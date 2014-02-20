@@ -1,0 +1,252 @@
+/* Add additional stylesheets below
+-------------------------------------------------- */
+/*
+  Bootstrap's documentation styles
+  Special styles for presenting Bootstrap's documentation and examples
+*/
+
+
+/* Body and structure
+-------------------------------------------------- */
+body {
+  position: relative;
+  padding-top: 50px;
+  background-color: #fff;
+  /*background-color: #ededed;*/
+  background-repeat: repeat-x;
+  background-position: 0 40px;
+  /*background-image: url('../img/tan_linen.jpg');*/
+}
+
+#quarryhelp {
+  margin-top: -10px;
+  margin-left: 20px;
+  /*display: none;*/
+}
+
+.row h1 {
+    text-align: center;
+    padding-top: 0.4em;
+    padding-bottom: 0.5em;
+}
+
+.cursorOn {
+    background-color: #aaa;
+}
+
+/* Navbar-related
+----------------- */
+.dropdown-menu i {
+    padding-right: 10px;
+}
+/* Tweaking the following Font Awesome classes to ensure that when used in
+   an unordered list (e.g., navbar) all fonts have a similar width */
+.icon-edit {
+    font-size: 0.85em;
+}
+.icon-play {
+    font-size: 1.1em;
+}
+.icon-hdd {
+    font-size: 1.15em;
+}
+
+/* When employing a Font Awesome caret icon in a menu list */
+li .icon-caret-down {
+    margin-left: 5px;
+}
+
+/* When we use a Font Awesome large icon inside a table cell */
+td .icon-large {
+    padding-left: 5px;
+}
+
+/* When we use a Font Awesome icon stack in a drop-down menu */
+li .icon-stack {
+    margin-left: -10px;
+    margin-right: 5px;
+}
+
+/* When we use a Bootstrap button inside a table cell */
+td .btn {
+    margin-left: 5px;
+}
+
+td > .ember-text-field {
+    margin: 5px;
+}
+
+td > .ember-checkbox {
+    margin-left: 15px;
+    margin-top: 15px;
+}
+
+/* Font Awesome's "icon-check" class is used as a bullet-point-style
+   icon identifier */
+.icon-check {
+    padding-right: 5px;
+}
+
+/* When text precedes an Ember input field in the same inline area */
+span + .ember-text-field  {
+    margin-left: 5px;
+}
+
+/* For Bootstrap button actions, we'll be including a Font Awesome
+   icon as a prefix symbol.  We want some whitespace after the icon */
+button > [class^="icon-"] {
+    padding-right: 5px;
+}
+
+/* Title text
+------------- */
+legend > [class^="icon-"] {
+    padding-right: 15px;
+}
+
+/* Space out sub-sections more
+-------------------------------------------------- */
+section {
+  padding-top: 60px;
+}
+
+/* Tools Link Button
+-------------------- */
+#tools-link {
+    padding-top: 4px;
+}
+
+/* Faded out hr */
+hr.soften {
+  height: 1px;
+  margin: 54px 0;
+  background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,.1), rgba(0,0,0,0));
+  background-image:    -moz-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,.1), rgba(0,0,0,0));
+  background-image:     -ms-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,.1), rgba(0,0,0,0));
+  background-image:      -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,.1), rgba(0,0,0,0));
+  border: 0;
+}
+
+/* Advanced Search
+------------------ */
+#advanced_search_tabs table {
+    background-color: whitesmoke;
+}
+
+.field-delete {
+    margin-top: 3em;
+    margin-left: 1em;
+    line-height: 1em;
+}
+
+/* Search Results
+----------------- */
+#serpHeaders a {
+    color: black;
+}
+
+#search-summary {
+    float: left;
+}
+
+#search-in-progress {
+    margin-bottom: 1.5em;
+}
+
+.search-errors {
+    margin-bottom: 2em;
+}
+
+#search-pagination {
+    margin-top: 2em;
+}
+
+#results-per-page {
+    margin-bottom: -2em;
+}
+
+/* Commission Well
+------------------ */
+.commissionWellEnumerator {
+    padding-left: 12px;
+    padding-bottom: 15px;
+    margin-top: -20px;
+}
+
+.addPhysicalWellEnumerator {
+    margin-top: -24px;
+    padding-left: 5px;
+    padding-bottom: 15px;
+}
+
+.template-well {
+    background-color: #e8efff;
+}
+
+/* Console Well */
+.console-well {
+    background-color: #000;
+    color: #FFF;
+}
+.console-well pre {
+    font-size: 12px;
+    background-color: #000;
+    color: #FFF;
+    padding: 0;
+}
+
+/* Log presentation */
+
+.logEntry {
+    margin: 0;
+}
+
+.logEntry > pre.logException {
+    color: orange;
+}
+
+/* Input field with fixed-width font */
+textarea.cli {
+    font-family: Courier, monospace;
+}
+
+/* Font Awesome messes up the vertical alignment of definition lists (<dd>)
+   when a <i></i> block is in the <dt></dt> (item) block*/
+dl.font-awesome-dt > dd {
+    line-height: 21px;
+}
+
+/* Bootstrap messes up the vertical alignment of definition lists
+   when a checkbox is in the <dt></dt> block */
+dt > input[type="checkbox"] {
+    margin: 0;
+}
+
+/* Refresh Jobs Button:
+   ul.pager adds a 20px top margin
+   which we don't want in this case
+----------------------------------- */
+#refresh-jobs-button {
+    margin-top: 0;
+}
+
+#pagerRefresh a {
+    cursor: default
+}
+
+/* Popovers
+----------- */
+
+a[rel="popover"] {
+    text-decoration: none;
+    color: #000000;
+}
+
+span[rel="popover"] {
+    cursor: help;
+}
+
+/* <button> element links */
+.buttonLink:hover {
+    text-decoration: none;
+}

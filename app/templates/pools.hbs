@@ -1,0 +1,39 @@
+{{#if childOutlet}}
+    {{outlet}}
+{{else}}
+    <legend>{{icon name="poolsPage"}}Hypervisor Pools</legend>
+    {{#if isLoading}}
+        <p id="search-in-progress">Refreshing pools list from the db....</p>
+        <div class="progress progress-striped active">
+            <div class="bar" style="width: 100%;"></div>
+        </div>
+    {{else}}
+        <div class="container">
+            {{#each controller}}
+                <div class="row">
+                    <div class="span3">
+                        {{#link-to "pool" this}}{{name}}{{/link-to}}
+                    </div>
+                    <div class="span8"></div>
+                    <div class="span1">
+                        {{#link-to "pool.delete" this}}{{icon name="delPool"}}{{/link-to}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span12">
+                        {{#if hypervisors}}
+                            {{render "poolStatsSummary" this}}
+                        {{else}}
+                            {{icon name="physical"}}&nbsp;&nbsp;<small>No hypervisors in this pool</small><br>
+                        {{/if}}
+                    </div>
+                </div>
+                <hr>
+            {{/each}}
+        </div>
+        {{#link-to "poolsNew" classNames="buttonLink"}}
+            <button class="btn btn-mini btn-success">{{icon name="add"}} Add New Hypervisor Pool</button>
+        {{/link-to}}
+        <br>
+    {{/if}}
+{{/if}}

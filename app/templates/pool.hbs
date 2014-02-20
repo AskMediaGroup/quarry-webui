@@ -1,0 +1,167 @@
+{{#if deleteState}}
+    <legend>{{icon name="cautionPage"}}Pool: {{name}}</legend>
+{{else}}
+    <legend>{{icon name="poolsPage"}}Pool: {{name}}</legend>
+{{/if}}
+{{#if status}}
+    {{#if status.deleted}}
+        <div class="well well-small">
+            <dl class="dl-horizontal">
+                <dt><span class="badge badge-success">success</span></dt>
+                <dd>Pool <strong>{{name}}</strong> deleted!</dd>
+            </dl>
+        </div>
+        <ul class="pager">
+            <li class="previous">
+                <a href="#" {{action "goPools"}}>&larr; Pools</a>
+            </li>
+        </ul>
+    {{else}}
+        {{#if status.updated}}
+            <div class="well well-small">
+                <dl class="dl-horizontal">
+                    <dt><span class="badge badge-success">success</span></dt>
+                    <dd>{{name}} updated</dd>
+                </dl>
+            </div>
+            <ul class="pager">
+                <li class="previous">
+                    <a href="#" {{action "refresh"}}>&larr; Back to Pool Detail</a>
+                </li>
+            </ul>
+        {{else}}
+            <div class="well well-small">
+                <dl class="dl-horizontal">
+                    <dt><span class="badge badge-important">failed</span></dt>
+                    <dd><strong>{{name}}</strong> unchanged</dd>
+                </dl>
+            </div>
+            <ul class="pager">
+                <li class="previous">
+                    <a href="#" {{action "refresh"}}>&larr; Back to Pool Detail</a>
+                </li>
+            </ul>
+        {{/if}}
+    {{/if}}
+{{else}}
+    <form>
+        <div class="container">
+            <div class="well well-large">
+                <div class="row">
+                    <div class="span4">
+                        <label>Name:</label>
+                        {{view Em.TextField
+                        valueBinding="newName" class="span4"}}
+                    </div>
+                    <div class="span1">
+                        <label>DC:</label>
+                        {{view Em.TextField
+                        valueBinding="dc" class="span1"}}
+                    </div>
+                    <div class="span3">
+                        <label>Production Type:</label>
+                        {{view Em.Select
+                        prompt="Select a prod type...."
+                        contentBinding="prodTypeOptions"
+                        valueBinding="prodtype" class="span3"}}
+                    </div>
+                    <div class="span3">
+                        <label>Business Unit:</label>
+                        {{view Em.Select
+                        prompt="Select a BU...."
+                        contentBinding="businessUnitOptions"
+                        valueBinding="business_unit" class="span3"}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span3">
+                        <label>Network:</label>
+                        {{view Em.Select
+                        contentBinding="networks"
+                        optionValuePath="gateway"
+                        optionLabelPath="gateway"
+                        valueBinding="network"
+                        class="span3"}}
+                    </div>
+                </div>
+            </div>
+            <p class="lead">Usage</p>
+            {{render "localeStats" this}}
+            <p class="lead">Hypervisors</p>
+            {{#each hypervisors}}
+                <div class="row">
+                    <div class="span4">
+                        <label>FQDN:</label>
+                        <a href="#" {{action getAsset name}}>{{name}}</a>
+                    </div>
+                    <div class="span2 offset1">
+                        <label>Type:</label>
+                        {{view Em.TextField class="span2" disabled="disabled"
+                        valueBinding="type"}}
+                    </div>
+                    <div class="span1">
+                        <label>Version:</label>
+                        {{view Em.TextField class="span1" disabled="disabled"
+                        valueBinding="version"}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span2">
+                        <label>Free Memory:</label>
+                        {{view Em.TextField class="span2" disabled="disabled"
+                        valueBinding="freeMemGiB"}}
+                    </div>
+                    <div class="span2">
+                        <label>Total Memory:</label>
+                        {{view Em.TextField class="span2" disabled="disabled"
+                        valueBinding="totalMemGiB"}}
+                    </div>
+                    <div class="span2 offset1">
+                        <label>Free Storage:</label>
+                        {{view Em.TextField class="span2" disabled="disabled"
+                        valueBinding="freeStorageGiB"}}
+                    </div>
+                    <div class="span2">
+                        <label>Total Storage:</label>
+                        {{view Em.TextField class="span2" disabled="disabled"
+                        valueBinding="totalStorageGiB"}}
+                    </div>
+                </div>
+                <hr>
+            {{/each}}
+        </div>
+        {{#if deleteInProgress}}
+        {{else}}
+            <div class="btn-group">
+                {{#if formUpdated}}
+                    <button class="btn btn-primary" type="submit" {{action "update"}}>
+                        {{icon name="network"}} Apply Changes
+                    </button>
+                    <button class="btn btn-warning" type="button" {{action "refresh"}}>
+                        {{icon name="reload"}} Reset
+                    </button>
+                    <button class="btn btn-danger" type="button" {{action "remove"}}>
+                        {{icon name="del"}} Delete Pool
+                    </button>
+                {{else}}
+                    <button class="btn btn-primary" disabled="disabled">
+                        {{icon name="network"}} Apply Changes
+                    </button>
+                    <button class="btn btn-warning" disabled="disabled">
+                        {{icon name="reload"}} Reset
+                    </button>
+                    <button class="btn btn-danger" type="button" {{action "remove"}}>
+                        {{icon name="del"}} Delete Pool
+                    </button>
+                {{/if}}
+            </div>
+            <hr>
+            <ul class="pager">
+                <li class="previous">
+                    <a href="#" {{action "goPools"}}>&larr; Back to Pools</a>
+                </li>
+            </ul>
+        {{/if}}
+    </form>
+{{/if}}
+{{outlet}}

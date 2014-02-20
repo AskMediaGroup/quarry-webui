@@ -1,0 +1,186 @@
+<legend>{{icon name="layoutsPage"}}Layout: {{name}}</legend>
+{{#if status}}
+    {{#if status.deleted}}
+        <div class="well well-small">
+            <dl class="dl-horizontal">
+                <dt><span class="badge badge-success">success</span></dt>
+                <dd>Layout {{partlayout_id}} deleted!</dd>
+            </dl>
+        </div>
+        <ul class="pager">
+            <li class="previous">
+                {{link-to "&larr; Load Layouts" "layouts"}}
+            </li>
+        </ul>
+    {{else}}
+        {{#if status.updated}}
+            <div class="well well-small">
+                <dl class="dl-horizontal">
+                    <dt><span class="badge badge-success">success</span></dt>
+                    <dd>{{name}} updated</dd>
+                </dl>
+            </div>
+            <ul class="pager">
+                <li class="previous">
+                    <a href="#" {{action "refresh" model}}>&larr; Back to Layout Detail</a>
+                </li>
+            </ul>
+        {{else}}
+            <div class="well well-small">
+                <dl class="dl-horizontal">
+                    <dt><span class="badge badge-important">failed</span></dt>
+                    <dd>{{name}} unchanged</dd>
+                </dl>
+            </div>
+            <ul class="pager">
+                <li class="previous">
+                    <a href="#" {{action "refresh" model}}>&larr; Back to Layout Detail</a>
+                </li>
+            </ul>
+        {{/if}}
+    {{/if}}
+{{else}}
+    <div class="container">
+        <div class="well well-large">
+            {{#if entries}}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Order</th>
+                        <th>FS Type</th>
+                        <th>Mount Point</th>
+                        <th>Size (in MB)</th>
+                        <th>Grow?</th>
+                        <th>Raid Level</th>
+                        <th>/dev Type</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {{#each entry in entries}}
+                        <tr>
+                            <td>{{view Em.TextField valueBinding="entry.order" class="span1"}}</td>
+                            <td>{{view Em.TextField valueBinding="entry.fs" class="span1"}}</td>
+                            <td>{{view Em.TextField valueBinding="entry.mnt" class="span2"}}</td>
+                            <td>{{view Em.TextField valueBinding="entry.size" class="span1"}}</td>
+                            <td>{{view Em.Checkbox checkedBinding="entry.willGrow" class="span1"}}</td>
+                            <td>{{view Em.TextField valueBinding="entry.level" class="span1"}}</td>
+                            <td>{{view Em.TextField valueBinding="entry.dev" class="span2"}}</td>
+                            <td><a href="#" {{action "delEntry" entry.partlayoutentry_id}}>
+                                {{icon name="delLayout"}}</a>
+                            </td>
+                        </tr>
+                        {{/each}}
+                        {{#each entry in newEntries}}
+                        <tr>
+                            <td>{{view Em.TextField valueBinding="entry.order" class="span1"}}</td>
+                            <td>{{view Em.TextField valueBinding="entry.fs" class="span1"}}</td>
+                            <td>{{view Em.TextField valueBinding="entry.mnt" class="span2"}}</td>
+                            <td>{{view Em.TextField valueBinding="entry.size" class="span1"}}</td>
+                            <td>{{view Em.Checkbox checkedBinding="entry.willGrow" class="span1"}}</td>
+                            <td>{{view Em.TextField valueBinding="entry.level" class="span1"}}</td>
+                            <td>{{view Em.TextField valueBinding="entry.dev" class="span2"}}</td>
+                            <td><a href="#" {{action "delNewEntry" entry}}>{{icon name="delLayout"}}</a>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            {{else}}
+                {{#if newEntries}}
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Order</th>
+                            <th>FS Type</th>
+                            <th>Mount Point</th>
+                            <th>Size (in MB)</th>
+                            <th>Grow?</th>
+                            <th>Raid Level</th>
+                            <th>/dev Type</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {{#each entry in newEntries}}
+                            <tr>
+                                <td>{{view Em.TextField valueBinding="entry.order" class="span1"}}</td>
+                                <td>{{view Em.TextField valueBinding="entry.fs" class="span1"}}</td>
+                                <td>{{view Em.TextField valueBinding="entry.mnt" class="span2"}}</td>
+                                <td>{{view Em.TextField valueBinding="entry.size" class="span1"}}</td>
+                                <td>{{view Em.Checkbox checkedBinding="entry.willGrow" class="span1"}}</td>
+                                <td>{{view Em.TextField valueBinding="entry.level" class="span1"}}</td>
+                                <td>{{view Em.TextField valueBinding="entry.dev" class="span2"}}</td>
+                                <td><a href="#" {{action "delNewEntry" entry}}>{{icon name="delLayout"}}</a>
+                                </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                {{else}}
+                    <p class="lead">No partition entries defined!</p>
+                {{/if}}
+            {{/if}}
+            <div class="row">
+                <div class="span2">
+                    <button class="btn btn-mini btn-success" {{action "addEntry"}}>
+                        <i class="icon-plus"></i> Add Partition</button>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="span2">
+                    <label class="checkbox">
+                        {{view Em.Checkbox
+                        checkedBinding="isAvailable"}}Available?
+                    </label>
+                </div>
+                <div class="span2">
+                    <label class="checkbox">
+                        {{view Em.Checkbox
+                        checkedBinding="isBase"}}Base?
+                    </label>
+                </div>
+                <div class="span7">
+                    <label class="checkbox">
+                        {{view Em.Checkbox
+                        checkedBinding="isSwRaid"}}Software RAID?
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{#if deleteInProgress}}
+    {{else}}
+        <div class="btn-group">
+            {{#if formUpdated}}
+                <button class="btn btn-primary" type="submit" {{action "update"}}>
+                    {{icon name="network"}} Apply Changes
+                </button>
+                <button class="btn btn-warning" type="button" {{action "refresh"}}>
+                    {{icon name="reload"}} Reset
+                </button>
+                <button class="btn btn-danger" type="button" {{action "remove"}}>
+                    {{icon name="del"}} Delete Layout Record
+                </button>
+            {{else}}
+                <button class="btn btn-primary" disabled="disabled">
+                    {{icon name="network"}} Apply Changes
+                </button>
+                <button class="btn btn-warning" disabled="disabled">
+                    {{icon name="reload"}} Reset
+                </button>
+                <button class="btn btn-danger" type="button" {{action "remove"}}>
+                    {{icon name="del"}} Delete Layout Record
+                </button>
+            {{/if}}
+        </div>
+        <hr>
+        <ul class="pager">
+            <li class="previous">
+                {{link-to "&larr; Back to Layouts" "layouts"}}
+            </li>
+        </ul>
+    {{/if}}
+{{/if}}
+{{outlet}}

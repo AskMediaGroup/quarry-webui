@@ -1,0 +1,19 @@
+<legend>{{icon name="arbitraryScriptsPage"}}Execute Arbitrary Script</legend>
+<form>
+    <div class="container">
+        <div class="well well-large">
+            <div class="row">
+                <div class="span2">
+                    <label>Script:</label>
+                    {{view Em.TextArea class="span11 cli" rows="20" valueBinding="command"}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="btn-group">
+        <button class="btn btn-danger" type="submit" {{action "run"}}>
+            {{icon name="start"}} Run Script
+        </button>
+    </div>
+</form>
+{{outlet}}

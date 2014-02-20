@@ -1,0 +1,275 @@
+<legend>{{icon name="vmPage"}}VM Commission</legend>
+{{#if showTemplate}}
+    <div class="well well-large template-well">
+        <div class="row-fluid">
+            <div class="span4 input-append">
+                <label>Hostname</label>
+                {{#if distinctHostnames}}
+                    {{view Em.TextField
+                    valueBinding="hostnamePrefix" placeholder="<replace existing selections>"}}
+                {{else}}
+                    {{view Em.TextField
+                    valueBinding="hostnamePrefix" placeholder="hostname prefix, e.g.: 'reply'"}}
+                {{/if}}
+                <span class="add-on">{{domainSuffix}}</span>
+            </div>
+            {{#unless hypervisorsReserved}}
+                <div class="span3 offset1">
+                    <label>Hypervisor Pool</label>
+                    {{#if distinctPools}}
+                        {{view Em.Select
+                        prompt="<replace existing selections>"
+                        contentBinding="pools"
+                        optionValuePath="content.name"
+                        optionLabelPath="content.name"
+                        valueBinding="pool"}}
+                    {{else}}
+                        {{view Em.Select
+                        prompt="Select a pool...."
+                        contentBinding="pools"
+                        optionValuePath="content.name"
+                        optionLabelPath="content.name"
+                        valueBinding="pool"}}
+                    {{/if}}
+                </div>
+            {{/unless}}
+        </div>
+        <hr>
+        <div class="row">
+            <div class="span3">
+                <label>Operating System</label>
+                {{#if distinctKickstarts}}
+                    {{view Em.Select
+                    prompt="<replace existing selections>"
+                    contentBinding="kickstarts"
+                    optionValuePath="content.name"
+                    optionLabelPath="content.name"
+                    valueBinding="kickstart"}}
+                {{else}}
+                    {{view Em.Select
+                    prompt="Select an OS build...."
+                    contentBinding="kickstarts"
+                    optionValuePath="content.name"
+                    optionLabelPath="content.name"
+                    valueBinding="kickstart"}}
+                {{/if}}
+            </div>
+            {{#unless hypervisorsReserved}}
+                <div class="span2">
+                    <label>RAM </label>
+                    {{#if distinctRam}}
+                        {{view Em.TextField
+                        valueBinding="ram" placeholder="<multiple>"
+                        maxlength="3" class="span2"}}
+                    {{else}}
+                        {{view Em.TextField
+                        valueBinding="ram" maxlength="3" class="span2"}}
+                    {{/if}}
+                    <br>
+                    <small>(GiB)</small>
+                </div>
+                <div class="span2">
+                    <label>CPUs</label>
+                    {{#if distinctCores}}
+                        {{view Em.TextField
+                        valueBinding="cores" placeholder="<multiple>"
+                        maxlength="2" class="span2"}}
+                    {{else}}
+                        {{view Em.TextField
+                        valueBinding="cores" maxlength="2" class="span2"}}
+                    {{/if}}
+                </div>
+                <div class="span2">
+                    <label>Total Storage</label>
+                    {{#if distinctStorage}}
+                        {{view Em.TextField
+                        valueBinding="storage" placeholder="<multiple>"
+                        maxlength="4" class="span2"}}
+                    {{else}}
+                        {{view Em.TextField
+                        valueBinding="storage" maxlength="4" class="span2"}}
+                    {{/if}}
+                    <br>
+                    <small>(GiB)</small>
+                </div>
+            {{/unless}}
+            <div class="span2">
+                <label>Partition Layout</label>
+                {{#if distinctLayouts}}
+                    {{view Em.Select
+                    prompt="<replace existing selections>"
+                    contentBinding="layouts"
+                    optionValuePath="content.name"
+                    optionLabelPath="content.name"
+                    valueBinding="layout" class="span2"}}
+                {{else}}
+                    {{view Em.Select
+                    prompt="Select a layout...."
+                    contentBinding="layouts"
+                    optionValuePath="content.name"
+                    optionLabelPath="content.name"
+                    valueBinding="layout" class="span2"}}
+                {{/if}}
+                <br>
+                {{#link-to "layouts"}}
+                    <button class="btn btn-mini btn-success"
+                        {{icon name="layouts"}}Edit Layouts
+                    </button>
+                {{/link-to}}
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="span3">
+                <label>Application Type</label>
+                {{#if distinctApplications}}
+                    {{view Em.Select
+                    prompt="<replace existing selections>"
+                    contentBinding="applicationTypeOptions"
+                    valueBinding="application" class="span3"}}
+                {{else}}
+                    {{view Em.Select
+                    prompt="Select an app type...."
+                    contentBinding="applicationTypeOptions"
+                    valueBinding="application" class="span3"}}
+                {{/if}}
+            </div>
+            <div class="span3">
+                <label>Production Type</label>
+                {{#if distinctProdTypes}}
+                    {{view Em.Select
+                    prompt="<replace existing selections>"
+                    contentBinding="prodTypeOptions"
+                    valueBinding="prodType" class="span3"}}
+                {{else}}
+                    {{view Em.Select
+                    prompt="Select a prod type...."
+                    contentBinding="prodTypeOptions"
+                    valueBinding="prodType" class="span3"}}
+                {{/if}}
+            </div>
+            <div class="span3">
+                <label>Business Unit</label>
+                {{#if distinctBusinessUnits}}
+                    {{view Em.Select
+                    prompt="<replace existing selections>"
+                    contentBinding="businessUnitOptions"
+                    valueBinding="businessUnit" class="span3"}}
+                {{else}}
+                    {{view Em.Select
+                    prompt="Select a BU...."
+                    contentBinding="businessUnitOptions"
+                    valueBinding="businessUnit" class="span3"}}
+                {{/if}}
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="span3">
+                <label>Owner</label>
+                {{#if distinctOwnerEmails}}
+                    {{view Em.TextField
+                    valueBinding="ownerEmail" placeholder="<replace existing selections>"
+                    class="span3"}}
+                {{else}}
+                    {{view Em.TextField
+                    valueBinding="ownerEmail" class="span3"}}
+                {{/if}}
+            </div>
+            <div class="span3">
+                <label>Owning Group</label>
+                {{#if distinctOwnerGroups}}
+                    {{view Em.TextField
+                    valueBinding="ownerGroup" placeholder="<replace existing selections>"
+                    class="span3"}}
+                {{else}}
+                    {{view Em.TextField
+                    valueBinding="ownerGroup" class="span3"}}
+                {{/if}}
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="span4">
+                <label class="checkbox">
+                    {{view Em.Checkbox
+                    checkedBinding="willAppendNumSeq"}}Add sequential numeric suffix
+                </label>
+            </div>
+            <div class="span4">
+                <label class="checkbox">
+                    {{view Em.Checkbox
+                    checkedBinding="willAppendDc"}}Add DC suffix
+                </label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="span1">
+                <label>From</label>
+                {{#if willAppendNumSeq}}
+                    {{view Em.TextField
+                    valueBinding="startNumSuffix" class="input-mini" maxlength="3"}}
+                {{else}}
+                    {{view Em.TextField
+                    valueBinding="startNumSuffix" disabled="disabled"
+                    class="input-mini" maxlength="3"}}
+                {{/if}}
+            </div>
+            <div class="span2">
+                <label>To <small> ( inclusive )</small></label>
+                {{#if willAppendNumSeq}}
+                    {{view Em.TextField
+                    valueBinding="endNumSuffix" class="input-mini" maxlength="3"}}
+                {{else}}
+                    {{view Em.TextField
+                    valueBinding="endNumSuffix" disabled="disabled"
+                    class="input-mini" maxlength="3"}}
+                {{/if}}
+            </div>
+            <div class="span7 offset1">
+                {{#if willAppendDc}}
+                    {{view Em.Select
+                    contentBinding="dcOptions"
+                    valueBinding="dcSuffix" class="span2"}}
+                {{else}}
+                    {{view Em.Select
+                    contentBinding="dcOptions"
+                    disabled="disabled"
+                    valueBinding="dcSuffix" class="span2"}}
+                {{/if}}
+            </div>
+        </div>
+    </div>
+    <div class="container"><br>
+        <label id="hostsToCommision">Number of hosts to commission:</label>
+        <div class="input-append">
+            {{#if willAppendNumSeq}}
+                {{view Em.TextField
+                valueBinding="numHostsAuto" class="input-mini uneditable-input"}}
+                {{#if numHostsAuto}}
+                    <button class="btn btn-primary" type="submit" {{action "buildHostSpecs"}}>
+                        {{icon name="bulk"}} Edit Hosts
+                        {{icon name="next"}}</button>
+                {{else}}
+                    <button class="btn" disabled>
+                        {{icon name="bulk"}} Edit Hosts</button>
+                {{/if}}
+            {{else}}
+                {{view Em.TextField
+                valueBinding="numHosts" class="input-mini"}}
+                {{#if numHosts}}
+                    <button class="btn btn-primary" type="submit" {{action "buildHostSpecs"}}>
+                        {{icon name="bulk"}} Edit Hosts
+                        {{icon name="next"}}</button>
+                {{else}}
+                    <button class="btn" disabled>
+                        {{icon name="bulk"}} Edit Hosts</button>
+                {{/if}}
+            {{/if}}
+        </div>
+    </div>
+    <p><small>Please be patient after clicking the button above....</small></p>
+    <div id="inputErrorsCommissionVm"></div>
+{{/if}}
+{{outlet}}

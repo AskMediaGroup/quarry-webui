@@ -1,0 +1,149 @@
+<legend>{{icon name="csvPage"}}Export</legend>
+{{#if isLoading}}
+    <p id="search-in-progress">Generating export data for <strong>{{searchString searchTerms}}</strong></p>
+    <div class="progress progress-striped active">
+        {{#if percentComplete}}
+            {{percentComplete}}% {{progressBar percentComplete}}
+        {{/if}}
+    </div>
+{{else}}
+    {{#if ready}}
+        <p class="lead">CSV data generated!</p>
+        <p>Used search query:
+        <blockquote>{{searchString searchTerms}}</blockquote>
+        </p>
+        <p>Included attributes:
+        <blockquote>{{csvAttributes}}</blockquote>
+        </p>
+        <form class="form-horizontal">
+            <div class="btn-group">
+                <button class="btn btn-primary" type="button" {{action "edit"}}>
+                    {{icon name="back"}} Edit Attributes</button>
+                <button class="btn" type="button" {{action "cancel"}}>
+                    {{icon name="cancel"}} Cancel</button>
+                <a id="csvDownloadLink" class="btn btn-success"
+                    {{bind-attr href="downloadLink"}}>
+                    {{icon name="csv"}} Download CSV File</a>
+            </div>
+        </form>
+    {{else}}
+        <div class="well well-small">
+            <p class="lead">Which asset attributes do you want to include in the data export?</p>
+            <div class="row">
+                <div class="span3">
+                    <dl class="dl-horizontal">
+                        <dt>{{view Em.Checkbox checkedBinding="selectAllAttributes"}}</dt>
+                        <dd>{{icon name="csv"}}</dd>
+                    </dl>
+                    <dl class="dl-horizontal">
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.id"}}</dt>
+                        <dd>id</dd>
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.FQDN"}}</dt>
+                        <dd>FQDN</dd>
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.DC"}}</dt>
+                        <dd>DC</dd>
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.OS"}}</dt>
+                        <dd>OS</dd>
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.RAM"}}</dt>
+                        <dd>RAM</dd>
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.RAM_Total"}}</dt>
+                        <dd>RAM_Total</dd>
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.Chassis_Model"}}</dt>
+                        <dd>Chassis_Model</dd>
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.Service_Tag"}}</dt>
+                        <dd>Service_Tag</dd>
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.MAC"}}</dt>
+                        <dd>MAC</dd>
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.Application"}}</dt>
+                        <dd>Application</dd>
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.ProdType"}}</dt>
+                        <dd>ProdType</dd>
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.Bits"}}</dt>
+                        <dd>Bits</dd>
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.Model"}}</dt>
+                        <dd>Model</dd>
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.Manufacturer"}}</dt>
+                        <dd>Manufacturer</dd>
+                    </dl>
+                </div>
+                <div class="span3">
+                    <dl class="dl-horizontal">
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.Disk0"}}</dt>
+                        <dd>Disk0</dd>
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.Disk1"}}</dt>
+                        <dd>Disk1</dd>
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.Disk2"}}</dt>
+                        <dd>Disk2</dd>
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.Disk3"}}</dt>
+                        <dd>Disk3</dd>
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.Disk4"}}</dt>
+                        <dd>Disk4</dd>
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.Disk5"}}</dt>
+                        <dd>Disk5</dd>
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.Filesystem0"}}</dt>
+                        <dd>Filesystem0</dd>
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.Filesystem1"}}</dt>
+                        <dd>Filesystem1</dd>
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.Filesystem2"}}</dt>
+                        <dd>Filesystem2</dd>
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.Filesystem3"}}</dt>
+                        <dd>Filesystem3</dd>
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.Filesystem4"}}</dt>
+                        <dd>Filesystem4</dd>
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.Windows"}}</dt>
+                        <dd>Windows</dd>
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.Linux"}}</dt>
+                        <dd>Linux</dd>
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.VM"}}</dt>
+                        <dd>VM</dd>
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.RAID_level"}}</dt>
+                        <dd>RAID_level</dd>
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.BIOS_Ver"}}</dt>
+                        <dd>BIOS_Ver</dd>
+                    </dl>
+                </div>
+                <div class="span3">
+                    <dl class="dl-horizontal">
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.RAID_Controller"}}</dt>
+                        <dd>RAID_Controller</dd>
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.CPU_Cores"}}</dt>
+                        <dd>CPU_Cores</dd>
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.CPU_Sockets"}}</dt>
+                        <dd>CPU_Sockets</dd>
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.CPU"}}</dt>
+                        <dd>CPU</dd>
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.OS_Version"}}</dt>
+                        <dd>OS_Version</dd>
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.SW_RAID"}}</dt>
+                        <dd>SW_RAID</dd>
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.Notes"}}</dt>
+                        <dd>Notes</dd>
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.Owner_Email"}}</dt>
+                        <dd>Owner_Email</dd>
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.Owning_Group"}}</dt>
+                        <dd>Owning_Group</dd>
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.Business_Unit"}}</dt>
+                        <dd>Business_Unit</dd>
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.Switch_Port"}}</dt>
+                        <dd>Switch_Port</dd>
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.Switch"}}</dt>
+                        <dd>Switch</dd>
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.Time_Modified"}}</dt>
+                        <dd>Time_Modified</dd>
+                        <dt>{{view Em.Checkbox checkedBinding="csvOptions.ips"}}</dt>
+                        <dd>ips</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        <form class="form-horizontal">
+            <div class="btn-group">
+                <button class="btn" type="button" {{action "cancel"}}>
+                    {{icon name="cancel"}} Cancel</button>
+                <button class="btn btn-primary" type="submit" {{action "beginDataFetch"}}>
+                    {{icon name="magic"}} Generate CSV File
+                    {{icon name="next"}}</button>
+            </div>
+        </form>
+    {{/if}}
+{{/if}}

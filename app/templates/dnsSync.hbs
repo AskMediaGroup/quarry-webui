@@ -1,0 +1,10 @@
+<legend>{{icon name="dnsSyncPage"}}Sync DNS</legend>
+<p class="lead">Are you sure you want Quarry to build a new zone file and update DNS?</p>
+<form class="form-horizontal">
+    <div class="btn-group">
+        <button class="btn btn-primary" type="submit" {{action "sync"}}>
+            {{icon name="dnsSync"}} Sync</button>
+        <button class="btn" type="button" {{action "goIndex"}}>
+            {{icon name="cancel"}} Cancel</button>
+    </div>
+</form>

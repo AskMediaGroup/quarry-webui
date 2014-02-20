@@ -1,0 +1,48 @@
+{{#if childOutlet}}
+    {{outlet}}
+{{else}}
+    <legend>{{icon name="networksPage"}}Networks</legend>
+    {{#if isLoading}}
+        <p id="search-in-progress">Refreshing networks list from the db....</p>
+        <div class="progress progress-striped active">
+            <div class="bar" style="width: 100%;"></div>
+        </div>
+    {{else}}
+        <table id="resultstable" class="table table-condensed">
+            <thead id="serpHeaders">
+            <tr>
+                <th>Network IP</th>
+                <th>Network description</th>
+                <th>DC</th>
+                <th>Gateway</th>
+                <th>Netmask</th>
+                <th>DNS 1</th>
+                <th>DNS 2</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+                {{#each controller}}
+                <tr>
+                    <td>{{#link-to "network" this}}{{name}}{{/link-to}}</td>
+                    <td>{{description}}</td>
+                    <td>{{datacenter}}</td>
+                    <td>{{gateway}}</td>
+                    <td>{{netmask}}</td>
+                    <td>{{dns1}}</td>
+                    <td>{{dns2}}</td>
+                    <td>
+                        {{#link-to "network.delete" this}}
+                            {{icon name="delNetwork"}}
+                        {{/link-to}}
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        {{#link-to "networks.new" classNames="buttonLink"}}
+            <button class="btn btn-mini btn-success">{{icon name="add"}} Add New Network</button>
+        {{/link-to}}
+        <br>
+    {{/if}}
+{{/if}}

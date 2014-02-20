@@ -1,0 +1,43 @@
+{{#if confirming}}
+    <div class="alert">
+        Are you sure you want to run an arbitrary script on this host?
+    </div>
+    <pre>{{command}}</pre>
+    <div class="alert alert-error">
+        This could be dangerous!
+    </div>
+    <form class="form-horizontal">
+        <div class="btn-group">
+            <button class="btn" type="button-primary" {{action "cancel"}}>
+                {{icon name="cancel"}} Cancel</button>
+        </div>
+    </form>
+    <p>Or, to continue:</p>
+    {{render "confirmation"}}
+    {{#if ready}}
+        <form class="form-horizontal">
+            <div class="btn-group">
+                <button class="btn btn-primary" type="submit" {{action "run"}}>
+                    {{icon name="start"}} Run</button>
+            </div>
+        </form>
+    {{/if}}
+{{else}}
+    <form>
+        <div class="container">
+            <div class="well well-large">
+                <div class="row">
+                    <div class="span2">
+                        <label>Script:</label>
+                        {{view Em.TextArea class="span11 cli" rows="5" valueBinding="command"}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="btn-group">
+            <button class="btn btn-primary" type="submit" {{action "confirm"}}>
+                {{icon name="start"}} Run Script
+            </button>
+        </div>
+    </form>
+{{/if}}

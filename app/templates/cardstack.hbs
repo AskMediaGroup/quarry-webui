@@ -1,0 +1,177 @@
+{{#if deleteState}}
+    <legend>{{icon name="cautionPage"}}Batch Job: {{name}}</legend>
+{{else}}
+    <legend>{{icon name="cardstacksPage"}}Batch Job: {{name}}</legend>
+{{/if}}
+{{#if status}}
+    {{#if status.deleted}}
+        <div class="well well-small">
+            <dl class="dl-horizontal">
+                <dt><span class="badge badge-success">success</span></dt>
+                <dd>Batch Job <strong>{{name}}</strong> deleted!</dd>
+            </dl>
+        </div>
+        <ul class="pager">
+            <li class="previous">
+                {{link-to "&larr; Batch Jobs" "cardstacks"}}
+            </li>
+        </ul>
+    {{else}}
+        {{#if status.updated}}
+            <div class="well well-small">
+                <dl class="dl-horizontal">
+                    <dt><span class="badge badge-success">success</span></dt>
+                    <dd>{{name}} updated</dd>
+                </dl>
+            </div>
+            <ul class="pager">
+                <li class="previous">
+                    <a href="#" {{action "reload"}}>&larr; Back to Batch Job Detail</a>
+                </li>
+            </ul>
+        {{else}}
+            <div class="well well-small">
+                <dl class="dl-horizontal">
+                    <dt><span class="badge badge-important">failed</span></dt>
+                    <dd><strong>{{name}}</strong> unchanged</dd>
+                </dl>
+            </div>
+            <ul class="pager">
+                <li class="previous">
+                    <a href="#" {{action "reload"}}>&larr; Back to Batch Job Detail</a>
+                </li>
+            </ul>
+        {{/if}}
+    {{/if}}
+{{else}}
+    <div class="container">
+        <div class="well well-large">
+            {{#if cards}}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th class="span1">Order</th>
+                        <th class="span3">Script Name</th>
+                        <th class="span5">Command</th>
+                        <th class="span1"></th>
+                        <th class="span1"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#each card in cards}}
+                        <tr>
+                            <td><span class="lead">{{card.order}}</span></td>
+                            <td><span class="lead muted">&#8220;</span>
+                                {{#link-to "card" card}}{{card.name}}{{/link-to}}
+                                <span class="lead muted">&#8221;</span>
+                            </td>
+                            <td><code>{{card.command_abbreviated}}</code></td>
+                            <td>
+                                <a href="#" {{action "demoteOrder" card}}>{{icon name="downArrow"}}</a>
+                                <a href="#" {{action "promoteOrder" card}}>{{icon name="upArrow"}}</a>
+                            </td>
+                            <td>
+                                <a href="#" {{action "delCard" card}}>
+                                    {{icon name="delCard"}}</a>
+                            </td>
+                        </tr>
+                    {{/each}}
+                    {{#each card in newCards}}
+                        <tr>
+                            <td></td>
+                            <td>{{view Em.Select
+                            prompt="Select a script...."
+                            contentBinding="allCards"
+                            optionValuePath="content.card_id"
+                            optionLabelPath="content.name"
+                            valueBinding="card.card_id" class="span2"}}
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td><a href="#" {{action "delNewCard" card}}>{{icon name="delCard"}}</a>
+                            </td>
+                        </tr>
+                    {{/each}}
+                    </tbody>
+                </table>
+            {{else}}
+                {{#if newCards}}
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th class="span1">Order</th>
+                            <th class="span3">Script Name</th>
+                            <th class="span5">Command</th>
+                            <th class="span1"></th>
+                            <th class="span1"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{#each card in newCards}}
+                            <tr>
+                                <td></td>
+                                <td>{{view Em.Select
+                                prompt="Select a script...."
+                                contentBinding="allCards"
+                                optionValuePath="content.card_id"
+                                optionLabelPath="content.name"
+                                valueBinding="card.card_id" class="span2"}}
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td><a href="#" {{action "delNewCard" card}}>{{icon name="delCard"}}</a>
+                                </td>
+                            </tr>
+                        {{/each}}
+                        </tbody>
+                    </table>
+                {{else}}
+                    <p class="lead">No operations defined!</p>
+                {{/if}}
+            {{/if}}
+            {{#if inUse}}
+            {{else}}
+                <div class="row">
+                    <div class="span2">
+                        <button class="btn btn-mini btn-success" {{action "addCard"}}>
+                            <i class="icon-plus"></i> Add Script</button>
+                    </div>
+                </div>
+                <hr>
+            {{/if}}
+        </div>
+    </div>
+    {{#if inUse}}
+    {{else}}
+        <div class="btn-group">
+            {{#if formUpdated}}
+                <button class="btn btn-primary" type="submit" {{action "update"}}>
+                    {{icon name="network"}} Apply Changes
+                </button>
+                <button class="btn btn-warning" type="button" {{action "reload"}}>
+                    {{icon name="reload"}} Reset
+                </button>
+                <button class="btn btn-danger" type="button" {{action "remove"}}>
+                    {{icon name="del"}} Delete Batch Job
+                </button>
+            {{else}}
+                <button class="btn btn-primary" disabled="disabled">
+                    {{icon name="network"}} Apply Changes
+                </button>
+                <button class="btn btn-warning" disabled="disabled">
+                    {{icon name="reload"}} Reset
+                </button>
+                <button class="btn btn-danger" type="button" {{action "remove"}}>
+                    {{icon name="del"}} Delete Batch Job
+                </button>
+            {{/if}}
+        </div>
+        <hr>
+        <ul class="pager">
+            <li class="previous">
+                {{link-to "&larr; Back to Batch Jobs" "cardstacks"}}
+            </li>
+        </ul>
+    {{/if}}
+{{/if}}
+{{outlet}}

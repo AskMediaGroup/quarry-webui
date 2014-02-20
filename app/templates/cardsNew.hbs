@@ -1,0 +1,72 @@
+<legend>{{icon name="cardsPage"}}Add New Script</legend>
+{{#if status}}
+    {{#if status.added}}
+        <div class="well well-small">
+            <dl class="dl-horizontal">
+                <dt><span class="badge badge-success">success</span></dt>
+                <dd>Script added</dd>
+            </dl>
+        </div>
+        <ul class="pager">
+            <li class="previous">
+                <a href="#" {{action "edit" model}}>&larr; Edit New Script</a>
+            </li>
+        </ul>
+    {{else}}
+        <div class="well well-small">
+            <dl class="dl-horizontal">
+                <dt><span class="badge badge-important">failed</span></dt>
+                <dd>Script not added</dd>
+            </dl>
+        </div>
+        <ul class="pager">
+            <li class="previous">
+                <a href="#" {{action "retry"}}>&larr; Back to New Script Details</a>
+            </li>
+        </ul>
+    {{/if}}
+{{else}}
+    <form>
+        <div class="container">
+            <div class="well well-large">
+                <div class="row">
+                    <div class="span4">
+                        <label>Name</label>
+                        {{view Em.TextField
+                        valueBinding="name" class="span4"}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span11">
+                        <label>Command String:</label>
+                        {{view Em.TextArea class="span11 cli" rows="20" valueBinding="command"}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{#if nameAlert}}
+            <div class="alert alert-error">
+                A new script requires a <strong>name</strong> value!
+            </div>
+        {{/if}}
+        {{#if commandAlert}}
+            <div class="alert alert-error">
+                A new script requires a <strong>command string</strong>!
+            </div>
+        {{/if}}
+        <div class="btn-group"><br>
+            <button class="btn btn-success" type="submit" {{action "add"}}>
+                {{icon name="add"}} Add Script
+            </button>
+            <button class="btn" type="button" {{action "cancel"}}>
+                {{icon name="cancel"}}Cancel
+            </button>
+        </div>
+    </form>
+    <hr>
+    <ul class="pager">
+        <li class="previous">
+            {{link-to "&larr; Back to Scripts" "cards"}}
+        </li>
+    </ul>
+{{/if}}

@@ -1,0 +1,50 @@
+{{#if childOutlet}}
+    {{outlet}}
+{{else}}
+    <legend>{{icon name="layoutsPage"}}Layouts</legend>
+    {{#if isLoading}}
+        <p id="search-in-progress">Refreshing layouts list from the db....</p>
+        <div class="progress progress-striped active">
+            <div class="bar" style="width: 100%;"></div>
+        </div>
+    {{else}}
+        <table id="resultstable" class="table table-condensed">
+            <thead id="serpHeaders">
+            <tr>
+                <th>Layout ID</th>
+                <th>Name</th>
+                <th>Base?</th>
+                <th>Avail?</th>
+                <th>Software RAID?</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+                {{#each controller}}
+                <tr>
+                    <td>{{partlayout_id}}</td>
+                    <td><a href="#" {{action "getLayout" partlayout_id}}>{{name}}</a></td>
+                    <td><p class="text-success">
+                        {{#if base}}{{icon name="check"}}{{else}}{{/if}}
+                    </p></td>
+                    <td><p class="text-success">
+                        {{#if available}}{{icon name="check"}}{{else}}{{/if}}
+                    </p></td>
+                    <td><p class="text-success">
+                        {{#if swraid}}{{icon name="check"}}{{else}}{{/if}}
+                    </p></td>
+                    <td>
+                        {{#link-to "layout.delete" this}}
+                            {{icon name="delLayout"}}
+                        {{/link-to}}
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        {{#link-to "layouts.new" classNames="buttonLink"}}
+            <button class="btn btn-mini btn-success">{{icon name="add"}} Add New Layout</button>
+        {{/link-to}}
+        <br>
+    {{/if}}
+{{/if}}

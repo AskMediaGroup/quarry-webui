@@ -1,0 +1,62 @@
+{{#if optionsSelected}}
+    <div class="alert">
+        Are you sure you want to rekick <strong>{{content.FQDN}}</strong>?
+    </div>
+    <div class="alert alert-error">
+        This is a destructive action!
+    </div>
+    <form class="form-horizontal">
+        <div class="btn-group">
+            <button class="btn" type="button-primary" {{action "cancel"}}>
+                {{icon name="cancel"}} Cancel</button>
+        </div>
+    </form>
+    <p>Or, to continue:</p>
+    {{render "confirmation"}}
+    {{#if ready}}
+        <form class="form-horizontal">
+            <div class="btn-group">
+                <button class="btn btn-primary" type="submit" {{action "rekick"}}>
+                    {{icon name="rekick"}} Rekick</button>
+            </div>
+        </form>
+    {{/if}}
+{{else}}
+    <div class="well well-small">
+        <p class="lead">Please choose the desired Rekick configuration:</p>
+        <dl class="dl-horizontal font-awesome-dt">
+            <dt>OS:</dt>
+            <dd>{{view Em.Select
+            prompt="Select Kickstart Option...."
+            contentBinding="kickstarts"
+            optionValuePath="content.name"
+            optionLabelPath="content.name"
+            valueBinding="kickstart"}}<br>
+            </dd>
+            <dt>Layout:</dt>
+            <dd>{{view Em.Select
+            prompt="Select Layout Option...."
+            contentBinding="layouts"
+            optionValuePath="content.name"
+            optionLabelPath="content.name"
+            valueBinding="layout"}}<br>
+            </dd>
+        </dl>
+    </div>
+    <form class="form-horizontal">
+        <div class="btn-group">
+            {{#if optionsReady}}
+                <button class="btn btn-primary" type="submit" {{action "confirm"}}>
+                    {{icon name="rekick"}} Use These Options
+                    {{icon name="next"}}
+                </button>
+            {{else}}
+                <button class="btn btn-primary disabled" disabled="disabled">
+                    {{icon name="warning"}} Select Options
+                </button>
+            {{/if}}
+            <button class="btn" type="button" {{action "cancel"}}>
+                {{icon name="cancel"}} Cancel</button>
+        </div>
+    </form>
+{{/if}}

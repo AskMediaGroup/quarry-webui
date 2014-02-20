@@ -1,0 +1,90 @@
+{{#if deleteState}}
+    <legend>{{icon name="cautionPage"}}Script: {{name}}</legend>
+{{else}}
+    <legend>{{icon name="cardsPage"}}Script: {{name}}</legend>
+{{/if}}
+{{#if status}}
+    {{#if status.deleted}}
+        <div class="well well-small">
+            <dl class="dl-horizontal">
+                <dt><span class="badge badge-success">success</span></dt>
+                <dd>Script <strong>{{name}}</strong> deleted!</dd>
+            </dl>
+        </div>
+        <ul class="pager">
+            <li class="previous">
+                {{link-to "&larr; Load Scripts" "cards"}}
+            </li>
+        </ul>
+    {{else}}
+        {{#if status.updated}}
+            <div class="well well-small">
+                <dl class="dl-horizontal">
+                    <dt><span class="badge badge-success">success</span></dt>
+                    <dd><strong>{{name}}</strong> updated</dd>
+                </dl>
+            </div>
+            <ul class="pager">
+                <li class="previous">
+                    <a href="#" {{action "reload"}}>&larr; Back to Script Detail</a>
+                </li>
+            </ul>
+        {{else}}
+            <div class="well well-small">
+                <dl class="dl-horizontal">
+                    <dt><span class="badge badge-important">failed</span></dt>
+                    <dd><strong>{{name}}</strong> unchanged</dd>
+                </dl>
+            </div>
+            <ul class="pager">
+                <li class="previous">
+                    <a href="#" {{action "reload" model}}>&larr; Back to Script Detail</a>
+                </li>
+            </ul>
+        {{/if}}
+    {{/if}}
+{{else}}
+    <div class="container">
+        <div class="well well-large">
+            <div class="row">
+                <div class="span2">
+                    <label>Command String:</label>
+                    {{view Em.TextArea class="span11 cli" rows="20" valueBinding="command"}}
+                </div>
+            </div>
+        </div>
+    </div>
+    {{#if deleteInProgress}}
+    {{else}}
+        <div class="btn-group">
+            {{#if formUpdated}}
+                <button class="btn btn-primary" type="submit" {{action "update"}}>
+                    {{icon name="network"}} Apply Changes
+                </button>
+                <button class="btn btn-warning" type="button" {{action "reload"}}>
+                    {{icon name="reload"}} Reset
+                </button>
+                <button class="btn btn-danger" type="button" {{action "remove"}}>
+                    {{icon name="del"}} Delete Script
+                </button>
+            {{else}}
+                <button class="btn btn-primary" disabled="disabled">
+                    {{icon name="network"}} Apply Changes
+                </button>
+                <button class="btn btn-warning" disabled="disabled">
+                    {{icon name="reload"}} Reset
+                </button>
+                <button class="btn btn-danger" type="button" {{action "remove"}}>
+                    {{icon name="del"}} Delete Script
+                </button>
+            {{/if}}
+        </div>
+        <hr>
+        <ul class="pager">
+            <li class="previous">
+                {{link-to "&larr; Back to Scripts" "cards"}}
+            </li>
+        </ul>
+    {{/if}}
+{{/if}}
+{{outlet}}

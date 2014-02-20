@@ -1,0 +1,137 @@
+<legend>{{icon name="networkPage"}}Network: {{description}}</legend>
+{{#if status}}
+    {{#if status.deleted}}
+        <div class="well well-small">
+            <dl class="dl-horizontal">
+                <dt><span class="badge badge-success">success</span></dt>
+                <dd>{{gateway}} deleted</dd>
+            </dl>
+        </div>
+        <ul class="pager">
+            <li class="previous">
+                {{link-to "&larr; Load Networks" "networks"}}
+            </li>
+        </ul>
+    {{else}}
+        {{#if status.updated}}
+            <div class="well well-small">
+                <dl class="dl-horizontal">
+                    <dt><span class="badge badge-success">success</span></dt>
+                    <dd>{{gateway}} updated</dd>
+                </dl>
+            </div>
+            <ul class="pager">
+                <li class="previous">
+                    <a href="#" {{action "refresh" model}}>&larr; Back to Network Detail</a>
+                </li>
+            </ul>
+        {{else}}
+            <div class="well well-small">
+                <dl class="dl-horizontal">
+                    <dt><span class="badge badge-important">failed</span></dt>
+                    <dd>{{gateway}} unchanged</dd>
+                </dl>
+            </div>
+            <ul class="pager">
+                <li class="previous">
+                    <a href="#" {{action "refresh" model}}>&larr; Back to Network Detail</a>
+                </li>
+            </ul>
+        {{/if}}
+    {{/if}}
+{{else}}
+    <div class="container">
+        <div class="well well-large">
+            <div class="row">
+                <div class="span2">
+                    Network IP <small>(e.g., 10.10.10.0)</small>
+                </div>
+                <div class="span2">
+                    Gateway:
+                </div>
+                <div class="span2">
+                    Netmask:
+                </div>
+                <div class="span1">
+                    DC:
+                </div>
+                <div class="span2">
+                    Primary DNS:
+                </div>
+                <div class="span2">
+                    Secondary DNS:
+                </div>
+            </div>
+            <div class="row">
+                <div class="span2">
+                    {{view Em.TextField
+                    valueBinding="name" class="span2"}}
+                </div>
+                <div class="span2">
+                    {{view Em.TextField
+                    valueBinding="gateway" class="span2"}}
+                </div>
+                <div class="span2">
+                    {{view Em.TextField
+                    valueBinding="netmask" class="span2"}}
+                </div>
+                <div class="span1">
+                    {{view Em.TextField
+                    valueBinding="datacenter" class="span1"}}
+                </div>
+                <div class="span2">
+                    {{view Em.TextField
+                    valueBinding="dns1" class="span2"}}
+                </div>
+                <div class="span2">
+                    {{view Em.TextField
+                    valueBinding="dns2" class="span2"}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="span4">
+                    Description:
+                </div>
+            </div>
+            <div class="row">
+                <div class="span4">
+                    {{view Em.TextField
+                    valueBinding="description" class="span4"}}
+                </div>
+            </div>
+        </div>
+    </div>
+    {{#if deleteInProgress}}
+    {{else}}
+        <div class="btn-group">
+            {{#if formUpdated}}
+                <button class="btn btn-primary" type="submit" {{action "update"}}>
+                    {{icon name="network"}} Apply Changes
+                </button>
+                <button class="btn btn-warning" type="button" {{action "refresh"}}>
+                    {{icon name="reload"}} Reset
+                </button>
+                <button class="btn btn-danger" type="button" {{action "remove"}}>
+                    {{icon name="del"}} Delete Network Record
+                </button>
+            {{else}}
+                <button class="btn btn-primary" disabled="disabled">
+                    {{icon name="network"}} Apply Changes
+                </button>
+                <button class="btn btn-warning" disabled="disabled">
+                    {{icon name="reload"}} Reset
+                </button>
+                <button class="btn btn-danger" type="button" {{action "remove"}}>
+                    {{icon name="del"}} Delete Network Record
+                </button>
+            {{/if}}
+        </div>
+        <hr>
+        <ul class="pager">
+            <li class="previous">
+                {{link-to "&larr; Back to Networks" "networks"}}
+            </li>
+        </ul>
+    {{/if}}
+{{/if}}
+{{outlet}}

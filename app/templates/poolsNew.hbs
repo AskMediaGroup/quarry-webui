@@ -1,0 +1,92 @@
+<legend>{{icon name="poolsPage"}}Add New Pool</legend>
+{{#if status}}
+    {{#if status.added}}
+        <div class="well well-small">
+            <dl class="dl-horizontal">
+                <dt><span class="badge badge-success">success</span></dt>
+                <dd>Pool added</dd>
+            </dl>
+        </div>
+        <ul class="pager">
+            <li class="previous">
+                <a href="#" {{action "edit" model}}>&larr; Edit New Pool</a>
+            </li>
+        </ul>
+    {{else}}
+        <div class="well well-small">
+            <dl class="dl-horizontal">
+                <dt><span class="badge badge-important">failed</span></dt>
+                <dd>Pool not added</dd>
+            </dl>
+        </div>
+        <ul class="pager">
+            <li class="previous">
+                <a href="#" {{action "retry"}}>&larr; Back to New Pool Details</a>
+            </li>
+        </ul>
+    {{/if}}
+{{else}}
+    <form>
+        <div class="container">
+            <div class="well well-large">
+                <div class="row">
+                    <div class="span4">
+                        <label>Name:</label>
+                        {{view Em.TextField
+                        valueBinding="name" class="span4"}}
+                    </div>
+                    <div class="span1">
+                        <label>DC:</label>
+                        {{view Em.TextField
+                        valueBinding="dc" class="span1"}}
+                    </div>
+                    <div class="span3">
+                        <label>Production Type:</label>
+                        {{view Em.Select
+                        prompt="Select a prod type...."
+                        contentBinding="prodTypeOptions"
+                        valueBinding="prodtype" class="span3"}}
+                    </div>
+                    <div class="span3">
+                        <label>Business Unit:</label>
+                        {{view Em.Select
+                        prompt="Select a BU...."
+                        contentBinding="businessUnitOptions"
+                        valueBinding="business_unit" class="span3"}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span3">
+                        <label>Network:</label>
+                        {{view Em.Select
+                        prompt="Select a Network...."
+                        contentBinding="networks"
+                        optionValuePath="content.gateway"
+                        optionLabelPath="content.gateway"
+                        valueBinding="network"
+                        class="span3"}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{#if nameAlert}}
+            <div class="alert alert-error">
+                A new pool requires a <strong>name</strong> value!
+            </div>
+        {{/if}}
+        <div class="btn-group"><br>
+            <button class="btn btn-success" type="submit" {{action "add"}}>
+                {{icon name="add"}} Add Pool
+            </button>
+            <button class="btn" type="button" {{action "cancel"}}>
+                {{icon name="cancel"}}Cancel
+            </button>
+        </div>
+    </form>
+    <hr>
+    <ul class="pager">
+        <li class="previous">
+            {{link-to "&larr; Back to Pool" "pools"}}
+        </li>
+    </ul>
+{{/if}}

@@ -1,0 +1,37 @@
+<legend>{{icon name="jobsPage"}}My Jobs</legend>
+{{#if isLoading}}
+    <ul class="pager" id="pagerRefresh">
+        <li class="previous">
+            <a href="#">{{icon name="loading"}}&nbsp; Refreshing Jobs Data</a>
+        </li>
+    </ul>
+    <div class="progress progress-striped active">
+        <div class="bar" style="width: 100%;"></div>
+    </div>
+{{else}}
+    <ul class="pager" id="refresh-jobs-button">
+        <li class="previous">
+            <a href="#" {{action "refresh"}}>{{icon name="reload"}}&nbsp; Refresh Jobs Data</a>
+        </li>
+    </ul>
+    {{#if content}}
+        {{#each job in sorted}}
+            <div class="well well-small">
+                <dl class="dl-horizontal">
+                    <dt>Job UUID</dt>
+                    <dd>
+                        {{#link-to "job" job}}{{job.uuid}}{{/link-to}}
+                    </dd>
+                    <dt>Job Type</dt>
+                    <dd>{{#if job.hasChildren}}{{icon name="more"}}{{/if}}
+                        {{jobStatusBanner job}}
+                    </dd>
+                    <dt>Submitted</dt>
+                    <dd>{{job.queue_date}}</dd>
+                </dl>
+            </div>
+        {{/each}}
+    {{else}}
+        <p>No Job History for the past 24 hours.</p>
+    {{/if}}
+{{/if}}

@@ -1,0 +1,379 @@
+{{#if assetIndex}}
+    {{#if isVm}}
+        <legend>{{icon name="vmPage"}}{{FQDN}}</legend>
+    {{else}}
+        <legend>{{icon name="physicalPage"}}{{FQDN}}</legend>
+    {{/if}}
+{{else}}
+    <legend>{{icon name="cautionPage"}}{{FQDN}}</legend>
+{{/if}}
+{{#if status}}
+    {{#if status.updated}}
+        <div class="well well-small">
+            <dl class="dl-horizontal">
+                <dt>Asset updated</dt>
+                <dd><span class="badge badge-success">success</span></dd>
+            </dl>
+        </div>
+        <ul class="pager">
+            <li class="previous">
+                <a href="#" {{action "refresh" model}}>&larr; Back to Asset Detail</a>
+            </li>
+        </ul>
+    {{else}}
+        <div class="well well-small">
+            <dl class="dl-horizontal">
+                <dt>Asset updated</dt>
+                <dd><span class="badge badge-important">failed</span></dd>
+            </dl>
+        </div>
+        <ul class="pager">
+            <li class="previous">
+                <a href="#" {{action "refresh" model}}>&larr; Back to Asset Detail</a>
+            </li>
+        </ul>
+    {{/if}}
+{{else}}
+    {{#if isLoading}}
+        <p id="search-in-progress">Loading asset details....</p>
+        <div class="progress progress-striped active">
+            <div class="bar" style="width: 100%;"></div>
+        </div>
+    {{else}}
+        <ul class="nav nav-tabs" id="assetTabs">
+            <li class="active"><a href="#general" data-toggle="tab">General</a></li>
+            {{#if vm}}
+                <li><a href="#vm" data-toggle="tab">VM</a></li>
+            {{/if}}
+            {{#if hypervisor}}
+                <li><a href="#hypervisor" data-toggle="tab">Hypervisor</a></li>
+            {{/if}}
+            <li><a href="#network" data-toggle="tab">Network</a></li>
+            <li><a href="#hardware" data-toggle="tab">Hardware</a></li>
+            <li><a href="#osap" data-toggle="tab">Operating System and Platform</a></li>
+            <li><a href="#partitioning" data-toggle="tab">Disks and Partitions</a></li>
+<!-- VNC console tab disabled
+            {{!--#if hasVnc}}
+                <li><a href="#console" data-toggle="tab">Console</a></li>
+            {{/if--}}
+-->
+        </ul>
+        <form>
+        <div class="well well-large">
+            <div id="asset_detail" class="tab-content">
+                <div class="tab-pane fade in active" id="general">
+                    <div class="row">
+                        <div class="span5"><label>FQDN:</label>
+                            {{view Em.TextField class="span5" valueBinding="content.FQDN"}}
+                        </div>
+                        <div class="span3"><label>Application Type:</label>
+                            {{view Em.Select class="span3"
+                            valueBinding="content.Application"
+                            contentBinding="applicationTypeOptions"}}
+                        </div>
+                        <div class="span3"><label>Production Type:</label>
+                            {{view Em.Select class="span3"
+                            valueBinding="content.ProdType"
+                            contentBinding="productionTypeOptions"}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="span1">
+                            <label>DC:</label>
+                            {{view Em.TextField class="span1" valueBinding="content.DC"}}
+                        </div>
+                        <div class="span3">
+                            <label>Asset Owner:</label>
+                            {{view Em.TextField class="span3" valueBinding="content.Owner_Email"}}
+                        </div>
+                        <div class="span3 offset1">
+                            <label>Owning Group:</label>
+                            {{view Em.TextField class="span3" valueBinding="content.Owning_Group"}}
+                        </div>
+                        <div class="span3">
+                            <label>Business Unit:</label>
+                            {{view Em.Select class="span3"
+                            valueBinding="content.Business_Unit"
+                            contentBinding="businessUnitOptions"}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="span3">
+                            <label>Last Modified:</label>
+                            <span class="span3 uneditable-input">{{Time_Modified}}</span>
+                        </div>
+                        <div class="span4">
+                            <label>Notes:</label>
+                            {{view Em.TextArea class="span4" rows="4" valueBinding="content.Notes"}}
+                        </div>
+                        <div class="span2 offset1"><br>
+                            {{#if isVm}}
+                                <p class="text-success">
+                                    {{icon name="check"}} Is a VM
+                                </p>
+                            {{/if}}
+                            {{#if isLinux}}
+                                <p class="text-success">
+                                    {{icon name="check"}} Is a Linux host
+                                </p>
+                            {{else}}
+                                {{#if isWindows}}
+                                    <p class="text-success">
+                                        {{icon name="check"}} Is a Windows host
+                                    </p>
+                                {{/if}}
+                            {{/if}}
+                        </div>
+                    </div>
+                </div>
+                    {{#if vm}}
+                    <div class="tab-pane fade" id="vm">
+                        <div class="row">
+                            <div class="span5">
+                                <label>Hypervisor:</label>
+                                <a href="#" {{action "getAsset" vm.hypervisor}}>{{vm.hypervisor}}</a>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="span1">
+                                <label>Memory:</label>
+                                {{view Em.TextField class="span1" disabled="disabled"
+                                valueBinding="vm.memory"}}
+                                <br>
+                                <small>(GiB)</small>
+                            </div>
+                            <div class="span1 offset1">
+                                <label>Storage:</label>
+                                {{view Em.TextField class="span1" disabled="disabled"
+                                valueBinding="vm.capacity"}}
+                                <br>
+                                <small>(GiB)</small>
+                            </div>
+                            <div class="span1 offset1">
+                                <label>VCPUs:</label>
+                                {{view Em.TextField class="span1" disabled="disabled"
+                                valueBinding="vm.cpus"}}
+                            </div>
+                        </div>
+                    </div>
+                    {{/if}}
+                    {{#if hypervisor}}
+                    {{render "hypervisor" hypervisor}}
+                    {{/if}}
+                <div class="tab-pane fade" id="network">
+                    <div class="row">
+                        <div class="span3">
+                            <label>MAC Address:</label>
+                            {{view Em.TextField class="span3" valueBinding="content.MAC"}}
+                        </div>
+                        {{#if content.Switch}}
+                            <div class="span2">
+                                <label>Switch:</label>
+                                {{view Em.TextField class="span2" valueBinding="content.Switch"}}
+                            </div>
+                        {{/if}}
+                    </div>
+                    {{#each ip in ips}}
+                        {{#if ip.network}}
+                            <br><p class="lead">
+                            {{ip.network.name}}/{{cidr ip.network.netmask}}
+                            interface ({{ip.network.description}})
+                        {{/if}}
+                    </p>
+                        <div class="row">
+                            <div class="span2">
+                                <span class="badge badge-inverse">{{netType ip.type}}</span>
+                            </div>
+                            <div class="span2">
+                                <label>IP Address:</label>
+                                {{view Em.TextField class="span2" valueBinding="ip.ip"}}
+                            </div>
+                            <div class="span2">
+                                <label>Subnet Mask:</label>
+                                {{view Em.TextField class="span2" valueBinding="ip.network.netmask"}}
+                            </div>
+                            <div class="span2">
+                                <label>Gateway:</label>
+                                {{view Em.TextField class="span2" valueBinding="ip.network.gateway"}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="span2 offset2">
+                                <label>Primary DNS:</label>
+                                {{view Em.TextField class="span2" valueBinding="ip.network.dns1"}}
+                            </div>
+                            <div class="span2">
+                                <label>Secondary DNS:</label>
+                                {{view Em.TextField class="span2" valueBinding="ip.network.dns2"}}
+                            </div>
+                        </div>
+                    {{/each}}
+                </div>
+                <div class="tab-pane fade" id="hardware">
+                    <div class="row">
+                        <div class="span2">
+                            <label>Manufacturer:</label>
+                            {{view Em.TextField class="span2" valueBinding="content.Manufacturer"}}
+                        </div>
+                        <div class="span4">
+                            <label>Service Tag:</label>
+                            {{view Em.TextField class="span4" valueBinding="content.Service_Tag"}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="span2">
+                            <label>Total RAM:</label>
+                            {{view Em.TextField class="span2" valueBinding="content.RAM_Total"}}
+                        </div>
+                        <div class="span9">
+                            <label>RAM Breakdown:</label>
+                            {{view Em.TextField class="span9" valueBinding="content.RAM"}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="span5">
+                            <label>CPU:</label>
+                            {{view Em.TextField class="span5" valueBinding="content.CPU"}}
+                        </div>
+                        <div class="span1">
+                            <label>Cores:</label>
+                            {{view Em.TextField class="span1" valueBinding="content.CPU_Cores"}}
+                        </div>
+                        <div class="span4">
+                            <label>Sockets:</label>
+                            {{view Em.TextField class="span1" valueBinding="content.CPU_Sockets"}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        {{#if content.RAID_Controller}}
+                            <div class="span4">
+                                <label>RAID Controller:</label>
+                                {{view Em.TextField class="span3" valueBinding="content.RAID_Controller"}}
+                            </div>
+                        {{/if}}
+                        <div class="span3">
+                            <label>Chassis Model:</label>
+                            {{view Em.TextField class="span3" valueBinding="content.Chassis_Model"}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        {{#if content.Disk0}}
+                            <div class="span1">
+                                <label>Disk "0":</label>
+                                {{view Em.TextField class="span1" valueBinding="content.Disk0"}}
+                            </div>
+                        {{/if}}
+                        {{#if content.Disk1}}
+                            <div class="span1">
+                                <label>Disk "1":</label>
+                                {{view Em.TextField class="span1" valueBinding="content.Disk1"}}
+                            </div>
+                        {{/if}}
+                        {{#if content.Disk2}}
+                            <div class="span1">
+                                <label>Disk "2":</label>
+                                {{view Em.TextField class="span1" valueBinding="content.Disk2"}}
+                            </div>
+                        {{/if}}
+                        {{#if content.Disk3}}
+                            <div class="span1">
+                                <label>Disk "3":</label>
+                                {{view Em.TextField class="span1" valueBinding="content.Disk3"}}
+                            </div>
+                        {{/if}}
+                        {{#if content.Disk4}}
+                            <div class="span1">
+                                <label>Disk "4":</label>
+                                {{view Em.TextField class="span1" valueBinding="content.Disk4"}}
+                            </div>
+                        {{/if}}
+                        {{#if content.Disk5}}
+                            <div class="span1">
+                                <label>Disk "5":</label>
+                                {{view Em.TextField class="span1" valueBinding="content.Disk5"}}
+                            </div>
+                        {{/if}}
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="osap">
+                    <div class="row">
+                        <div class="span4">
+                            <label>OS:</label>
+                            {{view Em.TextField class="span4" valueBinding="content.OS"}}
+                        </div>
+                        <div class="span2">
+                            <label>OS Version:</label>
+                            {{view Em.TextField class="span2" valueBinding="content.OS_Version"}}
+                        </div>
+                        <div class="span1">
+                            <label>Bits:</label>
+                            {{view Em.TextField class="span1" valueBinding="content.Bits"}}
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="partitioning">
+                    <div class="row">
+                        <div class="span2">
+                            <label>FS Volume "0":</label>
+                            {{view Em.TextField class="span2" valueBinding="content.Filesystem0"}}
+                        </div>
+                        <div class="span2">
+                            <label>FS Volume "1":</label>
+                            {{view Em.TextField class="span2" valueBinding="content.Filesystem1"}}
+                        </div>
+                        <div class="span2">
+                            <label>FS Volume "2":</label>
+                            {{view Em.TextField class="span2" valueBinding="content.Filesystem2"}}
+                        </div>
+                        <div class="span2">
+                            <label>FS Volume "3":</label>
+                            {{view Em.TextField class="span2" valueBinding="content.Filesystem3"}}
+                        </div>
+                        <div class="span3">
+                            <label>FS Volume "4":</label>
+                            {{view Em.TextField class="span2" valueBinding="content.Filesystem4"}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="span2">
+                            <label>Software RAID:</label>
+                            {{view Em.Checkbox class="span1" checkedBinding="content.isSwRaid"}}
+                        </div>
+                        <div class="span2">
+                            <label>RAID Level:</label>
+                            {{view Em.TextField class="span1" valueBinding="content.RAID_level"}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{#if assetIndex}}
+            <div class="btn-group">
+                {{#if formUpdated}}
+                    <button class="btn btn-primary" type="submit" {{action "submit"}}>
+                        {{icon name="edit"}} Update</button>
+                    <button class="btn btn-warning" type="button" {{action "refresh"}}>
+                        {{icon name="reload"}} Reset</button>
+                {{else}}
+                    <button class="btn btn-primary" type="submit" disabled="disabled"
+                        {{action "submit"}}>
+                        {{icon name="edit"}} Update</button>
+                    <button class="btn btn-warning" type="button" disabled="disabled"
+                        {{action "refresh"}}>
+                        {{icon name="reload"}} Reset</button>
+                {{/if}}
+            </div>
+            {{#if existingSerp}}
+            <hr>
+            <ul class="pager">
+                <li class="previous">
+                    {{link-to "&larr; Search Results" "serp"}}
+                </li>
+            </ul>
+            {{/if}}
+        {{/if}}
+        </form>
+    {{/if}}
+{{/if}}
+{{outlet}}

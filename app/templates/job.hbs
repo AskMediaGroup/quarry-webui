@@ -1,0 +1,209 @@
+<legend>{{icon name="jobsPage"}}Job {{uuid}}</legend>
+{{#if isLoading}}
+    <ul class="pager" id="pagerRefresh">
+        <li class="previous">
+            <a href="#">{{icon name="loading"}}&nbsp; Loading Job Data</a>
+        </li>
+    </ul>
+{{else}}
+    {{#if isRefreshing}}
+        <ul class="pager" id="pagerRefresh">
+            <li class="previous">
+                <a href="#">{{icon name="loading"}}&nbsp; Refreshing Job Data</a>
+            </li>
+        </ul>
+    {{else}}
+        <ul class="pager" id="refresh-jobs-button">
+            <li class="previous">
+                <a href="#" {{action "refresh"}}>{{icon name="reload"}}&nbsp; Refresh Job Data</a>
+            </li>
+        </ul>
+    {{/if}}
+    <div class="well well-small">
+        <dl class="dl-horizontal">
+            <dt>Job Type</dt>
+            <dd>{{jobStatusBanner content}}</dd>
+            <dt>Status</dt>
+            <dd>{{status}}</dd>
+            {{#if queue_time}}
+                <dt>Job queued at</dt>
+                <dd>{{queue_date}}</dd>
+            {{/if}}
+            {{#if start_time}}
+                <dt>Job started at</dt>
+                <dd>{{start_date}}</dd>
+            {{/if}}
+            {{#if end_time}}
+                <dt>Job ended at</dt>
+                <dd>{{end_date}}</dd>
+                <dt>Job duration</dt>
+                <dd>{{duration}} seconds</dd>
+            {{/if}}
+            <dt>Module</dt>
+            <dd>{{module}}</dd>
+            {{#if hasArgs}}
+                {{#if longArgs}}
+                    <dt>Args</dt>
+                    <dd><pre>{{args}}</pre></dd>
+                {{else}}
+                    <dt>Args</dt>
+                    <dd><code>{{args}}</code></dd>
+                {{/if}}
+            {{/if}}
+            {{#if hasKwargs}}
+                {{#if longKwargs}}
+                    <dt>Keyword Args</dt>
+                    <dd><pre>{{kwargs}}</pre></dd>
+                {{else}}
+                    <dt>Args</dt>
+                    <dd><code>{{kwargs}}</code></dd>
+                {{/if}}
+            {{/if}}
+            {{#if hasOutputJson}}
+                <dt>Job Output</dt>
+                <dd><pre>{{output_stringified}}</pre></dd>
+            {{/if}}
+        </dl>
+    </div>
+    {{#if hasCardstackOutput}}
+        {{#each card in output_docstore.cards}}
+            <p class="lead">{{card.card_name}}<br><code>{{card.card_command}}</code></p>
+            <hr>
+            {{#each card.hosts}}
+                {{#if traceback}}
+                    Quarry had problems reaching <strong>{{host}}</strong>!
+                    <div class="well well-small console-well">
+                        <br>
+                        <pre>{{traceback}}</pre>
+                    </div>
+                {{else}}
+                    <strong>{{host}}</strong>:<br><br>
+                    <div class="well well-small console-well">
+                        <br>
+                        <pre>{{stdout}}</pre>
+                                {{#if stderr}}<pre>{{stderr}}</pre>{{/if}}
+                    </div>
+                    <p><pre>Returned {{code}}</pre></p>
+                {{/if}}
+            {{/each}}
+            <hr>
+        {{/each}}
+    {{/if}}
+    {{#if hasRemoteCommandOutput}}
+        {{#each output_docstore.hosts}}
+            {{#if traceback}}
+                Quarry had problems reaching <strong>{{host}}</strong>!<br>
+                <div class="well well-small console-well">
+                    <pre>{{traceback}}</pre>
+                </div>
+            {{else}}
+                <strong>{{host}}</strong> ran <code>{{command_string}}</code><br><br>
+                <div class="well well-small console-well">
+                    <pre>{{stdout}}</pre>
+                            {{#if stderr}}<pre>{{stderr}}</pre>{{/if}}
+                </div>
+                <p><pre>Returned {{code}}</pre></p>
+            {{/if}}
+        {{/each}}
+    {{/if}}
+    {{#if logs}}
+        <div class="well well-small console-well">
+        {{#each entry in logs}}
+            <div class="logEntry">{{#if entry.displayTimestamp}}{{logTimestampBanner entry}}{{/if}}
+                {{#if entry.isException}}
+                    <pre class="logException">{{entry.message}}</pre>
+                {{else}}
+                    <pre>{{entry.message}}</pre>
+                {{/if}}
+            </div>
+        {{/each}}
+        {{#if tailingLogs}}
+            <pre>logs> <span class="blink"> </span></pre>
+        {{/if}}
+        </div>
+    {{else}}
+        {{#if tailingLogs}}
+            <div class="well well-small console-well">
+                <pre>logs> <span class="blink"> </span></pre>
+            </div>
+        {{/if}}
+    {{/if}}
+    {{#if children}}
+        <p class="lead">Child Jobs</p>
+        {{#each child in children}}
+            <div class="well well-small">
+                <dl class="dl-horizontal">
+                    <dt>Job Type</dt>
+                    <dd>{{jobStatusBanner child}}</dd>
+                    <dt>Status</dt>
+                    <dd>{{child.status}}</dd>
+                    {{#if child.start_time}}
+                        <dt>Job started at</dt>
+                        <dd>{{child.start_date}}</dd>
+                    {{/if}}
+                    {{#if child.queue_time}}
+                        <dt>Job queued at</dt>
+                        <dd>{{child.queue_date}}</dd>
+                    {{/if}}
+                    {{#if child.end_time}}
+                        <dt>Job ended at</dt>
+                        <dd>{{child.end_date}}</dd>
+                        <dt>Job duration</dt>
+                        <dd>{{child.duration}} seconds</dd>
+                    {{/if}}
+                    <dt>Module</dt>
+                    <dd>{{child.module}}</dd>
+                    {{#if child.hasArgs}}
+                        {{#if child.longArgs}}
+                            <dt>Args</dt>
+                            <dd><pre>{{child.args}}</pre></dd>
+                        {{else}}
+                            <dt>Args</dt>
+                            <dd><code>{{child.args}}</code></dd>
+                        {{/if}}
+                    {{/if}}
+                    {{#if child.hasKwargs}}
+                        {{#if child.longKwargs}}
+                            <dt>Keyword Args</dt>
+                            <dd><pre>{{child.kwargs}}</pre></dd>
+                        {{else}}
+                            <dt>Args</dt>
+                            <dd><code>{{child.kwargs}}</code></dd>
+                        {{/if}}
+                    {{/if}}
+                    {{#if child.hasOutputJson}}
+                        <dt>Job Output</dt>
+                        <dd><pre>{{child.output_stringified}}</pre></dd>
+                    {{/if}}
+                </dl>
+            </div>
+            {{#if child.logs}}
+                <div class="well well-small console-well">
+                {{#each entry in child.logs}}
+                    <div class="logEntry">{{#if entry.displayTimestamp}}{{logTimestampBanner entry}}{{/if}}
+                        {{#if entry.isException}}
+                            <pre class="logException">{{entry.message}}</pre>
+                        {{else}}
+                            <pre>{{entry.message}}</pre>
+                        {{/if}}
+                    </div>
+                {{/each}}
+                {{#if child.tailingLogs}}
+                    <pre>logs> <span class="blink"> </span></pre>
+                {{/if}}
+                </div>
+            {{else}}
+                {{#if child.tailingLogs}}
+                    <div class="well well-small console-well">
+                        <pre>logs> <span class="blink"> </span></pre>
+                    </div>
+                {{/if}}
+            {{/if}}
+        {{/each}}
+    {{/if}}
+{{/if}}
+<ul class="pager">
+    <li class="previous">
+        {{link-to "&larr; All Jobs" "jobs"}}
+    </li>
+</ul>

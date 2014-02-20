@@ -1,0 +1,38 @@
+<legend>{{icon name="rekickPage"}}Rekick</legend>
+<div class="well well-small">
+    <p class="lead">Please choose the desired Rekick configuration:</p>
+    <dl class="dl-horizontal font-awesome-dt">
+        <dt>OS:</dt>
+        <dd>{{view Em.Select
+        prompt="Select Kickstart Option...."
+        contentBinding="kickstarts"
+        optionValuePath="content.name"
+        optionLabelPath="content.name"
+        valueBinding="kickstart"}}<br>
+        </dd>
+        <dt>Layout:</dt>
+        <dd>{{view Em.Select
+        prompt="Select Layout Option...."
+        contentBinding="layouts"
+        optionValuePath="content.name"
+        optionLabelPath="content.name"
+        valueBinding="layout"}}<br>
+        </dd>
+    </dl>
+</div>
+<form class="form-horizontal">
+    <div class="btn-group">
+        {{#if optionsReady}}
+            <button class="btn btn-primary" type="submit"{{action "prepBulk"}}>
+                {{icon name="rekick"}} Use These Options
+                {{icon name="next"}}
+            </button>
+        {{else}}
+            <button class="btn btn-primary disabled" disabled="disabled">
+                {{icon name="warning"}} Select Options
+            </button>
+        {{/if}}
+        <button class="btn" type="button" {{action "cancel"}}>
+            {{icon name="cancel"}} Cancel</button>
+    </div>
+</form>

@@ -1,0 +1,76 @@
+<div class="tab-pane fade" id="hypervisor">
+    <div class="row">
+        <div class="span2">
+            <label>Type:</label>
+            {{view Em.TextField class="span2" disabled="disabled"
+            valueBinding="type"}}
+        </div>
+        <div class="span1 offset1">
+            <label>Version:</label>
+            {{view Em.TextField class="span1" disabled="disabled"
+            valueBinding="version"}}
+        </div>
+        <div class="span3">
+            <label>Production Type:</label>
+            {{view Em.TextField class="span3" disabled="disabled"
+            valueBinding="guest_prod_type"}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="span2">
+            <label>Free Memory:</label>
+            {{view Em.TextField class="span2" disabled="disabled"
+            valueBinding="freeMemGiB"}}
+        </div>
+        <div class="span2">
+            <label>Total Memory:</label>
+            {{view Em.TextField class="span2" disabled="disabled"
+            valueBinding="totalMemGiB"}}
+        </div>
+        <div class="span2 offset1">
+            <label>Free Storage:</label>
+            {{view Em.TextField class="span2" disabled="disabled"
+            valueBinding="freeStorageGiB"}}
+        </div>
+        <div class="span2">
+            <label>Total Storage:</label>
+            {{view Em.TextField class="span2" disabled="disabled"
+            valueBinding="totalStorageGiB"}}
+        </div>
+    </div>
+    <hr>
+    {{#if percentFull}}
+        {{icon name="vm"}}&nbsp;&nbsp;<small>{{percentFull}}% guest host capacity
+        (<strong>{{availVms}}</strong> vm slots available)</small><br>
+        <div class="progress">
+            <div class="bar bar-danger" {{bind-attr style=vms_allocated_style}}></div>
+            <div class="bar bar-success" {{bind-attr style=vms_avail_style}}></div>
+        </div>
+    {{/if}}
+    <hr>
+    <p class="lead">{{vms.length}} VMs:</p>
+    {{#each vm in vms}}
+        <div class="row">
+            <div class="span1"></div>
+            <div class="span11">
+                {{icon name="vm"}}&nbsp;&nbsp;
+                <a href="#" {{action "getAsset" vm.name}}>{{vm.name}}</a>
+            </div>
+        </div>
+        <dl class="dl-horizontal">
+            {{#if vm.mac}}<dt>MAC</dt>
+                <dd><code>{{vm.mac}}</code></dd>{{/if}}
+            {{#if vm.uuid}}<dt>UUID</dt>
+            <dd><small>{{vm.uuid}}</small></dd>{{/if}}
+            {{#if vm.capacity}}<dt>Storage Capacity</dt>
+            <dd>{{vm.capacity}}</dd>{{/if}}
+            {{#if vm.memory}}<dt>Memory</dt>
+            <dd>{{vm.memory}}</dd>{{/if}}
+            {{#if vm.cpus}}<dt>vCPUs</dt>
+            <dd>{{vm.cpus}}</dd>{{/if}}
+            {{#if vm.vnc}}<dt>VNC port</dt>
+            <dd>{{vm.vnc}}</dd>{{/if}}
+        </dl>
+        <hr>
+    {{/each}}
+</div>

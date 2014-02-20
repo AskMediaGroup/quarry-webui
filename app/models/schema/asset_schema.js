@@ -1,0 +1,51 @@
+/*global App*/
+/**
+ This object describes the static properties of an Asset model
+
+ @type {Object}
+ **/
+App.assetSchema = {
+    FQDN: null,
+    DC: null,
+    OS: null,
+    RAM: null,
+    RAM_Total: null,
+    Chassis_Model: null,
+    Service_Tag: null,
+    MAC: null,
+    Application: null,
+    Disk0: null,
+    Disk1: null,
+    Disk2: null,
+    Disk3: null,
+    Disk4: null,
+    Disk5: null,
+    Filesystem0: null,
+    Filesystem1: null,
+    Filesystem2: null,
+    Filesystem3: null,
+    Filesystem4: null,
+    ProdType: null,
+    Bits: null,
+    Windows: null,
+    Linux: null,
+    VM: null,
+    RAID_level: null,
+    BIOS_Ver: null,
+    Owner_Email: null,
+    Model: null,
+    Manufacturer: null,
+    RAID_Controller: null,
+    CPU_Cores: null,
+    CPU_Sockets: null,
+    CPU: null,
+    OS_Version: null,
+    SW_RAID: null,
+    Notes: null,
+    Owning_Group: null,
+    Business_Unit: null,
+    Switch_Port: null,
+    Switch: null,
+    Time_Modified: null,
+    id: null
+};

@@ -1,0 +1,280 @@
+<legend>{{icon name="advSearchPage"}}Advanced Search</legend>
+<ul class="nav nav-tabs">
+    <li class="active"><a href="#adv_general" data-toggle="tab">General</a></li>
+    <li><a href="#adv_network" data-toggle="tab">Network</a></li>
+    <li><a href="#adv_hardware" data-toggle="tab">Hardware</a></li>
+    <li><a href="#adv_osap" data-toggle="tab">Operating System and Platform</a></li>
+    <li><a href="#adv_partitioning" data-toggle="tab">Disks and Partitions</a></li>
+</ul>
+<form>
+<div class="well well-large">
+    {{#with searchTerms}}
+        <div id="advanced_search_tabs" class="tab-content">
+            <div class="tab-pane fade in active" id="adv_general">
+                <div class="row">
+                    <div class="span4"><label>FQDN:</label>
+                        {{view Em.TextField class="span4" valueBinding="asset.FQDN"}}
+                    </div>
+                    <div class="span3 offset1"><label>Application Type:</label>
+                        {{view Em.Select class="span3"
+                        valueBinding="asset.Application"
+                        contentBinding="controller.applicationTypeOptions"}}
+                    </div>
+                    <div class="span3"><label>Production Type:</label>
+                        {{view Em.Select class="span3"
+                        valueBinding="asset.ProdType"
+                        contentBinding="controller.productionTypeOptions"}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span2">
+                        <label>Datacenter:</label>
+                        {{view Em.TextField class="span1" valueBinding="asset.DC"}}
+                    </div>
+                    <div class="span2">
+                        <label>Asset Owner:</label>
+                        {{view Em.TextField class="span2" valueBinding="asset.Owner_Email"}}
+                    </div>
+                    <div class="span3 offset1">
+                        <label>Owning Group:</label>
+                        {{view Em.TextField class="span3" valueBinding="asset.Owning_Group"}}
+                    </div>
+                    <div class="span3">
+                        <label>Business Unit:</label>
+                        {{view Em.Select class="span3"
+                        valueBinding="asset.Business_Unit"
+                        contentBinding="controller.businessUnitOptions"}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span2">
+                        <label>Last Modified:</label>
+                        {{view Em.TextField class="span2" valueBinding="asset.Time_Modified"}}
+                    </div>
+                    <div class="span3">
+                        <label>Notes:</label>
+                        {{view Em.TextArea valueBinding="asset.Notes"}}
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="adv_network">
+                <div class="row">
+                    <div class="input-append span3">
+                        <label>Enable IP search:</label>
+                        {{view Em.TextField
+                        valueBinding="controller.numIps" class="input-mini"}}
+                        {{#if controller.numIps}}
+                            <button class="btn btn-primary" type="submit" {{action "addIps"}}>
+                                {{icon name="add"}} Add fields
+                                {{icon name="next"}}
+                            </button>
+                        {{else}}
+                            <button class="btn" disabled>
+                                {{icon name="add"}} How many addresses?</button>
+                        {{/if}}
+                    </div>
+                    {{#each ip in ips}}
+                        <div class="span3">
+                            <label>IP Address:</label>
+                            {{view Em.TextField class="span2" valueBinding="ip.ip"}}
+                            <a href="#"{{action "popIp"}}>{{icon name="del"}}</a>
+                        </div>
+                    {{/each}}
+                </div>
+                <div class="row">
+                    <div class="span2">
+                        <label>Switch:</label>
+                        {{view Em.TextField class="span2" valueBinding="asset.Switch"}}
+                    </div>
+                    <div class="span3">
+                        <label>MAC Address:</label>
+                        {{view Em.TextField class="span3" valueBinding="asset.MAC"}}
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="adv_hardware">
+                <div class="row">
+                    <div class="span2">
+                        <label>Manufacturer:</label>
+                        {{view Em.TextField class="span2" valueBinding="asset.Manufacturer"}}
+                    </div>
+                    <div class="span2">
+                        <label>Service Tag:</label>
+                        {{view Em.TextField class="span2" valueBinding="asset.Service_Tag"}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span2">
+                        <label>Total RAM:</label>
+                        {{view Em.TextField class="span1" valueBinding="asset.RAM_Total"}}
+                    </div>
+                    <div class="span9">
+                        <label>RAM Breakdown:</label>
+                        {{view Em.TextField class="span10" valueBinding="asset.RAM"}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span1">
+                        <label>Bits:</label>
+                        {{view Em.TextField class="span1" valueBinding="asset.Bits"}}
+                    </div>
+                    <div class="span4">
+                        <label>CPU:</label>
+                        {{view Em.TextField class="span4" valueBinding="asset.CPU"}}
+                    </div>
+                    <div class="span1">
+                        <label>Cores:</label>
+                        {{view Em.TextField class="span1" valueBinding="asset.CPU_Cores"}}
+                    </div>
+                    <div class="span4">
+                        <label>Sockets:</label>
+                        {{view Em.TextField class="span1" valueBinding="asset.CPU_Sockets"}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span2">
+                        <label>RAID Controller:</label>
+                        {{view Em.TextField class="span2" valueBinding="asset.RAID_Controller"}}
+                    </div>
+                    <div class="span2">
+                        <label>VM:</label>
+                        {{view Em.Select class="span2"
+                        contentBinding="controller.vmOptions"
+                        optionLabelPath="content.label"
+                        optionValuePath="content.value"
+                        valueBinding="asset.VM"}}
+                    </div>
+                    <div class="span6">
+                        <label>Chassis Model:</label>
+                        {{view Em.TextField class="span2" valueBinding="asset.Chassis_Model"}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span2">
+                        <label>Physical Disk "0":</label>
+                        {{view Em.TextField class="span1" valueBinding="asset.Disk0"}}
+                    </div>
+                    <div class="span2">
+                        <label>Physical Disk "1":</label>
+                        {{view Em.TextField class="span1" valueBinding="asset.Disk1"}}
+                    </div>
+                    <div class="span2">
+                        <label>Physical Disk "2":</label>
+                        {{view Em.TextField class="span1" valueBinding="asset.Disk2"}}
+                    </div>
+                    <div class="span2">
+                        <label>Physical Disk "3":</label>
+                        {{view Em.TextField class="span1" valueBinding="asset.Disk3"}}
+                    </div>
+                    <div class="span2">
+                        <label>Physical Disk "4":</label>
+                        {{view Em.TextField class="span1" valueBinding="asset.Disk4"}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span2">
+                        <label>Physical Disk "5":</label>
+                        {{view Em.TextField class="span1" valueBinding="asset.Disk5"}}
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="adv_osap">
+                <div class="row">
+                    <div class="span3">
+                        <label>OS:</label>
+                        {{view Em.TextField class="span3" valueBinding="asset.OS"}}
+                    </div>
+                    <div class="span2">
+                        <label>OS Version:</label>
+                        {{view Em.TextField class="span2" valueBinding="asset.OS_Version"}}
+                    </div>
+                    <div class="span3">
+                        <label>Linux:</label>
+                        {{view Em.Select class="span3"
+                        contentBinding="controller.linuxOptions"
+                        optionLabelPath="content.label"
+                        optionValuePath="content.value"
+                        valueBinding="asset.Linux"}}
+                    </div>
+                    <div class="span3">
+                        <label>Windows:</label>
+                        {{view Em.Select class="span3"
+                        contentBinding="controller.windowsOptions"
+                        optionLabelPath="content.label"
+                        optionValuePath="content.value"
+                        valueBinding="asset.Windows"}}
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="adv_partitioning">
+                <div class="row">
+                    <div class="span2">
+                        <label>FS Volume "0":</label>
+                        {{view Em.TextField class="span2" valueBinding="asset.Filesystem0"}}
+                    </div>
+                    <div class="span2">
+                        <label>FS Volume "1":</label>
+                        {{view Em.TextField class="span2" valueBinding="asset.Filesystem1"}}
+                    </div>
+                    <div class="span2">
+                        <label>FS Volume "2":</label>
+                        {{view Em.TextField class="span2" valueBinding="asset.Filesystem2"}}
+                    </div>
+                    <div class="span2">
+                        <label>FS Volume "3":</label>
+                        {{view Em.TextField class="span2" valueBinding="asset.Filesystem3"}}
+                    </div>
+                    <div class="span3">
+                        <label>FS Volume "4":</label>
+                        {{view Em.TextField class="span2" valueBinding="asset.Filesystem4"}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span2">
+                        <label>RAID Level:</label>
+                        {{view Em.TextField class="span1" valueBinding="asset.RAID_level"}}
+                    </div>
+                    <div class="span3">
+                        <label>Software RAID:</label>
+                        {{view Em.Select class="span3"
+                            contentBinding="controller.swRaidOptions"
+                            optionLabelPath="content.label"
+                            optionValuePath="content.value"
+                            valueBinding="asset.SW_RAID"}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{/with}}
+</div>
+<div class="row">
+    <div class="span2">
+        <label>Sort Field</label>
+        {{view Em.Select class="span2"
+            contentBinding="assetFields"
+            valueBinding="searchTerms.sort"}}
+    </div>
+    <div class="span2">
+        <label>Sort Order:</label>
+        {{view Em.Select class="span2"
+            contentBinding="sortOrderOptions"
+            optionLabelPath="content.label"
+            optionValuePath="content.value"
+            valueBinding="searchTerms.desc"}}
+    </div>
+</div>
+<br><br>
+<div class="btn-group">
+    <button class="btn btn-primary" type="submit" {{action "submit"}}>
+        {{icon name="search"}} Search</button>
+    <button class="btn" type="button" {{action "reset"}}>Reset</button>
+    <button class="btn" type="button" {{action "goSerp"}}>
+        {{icon name="cancel"}} Cancel</button>
+</div>
+</form>
+{{#if submittedEmpty}}
+    <div class="alert">
+        <a class="close" data-dismiss="alert">×</a>
+        <span>Empty search criteria!</span>
+    </div>
+{{/if}}

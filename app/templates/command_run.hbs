@@ -1,0 +1,28 @@
+<div class="alert">
+    Are you sure you want to execute the script on the following hosts</strong>?
+</div>
+<dl class="dl-horizontal font-awesome-dt">
+    {{#each assets}}
+        <dt>{{icon name="card"}}</dt>
+        <dd>{{FQDN}}</dd>
+    {{/each}}
+</dl>
+<div class="alert alert-error">
+    This could be dangerous!
+</div>
+<form class="form-horizontal">
+    <div class="btn-group">
+        <button class="btn" type="button-primary" {{action "cancel"}}>
+            {{icon name="cancel"}} Cancel</button>
+    </div>
+</form>
+<p>Or, to continue:</p>
+{{render "confirmation"}}
+{{#if ready}}
+    <form class="form-horizontal">
+        <div class="btn-group">
+            <button class="btn btn-success" type="submit" {{action "run"}}>
+                {{icon name="start"}} Run Script</button>
+        </div>
+    </form>
+{{/if}}

@@ -1,0 +1,185 @@
+<legend>{{icon name="physicalPage"}}Add Physical Assets</legend>
+{{#if showTemplate}}
+    <div class="well well-large">
+        <div class="row">
+            <div class="span3">
+                {{#if distinctHostnames}}
+                    <label>Hostname</label>
+                    {{view Em.TextField
+                    valueBinding="hostnamePrefix"
+                    placeholder="<replace existing selections>"
+                    class="span3"}}
+                {{else}}
+                    <label>Hostname</label>
+                    {{view Em.TextField
+                    valueBinding="hostnamePrefix"
+                    placeholder="hostname prefix, e.g.: 'reply'"
+                    class="span3"}}
+                {{/if}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="span4">
+                <label>Host Network</label>
+                {{view Em.Select
+                prompt="Select a host network...."
+                contentBinding="networks"
+                optionValuePath="content.gateway"
+                optionLabelPath="content.name"
+                valueBinding="hostNetwork" class="span4"}}
+                <br>
+                {{#link-to "networks" classNames="buttonLink"}}
+                    <button class="btn btn-mini btn-success">{{icon name="network"}} Edit Networks</button>
+                {{/link-to}}
+            </div>
+            <div class="span4">
+                <label>LOM Network</label>
+                {{view Em.Select
+                prompt="Select a LOM network (optional) ...."
+                contentBinding="networks"
+                optionValuePath="content.gateway"
+                optionLabelPath="content.name"
+                valueBinding="lomNetwork" class="span4"}}
+            </div>
+            <div class="span2">
+                {{#if distinctSwRaid}}
+                {{else}}
+                    <label>Software RAID?</label>
+                    {{view Em.Checkbox
+                    checkedBinding="swRaid"}}
+                {{/if}}
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="span3">
+                <label>Application Type</label>
+                {{#if distinctApplications}}
+                    {{view Em.Select
+                    prompt="<replace existing selections>"
+                    contentBinding="applicationTypeOptions"
+                    valueBinding="application" class="span3"}}
+                {{else}}
+                    {{view Em.Select
+                    prompt="Select an app type...."
+                    contentBinding="applicationTypeOptions"
+                    valueBinding="application" class="span3"}}
+                {{/if}}
+            </div>
+            <div class="span3">
+                <label>Production Type</label>
+                {{#if distinctProdTypes}}
+                    {{view Em.Select
+                    prompt="<replace existing selections>"
+                    contentBinding="prodTypeOptions"
+                    valueBinding="prodType" class="span3"}}
+                {{else}}
+                    {{view Em.Select
+                    prompt="Select a prod type...."
+                    contentBinding="prodTypeOptions"
+                    valueBinding="prodType" class="span3"}}
+                {{/if}}
+            </div>
+            <div class="span3">
+                <label>Business Unit</label>
+                {{#if distinctBusinessUnits}}
+                    {{view Em.Select
+                    prompt="<replace existing selections>"
+                    contentBinding="businessUnitOptions"
+                    valueBinding="businessUnit" class="span3"}}
+                {{else}}
+                    {{view Em.Select
+                    prompt="Select a BU...."
+                    contentBinding="businessUnitOptions"
+                    valueBinding="businessUnit" class="span3"}}
+                {{/if}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="span3">
+                <label>Asset Tags</label>
+                {{view Em.TextArea valueBinding="assetTags" rows="10"}}
+            </div>
+            <div class="span3">
+                <label>Owner</label>
+                {{#if distinctOwnerEmails}}
+                    {{view Em.TextField
+                    valueBinding="ownerEmail" placeholder="<replace existing selections>"
+                    class="span3"}}
+                {{else}}
+                    {{view Em.TextField
+                    valueBinding="ownerEmail" class="span3"}}
+                {{/if}}
+            </div>
+            <div class="span3">
+                <label>Owning Group</label>
+                {{#if distinctOwnerGroups}}
+                    {{view Em.TextField
+                    valueBinding="ownerGroup" placeholder="<replace existing selections>"
+                    class="span3"}}
+                {{else}}
+                    {{view Em.TextField
+                    valueBinding="ownerGroup" class="span3"}}
+                {{/if}}
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="span4">
+                <label class="checkbox">
+                    {{view Em.Checkbox
+                    checkedBinding="willAppendNumSeq"}}Add sequential numeric suffix
+                </label>
+            </div>
+            <div class="span4">
+                <label class="checkbox">
+                    {{view Em.Checkbox
+                    checkedBinding="willAppendDc"}}Add DC suffix
+                </label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="span4">
+                <label>Initial suffix number</label>
+                {{#if willAppendNumSeq}}
+                    {{view Em.TextField
+                    valueBinding="startNumSuffix" class="input-mini span2" maxlength="3"}}
+                {{else}}
+                    {{view Em.TextField
+                    valueBinding="startNumSuffix" disabled="disabled"
+                    class="input-mini span2" maxlength="3"}}
+                {{/if}}
+            </div>
+            <div class="span7">
+                {{#if willAppendDc}}
+                    {{view Em.Select
+                    contentBinding="dcOptions"
+                    valueBinding="dcSuffix" class="span2"}}
+                {{else}}
+                    {{view Em.Select
+                    contentBinding="dcOptions"
+                    disabled="disabled"
+                    valueBinding="dcSuffix" class="span2"}}
+                {{/if}}
+            </div>
+        </div>
+    </div>
+    <div class="container"><br>
+        <div class="input-append">
+            {{#if ready}}
+                <button class="btn btn-primary" type="submit" {{action "buildHostSpecs"}}>
+                    {{icon name="bulk"}} Edit
+                    <span class="badge badge-default">{{numHosts}}</span> Assets
+                    {{icon name="next"}}</button>
+            {{else}}
+                <button class="btn" disabled>
+                    {{icon name="next"}} Edit Hosts
+                </button>
+            {{/if}}
+        </div>
+    </div>
+    <p><small>Please be patient after clicking the button above....</small></p>
+    <div id="inputErrorsAddPhysical"></div>
+{{/if}}
+{{outlet}}

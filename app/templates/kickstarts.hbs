@@ -1,0 +1,28 @@
+<legend>{{icon name="kickstartsPage"}}Kickstart Targets</legend>
+{{#if isLoading}}
+    <p id="search-in-progress">Refreshing kickstarts list from the db....</p>
+    <div class="progress progress-striped active">
+        <div class="bar" style="width: 100%;"></div>
+    </div>
+{{else}}
+    <table id="resultstable" class="table table-condensed">
+        <thead id="serpHeaders">
+        <tr>
+            <th>id</th>
+            <th>available</th>
+            <th>name</th>
+            <th>filename</th>
+        </tr>
+        </thead>
+    <tbody>
+    {{#each controller}}
+    <tr>
+        <td>{{id}}</td>
+        <td>{{available}}</td>
+        <td>{{name}}</td>
+        <td>{{filename}}</td>
+    </tr>
+    {{/each}}
+    </tbody>
+    </table>
+{{/if}}

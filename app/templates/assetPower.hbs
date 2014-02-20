@@ -1,0 +1,11 @@
+<div class="alert">
+    Are you sure you want to {{description}} <strong>{{fqdn}}</strong>?
+</div>
+<form class="form-horizontal">
+    <div class="btn-group">
+        <button class="btn btn-danger" type="submit" {{action "push"}}>
+            {{powerIcon action}} {{capitalize description}}</button>
+        <button class="btn" {{action "cancel"}}>
+            {{icon name="cancel"}} Cancel</button>
+    </div>
+</form>

@@ -1,0 +1,47 @@
+<legend>{{icon name="hypervisorsPage"}}Hypervisors</legend>
+{{#if isLoading}}
+    <p id="search-in-progress">Refreshing hypervisors list from the db....</p>
+    <div class="progress progress-striped active">
+        <div class="bar" style="width: 100%;"></div>
+    </div>
+{{else}}
+    <table class="table table-bordered table-condensed">
+        <thead id="serpHeaders">
+        <tr>
+            <th>FQDN</th>
+            <th>IPs</th>
+            <th>OS</th>
+            <th>Asset Tag</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each controller}}
+        <tr>
+            <td>{{FQDN}}</td>
+            <td>
+                {{#if hasIpAddress}}
+                    {{hostIp ips}}
+                    {{#if hasMultipleIps}}
+                        {{#view App.PopoverView tagName="span"}}
+                            <span rel="popover"
+                                  data-placement="right"
+                                {{bind-attr data-content="allIps"}}>
+                                {{icon name="hasIps"}}</span>
+                        {{/view}}
+                    {{/if}}
+                {{else}}
+                    {{#view App.PopoverView}}
+                        <span rel="popover"
+                              data-placement="right"
+                            {{bind-attr data-content="allIps"}}>
+                            {{icon name="noIps"}}</span>
+                    {{/view}}
+                {{/if}}
+            </td>
+            <td>{{OS}}</td>
+            <td>{{Service_Tag}}</td>
+        </tr>
+        {{/each}}
+        </tbody>
+    </table>
+{{/if}}

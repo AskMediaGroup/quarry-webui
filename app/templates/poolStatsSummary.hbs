@@ -1,0 +1,10 @@
+{{icon name="cloudStorage"}}&nbsp;&nbsp;<small>{{storage_percent_free}} % storage available</small><br>
+<div class="progress">
+    <div class="bar bar-danger" {{bind-attr style=storage_used_style}}></div>
+    <div class="bar bar-success" {{bind-attr style=storage_free_style}}></div>
+</div>
+{{icon name="cloudMemory"}}&nbsp;&nbsp;<small>{{memory_percent_free}} % memory available</small><br>
+<div class="progress">
+    <div class="bar bar-danger" {{bind-attr style=memory_used_style}}></div>
+    <div class="bar bar-success" {{bind-attr style=memory_free_style}}></div>
+</div>

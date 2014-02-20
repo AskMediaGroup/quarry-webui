@@ -1,0 +1,21 @@
+<br>
+<div class="well well-small">
+    <p class="lead">Do you want to build a VM commission template based on the details in the following hosts?</p>
+    <dl class="dl-horizontal font-awesome-dt">
+        {{#each controller}}
+            <dt>{{icon name="vm"}}</dt>
+            <dd>{{hostname}}
+            </dd>
+        {{/each}}
+    </dl>
+</div>
+<form class="form-horizontal">
+    <div class="btn-group">
+        <button class="btn btn-success" type="submit" {{action "confirm"}}>
+            {{icon name="vm"}} Yes, SERP Commission
+        </button>
+        <button class="btn btn-primary" type="submit" {{action "freshCommission"}}>
+            {{icon name="vm"}} Nope, start from scratch
+        </button>
+    </div>
+</form>

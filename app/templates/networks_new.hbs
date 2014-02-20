@@ -1,0 +1,136 @@
+<legend>{{icon name="networkPage"}}Add New Network</legend>
+{{#if status}}
+    {{#if status.added}}
+        <div class="well well-small">
+            <dl class="dl-horizontal">
+                <dt>Network added</dt>
+                <dd><span class="badge badge-success">success</span></dd>
+            </dl>
+        </div>
+        <ul class="pager">
+            <li class="previous">
+                <a href="#" {{action "edit" model}}>&larr; Edit New Network</a>
+            </li>
+        </ul>
+    {{else}}
+        <div class="well well-small">
+            <dl class="dl-horizontal">
+                <dt>Network not added</dt>
+                <dd><span class="badge badge-important">failed</span></dd>
+            </dl>
+        </div>
+        <ul class="pager">
+            <li class="previous">
+                <a href="#" {{action "retry"}}>&larr; Back to Network Detail</a>
+            </li>
+        </ul>
+    {{/if}}
+{{else}}
+    <form>
+        <div class="container">
+            <div class="well well-large">
+                <div class="row">
+                    <div class="span2">
+                        Network IP <small>(e.g., 10.10.10.0)</small>
+                    </div>
+                    <div class="span2">
+                        Gateway:
+                    </div>
+                    <div class="span2">
+                        Netmask:
+                    </div>
+                    <div class="span1">
+                        DC:
+                    </div>
+                    <div class="span2">
+                        Primary DNS:
+                    </div>
+                    <div class="span2">
+                        Secondary DNS:
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span2">
+                        {{view Em.TextField
+                        valueBinding="name" class="span2"}}
+                    </div>
+                    <div class="span2">
+                        {{view Em.TextField
+                        valueBinding="gateway" class="span2"}}
+                    </div>
+                    <div class="span2">
+                        {{view Em.TextField
+                        valueBinding="netmask" class="span2"}}
+                    </div>
+                    <div class="span1">
+                        {{view Em.TextField
+                        valueBinding="datacenter" class="span1"}}
+                    </div>
+                    <div class="span2">
+                        {{view Em.TextField
+                        valueBinding="dns1" class="span2"}}
+                    </div>
+                    <div class="span2">
+                        {{view Em.TextField
+                        valueBinding="dns2" class="span2"}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span4">
+                        Description:
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span4">
+                        {{view Em.TextField
+                        valueBinding="description" class="span4"}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{#if nameAlert}}
+            <div class="alert alert-error">
+                A new network record requires a <strong>Network IP</strong> value!
+            </div>
+        {{/if}}
+        {{#if gatewayAlert}}
+            <div class="alert alert-error">
+                A new network record requires a <strong>Gateway</strong> value!
+            </div>
+        {{/if}}
+        {{#if netmaskAlert}}
+            <div class="alert alert-error">
+                A new network record requires a <strong>Netmask</strong> value!
+            </div>
+        {{/if}}
+        {{#if datacenterAlert}}
+            <div class="alert alert-error">
+                A new network record requires a <strong>DC</strong> value!
+            </div>
+        {{/if}}
+        {{#if dns1Alert}}
+            <div class="alert alert-error">
+                A new network record requires a <strong>Primary DNS</strong> value!
+            </div>
+        {{/if}}
+        {{#if descriptionAlert}}
+            <div class="alert alert-error">
+                A new network record requires a <strong>Description</strong> value!
+            </div>
+        {{/if}}
+        <div class="btn-group"><br>
+            <button class="btn btn-success" type="submit" {{action "add"}}>
+                {{icon name="add"}} Add Network
+            </button>
+            <button class="btn" type="button" {{action "cancel"}}>
+                {{icon name="cancel"}}Cancel
+            </button>
+        </div>
+    </form>
+    <hr>
+    <ul class="pager">
+        <li class="previous">
+            {{link-to "&larr; Back to Networks" "networks"}}
+        </li>
+    </ul>
+{{/if}}

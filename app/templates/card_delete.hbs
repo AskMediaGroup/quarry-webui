@@ -1,0 +1,25 @@
+{{#if status}}
+{{else}}
+    <div class="alert">
+        Are you sure you want to delete the Script <strong>{{name}}</strong>?
+    </div>
+    <div class="alert alert-error">
+        This is a destructive action!
+    </div>
+    <form class="form-horizontal">
+        <div class="btn-group">
+            <button class="btn" type="button-primary" {{action "cancel"}}>
+                {{icon name="cancel"}} Cancel</button>
+        </div>
+    </form>
+    <p>Or, to continue:</p>
+    {{render "confirmation"}}
+    {{#if ready}}
+        <form class="form-horizontal">
+            <div class="btn-group">
+                <button class="btn btn-danger" type="submit" {{action "remove"}}>
+                    {{icon name="cleanup"}} Delete Script</button>
+            </div>
+        </form>
+    {{/if}}
+{{/if}}

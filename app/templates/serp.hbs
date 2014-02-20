@@ -1,0 +1,236 @@
+<legend>{{icon name="serpPage"}}Search Results</legend>
+{{#if isLoading}}
+    <p id="search-in-progress">Searching for <strong>{{searchString searchTerms}}</strong></p>
+    <div class="progress progress-striped active">
+        <div class="bar" style="width: 100%;"></div>
+    </div>
+{{else}}
+    {{#if hasResults}}
+        <ul class="pager">
+            <li class="previous" id="search-summary">
+                {{serpCountStats searchTerms totalBinding="total"}}
+                for <strong>{{searchString searchTerms}}</strong>
+                sorted by '{{searchTerms.sort}}'
+                in {{#if searchTerms.desc}}descending{{else}}ascending{{/if}} order
+            </li>
+            <li class="next">
+                {{link-to "Refine Search &rarr;" "advancedSearch"}}
+            </li>
+        </ul>
+        <table id="resultstable" class="table table-bordered table-condensed">
+            <thead id="serpHeaders">
+            <tr>
+                <th><a href="#" {{action "reSort" view.fqdnSort}}>FQDN</a></th>
+                <th>IP(s)</th>
+                <th><a href="#" {{action "reSort" view.assetTagSort}}>Asset Tag</a></th>
+                <th><a href="#" {{action "reSort" view.chassisSort}}>Chassis</a></th>
+                <th><a href="#" {{action "reSort" view.ramSort}}>RAM</a></th>
+                <th>Disk</th>
+                <th><a href="#" {{action "reSort" view.osSort}}>OS</a></th>
+                <th><a href="#" {{action "reSort" view.ownerSort}}>Ownership</a></th>
+            </tr>
+            </thead>
+            <tbody>
+                {{#each controller}}
+                    {{#if isStale}}
+                    <tr class="warning">
+                    {{else}}
+                    <tr>
+                    {{/if}}
+                    {{#if hasLongFqdnString}}
+                        <td>
+                        {{#view App.PopoverView}}
+                            <a href="#" {{action "showAsset" this}}>
+                                {{hostname}}
+                            </a><span rel="popover"
+                                {{bind-attr data-content="domain"}}>...</span>
+                        {{/view}}
+                        </td>
+                    {{else}}
+                        <td><a href="#" {{action "showAsset" this}}>
+                            {{serpFqdn}}
+                        </a>
+                        </td>
+                    {{/if}}
+                    <td>
+                        {{#if hasIpAddress}}
+                            {{hostIp ips}}
+                            {{#if hasMultipleIps}}
+                                {{#view App.PopoverView tagName="span"}}
+                                    <span rel="popover"
+                                          data-placement="right"
+                                        {{bind-attr data-content="allIps"}}>
+                                {{icon name="hasIps"}}</span>
+                                {{/view}}
+                            {{/if}}
+                        {{else}}
+                            {{#view App.PopoverView}}
+                                <span rel="popover"
+                                      data-placement="right"
+                                    {{bind-attr data-content="allIps"}}>
+                                    {{icon name="noIps"}}</span>
+                            {{/view}}
+                        {{/if}}
+                    </td>
+                <td>
+                    {{#if hasLongAssetTagString}}
+                        {{#if isVm}}
+                            Virtual
+                        {{/if}}
+                        {{#view App.PopoverView tagName="span"}}
+                            <span rel="popover"
+                                {{bind-attr data-content="Service_Tag"}}>
+                            {{icon name="serpTag"}}
+                            </span>
+                        {{/view}}
+                    </td>
+                    {{else}}
+                        {{Service_Tag}}
+                    {{/if}}
+                    </td>
+                    {{#if hasLongChassisString}}
+                        <td>{{#view App.PopoverView}}
+                            {{serpChassis}}
+                            <span rel="popover"
+                                  data-placement="left"
+                                {{bind-attr data-content="Chassis_Model"}}>
+                        ...
+                    </span>
+                        {{/view}}
+                        </td>
+                    {{else}}
+                        <td>{{serpChassis}}</td>
+                    {{/if}}
+                    {{#if hasLongRamString}}
+                        <td>{{#view App.PopoverView}}
+                            {{serpRamTotal}}
+                            <span rel="popover"
+                                  data-placement="left"
+                                {{bind-attr data-content="RAM_Total"}}> ...</span>
+                            {{/view}}
+                        </td>
+                    {{else}}
+                        <td>
+                            {{#if isVm}}
+                                {{serpRamTotal}}
+                            {{else}}
+                                {{#if hasRamDetails}}
+                                    {{#view App.PopoverView tagName="span"}}
+                                        <span rel="popover"
+                                            {{bind-attr data-content="serpRam"}}>
+                                            {{serpRamTotal}}
+                                        </span>
+                                    {{/view}}
+                                {{else}}
+                                    {{serpRamTotal}}
+                                {{/if}}
+                            {{/if}}
+                        </td>
+                    {{/if}}
+                    <td>{{#view App.PopoverView}}
+                        <span rel="popover"
+                              data-placement="left"
+                            {{bind-attr data-content="serpDiskInfo"}}>
+                            {{#if hasDiskInfo}}
+                                {{icon name="hasDiskInfo"}}
+                            {{else}}
+                                {{icon name="noDiskInfo"}}
+                            {{/if}}
+                        </span>
+                    {{/view}}
+                    </td>
+                    {{#if hasLongOsString}}
+                        <td>{{#view App.PopoverView}}
+                            {{serpOs}}
+                            <span rel="popover"
+                                  data-placement="left"
+                                {{bind-attr data-content="OS"}}>
+                        ...
+                    </span>
+                        {{/view}}
+                        </td>
+                    {{else}}
+                        <td>{{serpOs}}</td>
+                    {{/if}}
+                    <td>{{#view App.PopoverView}}
+                        <span rel="popover"
+                              data-placement="left"
+                            {{bind-attr data-content="Owner_Email"}}>
+                            {{#if hasOwnerEmail}}
+                                {{icon name="hasOwner"}}
+                            {{else}}
+                                {{icon name="noOwner"}}
+                            {{/if}}
+                        </span>
+                <span rel="popover"
+                      data-placement="left"
+                    {{bind-attr data-content="Owning_Group"}}>
+                    {{#if hasOwningGroup}}
+                        {{icon name="hasGroup"}}
+                    {{else}}
+                        {{icon name="noGroup"}}
+                    {{/if}}
+                </span>
+                    {{/view}}
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        {{#if canBePaginated}}
+            <div class="row" id="results-per-page">
+                <div class="span2">
+                    <div class="btn-group dropup">
+                        <a class="btn btn-small btn-info dropdown-toggle" data-toggle="dropdown" href="#">
+                            Results per page
+                            {{icon name="navUp"}}
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" {{action "redrawPage" view.smallPage}}>{{view.smallPage}}</a></li>
+                            <li><a href="#" {{action "redrawPage" view.bigPage}}>{{view.bigPage}}</a></li>
+                            <li><a href="#" {{action "redrawPage" view.hugePage}}>{{view.hugePage}}</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            {{#if hasPages}}
+                <div class="pagination pagination-centered" id="search-pagination">
+                    {{#if hasPreviousPages}}
+                    <ul>
+                        <li><a href="#" {{action "goPreviousPage"}}>Prev</a></li>
+                    {{else}}
+                    <ul>
+                        <li class="disabled"><a href="#">Prev</a></li>
+                    {{/if}}
+                    {{#if hasNextPages}}
+                        <li><a href="#" {{action "goNextPage"}}>Next</a></li>
+                    </ul>
+                    {{else}}
+                        <li class="disabled"><a href="#">Next</a></li>
+                    </ul>
+                    {{/if}}
+                </div>
+            {{/if}}
+        {{/if}}
+    {{else}}
+        <p class="search-errors">
+            No results for <strong>{{searchString searchTerms}}</strong>
+        </p>
+        <ul class="pager">
+            <li class="previous">
+                {{link-to "Advanced Search &rarr;" "advancedSearch"}}
+            </li>
+        </ul>
+    {{/if}}
+{{/if}}
+{{#if emptySearch}}
+    <p class="search-errors">
+        Error: <strong>No Search Criteria</strong>!
+    </p>
+    <ul class="pager">
+        <li class="previous">
+            {{link-to "Advanced Search &rarr;" "advancedSearch"}}
+        </li>
+    </ul>
+{{/if}}
+{{outlet}}

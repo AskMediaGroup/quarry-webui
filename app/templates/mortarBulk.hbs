@@ -1,0 +1,146 @@
+{{#if content.func}}
+    {{#if verified}}
+        <legend xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">{{icon name="okPage"}}{{capitalize name}} has already been submitted!</legend>
+        <div class="well well-small">
+            <p class="lead">These assets are affected:</p>
+            <dl class="dl-horizontal font-awesome-dt">
+                {{#each asset in content.fqdnArr}}
+                    <dt>{{icon name="bulkCancel"}}</dt>
+                    <dd>{{asset.fqdn}}</dd>
+                {{/each}}
+            </dl>
+        </div>
+    {{else}}
+        <legend>{{mortarBulkIcon name}}Bulk {{capitalize name}}</legend>
+        <div class="well well-small">
+            <p class="lead">Are you sure you want to {{content.name}}
+            {{#if content.fqdnArr}}
+                the following assets?</p>
+                <dl class="dl-horizontal font-awesome-dt">
+                    {{#each asset in content.fqdnArr}}
+                        <dt>{{icon name="bulk"}}</dt>
+                        <dd>{{asset.fqdn}}</dd>
+                    {{/each}}
+                </dl>
+            {{else}}
+                ?</p>
+            {{/if}}
+        </div>
+        {{#if hasKwargs}}
+            {{#if hasRekickArgs}}
+                <div class="well well-small">
+                    <p class="lead">Using the following configuration:</p>
+                    <dl class="dl-horizontal font-awesome-dt">
+                        <dt>OS:</dt>
+                        <dd>{{osName}} ({{content.kwargs.kstarget.id}})<br>
+                        </dd>
+                        <dt>Layout:</dt>
+                        <dd>{{layoutName}} ({{content.kwargs.layout.partlayout_id}})<br>
+                        </dd>
+                    </dl>
+                </div>
+            {{/if}}
+            {{#if hasAddAssetArgs}}
+                <div class="well well-small">
+                    {{#each content.kwargs}}
+                        <dl class="dl-horizontal font-awesome-dt">
+                            <dt>{{icon name="physical"}}</dt>
+                            <dd>FQDN: <strong>{{asset.FQDN}}</strong><br>
+                                Asset Tag: <strong>{{asset.Service_Tag}}</strong><br>
+                                {{#if asset.MAC}}
+                                    MAC Address: <strong>{{asset.MAC}}</strong><br>
+                                {{/if}}
+                                {{#if asset.SW_RAID}}
+                                    Software RAID: {{icon name="check"}}<br>
+                                {{/if}}
+                                {{#if asset.ProdType}}
+                                    Production Type: <strong>{{asset.ProdType}}</strong><br>
+                                {{/if}}
+                                {{#if asset.Application}}
+                                    Application Type: <strong>{{asset.Application}}</strong><br>
+                                {{/if}}
+                                {{#if asset.Business_Unit}}
+                                    BU: <strong>{{asset.Business_Unit}}</strong><br>
+                                {{/if}}
+                                {{#if asset.Owner_Email}}
+                                    Owner E-mail: <strong>{{asset.Owner_Email}}</strong><br>
+                                {{/if}}
+                                {{#if asset.Owning_Group}}
+                                    Owning Group: <strong>{{asset.Owning_Group}}</strong><br>
+                                {{/if}}
+                            </dd>
+                        </dl>
+                    {{/each}}
+                </div>
+                <div class="alert alert-info alert-block">
+                    <h4>Network Details</h4><br>
+                    <p>
+                        Host Network: {{network.gateway}}
+                        {{#if lomNetwork}}
+                            <br>LOM Network: {{lomNetwork.gateway}}
+                        {{/if}}
+                    </p>
+                </div>
+            {{/if}}
+        {{/if}}
+        {{#if destructive}}
+            {{#if confirming}}
+                <div class="alert alert-error">
+                    This is a destructive action!
+                </div>
+                <form class="form-horizontal">
+                    <div class="btn-group">
+                        <button class="btn" type="button-primary" {{action "cancel"}}>
+                            {{icon name="cancel"}} Cancel</button>
+                    </div>
+                </form>
+                <p>Or, to continue:</p>
+                {{render "confirmation"}}
+                {{#if ready}}
+                    <form class="form-horizontal">
+                        <div class="btn-group">
+                            <button class="btn btn-primary" type="submit" {{action "verify"}}>
+                                {{icon name="bulk"}} {{capitalize name}}</button>
+                        </div>
+                    </form>
+                {{/if}}
+            {{else}}
+                <form class="form-horizontal">
+                    <div class="btn-group">
+                        <button class="btn btn-primary" type="submit" {{action "confirm"}}>
+                            {{icon name="bulk"}} {{capitalize name}}</button>
+                        <button class="btn" type="button" {{action "cancel"}}>
+                            {{icon name="cancel"}} Cancel</button>
+                    </div>
+                </form>
+            {{/if}}
+        {{else}}
+            <form class="form-horizontal">
+                <div class="btn-group">
+                    <button class="btn" type="button" {{action "cancel"}}>
+                        {{icon name="cancel"}} Cancel</button>
+                    <button class="btn btn-primary" type="submit" {{action "verify"}}>
+                        {{icon name="bulk"}} {{capitalize name}}</button>
+                </div>
+            </form>
+        {{/if}}
+    {{/if}}
+{{else}}
+    <legend>{{icon name="bulkCancel"}}{{capitalize name}} cancelled!</legend>
+    <div class="well well-small">
+        {{#if content.fqdnArr}}
+            <p class="lead">These assets were unaffected:</p>
+            <dl class="dl-horizontal font-awesome-dt">
+                {{#each asset in content.fqdnArr}}
+                    <dt>{{icon name="bulkCancel"}}</dt>
+                    <dd>{{asset.fqdn}}</dd>
+                {{/each}}
+            </dl>
+        {{else}}
+            {{#if content.hasKwargs}}
+                <pre>{{kwargsDump}}</pre>
+            {{/if}}
+        {{/if}}
+    </div>
+{{/if}}
+{{outlet}}

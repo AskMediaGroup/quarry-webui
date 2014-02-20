@@ -1,0 +1,38 @@
+{{#if childOutlet}}
+    {{outlet}}
+{{else}}
+    <legend>{{icon name="metadataPage"}}Quarry Metadata</legend>
+    {{#if isLoading}}
+        <p id="search-in-progress">Refreshing metadata from the db....</p>
+        <div class="progress progress-striped active">
+            <div class="bar" style="width: 100%;"></div>
+        </div>
+    {{else}}
+        <table id="resultstable" class="table table-condensed">
+            <thead id="serpHeaders">
+            <tr>
+                <th>Name</th>
+                <th>Value</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+                {{#each controller}}
+                <tr>
+                    <td>{{#link-to "metadatum" this}}{{name}}{{/link-to}}</td>
+                    <td>{{stringified}}</td>
+                    <td>
+                        {{#link-to "metadatum.delete" this}}
+                            {{icon name="delMetadata"}}
+                        {{/link-to}}
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        {{#link-to "metadata.new" classNames="buttonLink"}}
+            <button class="btn btn-mini btn-success">{{icon name="add"}} Add New Metadatum</button>
+        {{/link-to}}
+        <br>
+    {{/if}}
+{{/if}}

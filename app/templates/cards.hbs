@@ -1,0 +1,34 @@
+<legend>{{icon name="cardsPage"}}Scripts</legend>
+{{#if isLoading}}
+    <p id="search-in-progress">Refreshing scripts list from the db....</p>
+    <div class="progress progress-striped active">
+        <div class="bar" style="width: 100%;"></div>
+    </div>
+{{else}}
+    <table id="resultstable" class="table table-condensed">
+        <thead id="serpHeaders">
+        <tr>
+            <th>Name</th>
+            <th>Command</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+            {{#each sorted}}
+            <tr>
+                <td><a href="#" {{action "getCard" card_id}}>{{name}}</a></td>
+                <td>{{command}}</td>
+                <td>
+                    {{#link-to "card.delete" this}}
+                        {{icon name="delCard"}}
+                    {{/link-to}}
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    {{#link-to "cardsNew" classNames="buttonLink"}}
+        <button class="btn btn-mini btn-success">{{icon name="add"}} Add Script</button>
+    {{/link-to}}
+    <br>
+{{/if}}

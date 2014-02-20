@@ -1,0 +1,37 @@
+<legend>{{icon name="cardstacksPage"}}Batch Jobs</legend>
+{{#if isLoading}}
+    <p id="search-in-progress">Refreshing batch jobs list from the db....</p>
+    <div class="progress progress-striped active">
+        <div class="bar" style="width: 100%;"></div>
+    </div>
+{{else}}
+    <table id="resultstable" class="table table-condensed">
+        <thead id="serpHeaders">
+        <tr>
+            <th>Name</th>
+            <th>Batch Jobs</th>
+            <th>Query</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+            {{#each sorted}}
+            <tr>
+                <td>{{#link-to "cardstack" this}}{{name}}{{/link-to}}</td>
+                <td>{{#each card in cards}}
+                    <a href="#" {{action "getCard" card.card_id}}>{{card.name}}</a><br>
+                    {{/each}}</td>
+                <td>{{query}}</td>
+                <td><a href="#" {{action "delCardstack" cardstack_id}}>
+                        {{icon name="delCardstack"}}
+                    </a>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    {{#link-to "cardstacksNew" classNames="buttonLink"}}
+        <button class="btn btn-mini btn-success">{{icon name="add"}} Add New Batch Job</button>
+    {{/link-to}}
+    <br>
+{{/if}}

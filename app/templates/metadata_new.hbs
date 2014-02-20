@@ -1,0 +1,53 @@
+<legend>{{icon name="metadataPage"}}Add New Metadata</legend>
+<form>
+    <div class="container">
+        <div class="well well-large">
+            <div class="row">
+                <div class="span4">
+                    Name:
+                </div>
+            </div>
+            <div class="row">
+                <div class="span4">
+                    {{view Em.TextField
+                    valueBinding="name" class="span4"}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="span4">
+                    Value:
+                </div>
+            </div>
+            <div class="row">
+                <div class="span4">
+                    {{view Em.TextArea
+                    valueBinding="value" class="span11" rows="20"}}
+                </div>
+            </div>
+        </div>
+    </div>
+    {{#if nameAlert}}
+        <div class="alert alert-error">
+            A new metadata record requires a <strong>Name</strong> value!
+        </div>
+    {{/if}}
+    {{#if gatewayAlert}}
+        <div class="alert alert-error">
+            A new metadata record requires a <strong>Value</strong> value!
+        </div>
+    {{/if}}
+    <div class="btn-group"><br>
+        <button class="btn btn-success" type="submit" {{action "add"}}>
+            {{icon name="add"}} Add Metadata
+        </button>
+        <button class="btn" type="button" {{action "cancel"}}>
+            {{icon name="cancel"}}Cancel
+        </button>
+    </div>
+</form>
+<hr>
+<ul class="pager">
+    <li class="previous">
+        {{link-to "&larr; Back to Metadata" "metadata"}}
+    </li>
+</ul>

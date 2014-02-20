@@ -1,0 +1,45 @@
+<legend>{{icon name="metadataPage"}}Metadatum: {{name}}</legend>
+<div class="container">
+    <div class="well well-large">
+        <div class="row">
+            <div class="span2">
+                {{view Em.TextArea valueBinding="stringified" class="span11" rows="20"}}
+            </div>
+        </div>
+    </div>
+</div>
+{{#if deleteInProgress}}
+{{else}}
+    <form>
+        <div class="btn-group">
+            {{#if formUpdated}}
+                <button class="btn btn-primary" type="submit" {{action "update"}}>
+                    {{icon name="network"}} Apply Changes
+                </button>
+                <button class="btn btn-warning" type="button" {{action "refresh"}}>
+                    {{icon name="reload"}} Reset
+                </button>
+                <button class="btn btn-danger" type="button" {{action "remove"}}>
+                    {{icon name="del"}} Delete Metadatum Record
+                </button>
+            {{else}}
+                <button class="btn btn-primary" disabled="disabled">
+                    {{icon name="network"}} Apply Changes
+                </button>
+                <button class="btn btn-warning" disabled="disabled">
+                    {{icon name="reload"}} Reset
+                </button>
+                <button class="btn btn-danger" type="button" {{action "remove"}}>
+                    {{icon name="del"}} Delete Metadatum Record
+                </button>
+            {{/if}}
+        </div>
+    </form>
+    <hr>
+    <ul class="pager">
+        <li class="previous">
+            {{link-to "&larr; Back to Metadata" "metadata"}}
+        </li>
+    </ul>
+{{/if}}
+{{outlet}}

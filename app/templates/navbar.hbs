@@ -1,0 +1,302 @@
+<!-- Navbar Top ================================================== -->
+<div class="navbar navbar-fixed-top navbar-inverse" xmlns="http://www.w3.org/1999/html">
+    <div class="navbar-inner">
+        <div class="container">
+            {{#view App.VersionView class="brand" id="quarryLogo"}}
+                {{#link-to "index"}}<img src="images/quarry.png">{{/link-to}}
+            {{/view}}
+
+            <!-- The following unordered lists with a class of "pull-right"
+            are right-justified in the navbar -->
+
+            <!-- Tools link -->
+            <ul class="nav pull-right" id="tools-link">
+                {{#view Em.View tagName="li"}}
+                    <a {{bind-attr href="toolsLink" alt="toolsLink"}}>
+                        {{icon name="navTools"}}
+                    </a>
+                {{/view}}
+            </ul>
+
+            <!-- Divider -->
+            <ul class="nav pull-right">
+                <li class="divider-vertical"></li>
+            </ul>
+
+            <!-- My jobs menu -->
+            <ul class="nav pull-right" role="menu">
+                <li class="dropdown">
+                    <a href="#"
+                       class="dropdown-toggle"
+                       data-toggle="dropdown">
+                        {{icon name="navJobs"}}
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            {{#link-to "jobs"}}
+                                {{icon name="jobs"}}
+                                My Jobs
+                            {{/link-to}}
+                        </li>
+                        <li class="divider"></li>
+                        {{#if lastTenJobs}}
+                            {{#each job in lastTenJobs}}
+                                <li>
+                                    {{#link-to "job" job}}
+                                        {{jobStatusBanner job}}
+                                        {{job.start_date}}
+                                    {{/link-to}}
+                                </li>
+                            {{/each}}
+                        {{else}}
+                            <li>
+                                {{#link-to "jobs"}}
+                                    {{icon name="jobs"}}
+                                    No Jobs
+                                {{/link-to}}
+                            </li>
+                        {{/if}}
+                    </ul>
+                </li>
+            </ul>
+
+            <!-- Utilities menu -->
+            <ul class="nav pull-right" role="menu">
+                <li class="dropdown">
+                    <a href="#"
+                       class="dropdown-toggle"
+                       data-toggle="dropdown">
+                        {{icon name="navUtils"}}
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            {{#link-to "networks"}}
+                                {{icon name="network"}}
+                                Networks
+                            {{/link-to}}
+                        </li>
+                        <li>
+                            {{#link-to "layouts"}}
+                                {{icon name="layouts"}}
+                                Layouts
+                            {{/link-to}}
+                        </li>
+                        <li>
+                            {{#link-to "pools"}}
+                                {{icon name="pools"}}
+                                Pools
+                            {{/link-to}}
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            {{#link-to "dnsSync"}}
+                                {{icon name="dnsSync"}}
+                                Sync DNS
+                            {{/link-to}}
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <!-- Divider -->
+            <ul class="nav pull-right">
+                <li class="divider-vertical"></li>
+            </ul>
+
+            <!-- Commission menu -->
+            <ul class="nav pull-right" role="menu">
+                <li class="dropdown">
+                    <a href="#"
+                       class="dropdown-toggle"
+                       data-toggle="dropdown">
+                        {{icon name="navCommission"}}
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="#" {{action "commissionVm"}}>
+                                {{icon name="vm"}}
+                                VM Commission
+                            </a>
+                        </li>
+                        <li>
+                            {{#link-to "addPhysical"}}
+                                {{icon name="physical"}}
+                                Add Physical Assets
+                            {{/link-to}}
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <!-- Cardrunner menu -->
+            <ul class="nav pull-right" role="menu">
+                <li class="dropdown">
+                    <a href="#"
+                       class="dropdown-toggle"
+                       data-toggle="dropdown">
+                        {{icon name="cardrunner"}}
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            {{#link-to "cardstacks"}}
+                                {{icon name="cardstack"}}
+                                Batch Jobs
+                            {{/link-to}}
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            {{#link-to "cards"}}
+                                {{icon name="script"}}
+                                Scripts
+                            {{/link-to}}
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#" {{action "assetAction" "command"}}>
+                                {{icon name="arbitraryScript"}}
+                                Run Arbitrary Script
+                            </a>
+                        </li>
+                        {{#if generalCardstacks}}
+                            <li class="divider"></li>
+                            {{#each cardstack in generalCardstacks}}
+                                <li>
+                                    <a href="#" {{action "assetAction" "cardstack" cardstack}}>
+                                        {{icon name="start"}}
+                                        {{cardstack.name}}
+                                    </a>
+                                </li>
+                            {{/each}}
+                        {{/if}}
+                    </ul>
+                </li>
+            </ul>
+
+            <!-- Power Functions -->
+            <ul class="nav pull-right" role="menu">
+                <li class="dropdown">
+                    <a href="#"
+                       class="dropdown-toggle"
+                       data-toggle="dropdown">
+                        {{icon name="navPower"}}
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="#" {{action "assetAction" "power" "stop"}}>
+                                {{icon name="stop"}}
+                                Power Off
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" {{action "assetAction" "power" "start"}}>
+                                {{icon name="start"}}
+                                Power On
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" {{action "assetAction" "power" "power_cycle"}}>
+                                {{icon name="power_cycle"}}
+                                Power Cycle
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" {{action "assetAction" "power" "reset"}}>
+                                {{icon name="reset"}}
+                                Reset (DRAC)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" {{action "assetAction" "power" "shutdown"}}>
+                                {{icon name="shutdown"}}
+                                Shutdown (graceful)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" {{action "assetAction" "power" "restart"}}>
+                                {{icon name="restart"}}
+                                Restart (graceful)
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <!-- Asset Functions -->
+            <ul class="nav pull-right" role="menu">
+                <li class="dropdown">
+                    <a href="#"
+                       class="dropdown-toggle"
+                       data-toggle="dropdown">
+                        {{icon name="navAssetActions"}}
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="#" {{action "assetAction" "decommission"}}>
+                                {{icon name="decommission"}}
+                                Decommission
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" {{action "assetAction" "asset/cleanup"}}>
+                                {{icon name="cleanup"}}
+                                Asset Cleanup
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" {{action "assetAction" "rekick"}}>
+                                {{icon name="rekick"}}
+                                Rekick
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" {{action "assetAction" "rename"}}>
+                                {{icon name="rename"}}
+                                Rename
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#" {{action "assetAction" "export"}}>
+                                {{icon name="csv"}}
+                                CSV Export
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <!-- Divider -->
+            <ul class="nav pull-right">
+                <li class="divider-vertical"></li>
+            </ul>
+
+            <!-- Advanced asset search -->
+            <ul class="nav pull-right" role="menu">
+                <li class="dropdown">
+                    <a href="#"
+                       class="dropdown-toggle"
+                       data-toggle="dropdown">
+                        {{icon name="navSearch"}}
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            {{#link-to "advancedSearch"}}
+                                {{icon name="advSearch"}}
+                                Advanced Search
+                            {{/link-to}}
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <!-- Asset search field -->
+            <div class="navbar-search pull-right">
+                {{view Em.TextField class="search-query"
+                placeholder="Search by FQDN"
+                valueBinding="searchFieldVal"
+                action="search"}}
+            </div>
+
+        </div>
+    </div>
+</div>

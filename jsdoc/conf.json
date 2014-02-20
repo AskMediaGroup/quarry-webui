@@ -1,0 +1,21 @@
+{
+    "tags": {
+        "allowUnknownTags": true
+    },
+    "source": {
+        "includePattern": ".+\\.js(doc)?$",
+        "excludePattern": "(^|\\/|\\\\)_",
+        "include": ["app/app.js", "app/router.js",
+            "app/quarry-data.js", "app/classes/", "app/controllers/",
+            "app/helpers/", "app/models/", "app/routes/", "app/utilities/",
+            "app/views/", "app/models/schema/"]
+    },
+    "plugins": [],
+    "templates": {
+        "cleverLinks": false,
+        "monospaceLinks": false,
+        "default": {
+            "outputSourceFiles": true
+        }
+    }
+}

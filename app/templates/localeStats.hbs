@@ -1,0 +1,31 @@
+<div class="well">
+    <p class="lead">
+        {{#if locale}}
+            <a href="#" {{action search}}><span {{bind-attr id=locale}}>{{hypervisors.length}} hypervisors in {{locale}}</span></a>
+        {{else}}
+            {{hypervisors.length}} hypervisors
+        {{/if}}
+    </p>
+    {{icon name="cloudStorage"}}&nbsp;&nbsp;<small>{{storage_percent_free}} % storage available</small><br>
+    <div class="progress">
+        <div class="bar bar-danger" {{bind-attr style=storage_used_style}}></div>
+        <div class="bar bar-success" {{bind-attr style=storage_free_style}}></div>
+    </div>
+    <dl class="dl-horizontal">
+        <dt>Total</dt>
+        <dd><strong>{{storage_total_TiB}}</strong> TiB</dd>
+        <dt>Available</dt>
+        <dd><strong>{{storage_free_TiB}}</strong> TiB</dd>
+    </dl>
+    {{icon name="cloudMemory"}}&nbsp;&nbsp;<small>{{memory_percent_free}} % memory available</small><br>
+    <div class="progress">
+        <div class="bar bar-danger" {{bind-attr style=memory_used_style}}></div>
+        <div class="bar bar-success" {{bind-attr style=memory_free_style}}></div>
+    </div>
+    <dl class="dl-horizontal">
+        <dt>Total</dt>
+        <dd><strong>{{memory_total_GiB}}</strong> GiB</dd>
+        <dt>Available</dt>
+        <dd><strong>{{memory_free_GiB}}</strong> GiB</dd>
+    </dl>
+</div>
