@@ -26,7 +26,7 @@ module.exports = function (config) {
             'test/init.js',
             'test/templates/*.hbs',
             {
-                pattern: 'images/quarry.png',
+                pattern: 'images/*',
                 included: false,
                 served: true
             },
@@ -44,6 +44,10 @@ module.exports = function (config) {
             'test/ajax/*.js',
             'test/integration/*.js'
         ],
+
+        proxies:  {
+            '/images': 'http://localhost:9876/base/images'
+        },
 
         plugins: [
             'karma-qunit',
