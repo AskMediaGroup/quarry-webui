@@ -31,11 +31,6 @@ module.exports = function (config) {
                 served: true
             },
             {
-                pattern: 'config.json',
-                included: false,
-                served: true
-            },
-            {
                 pattern: 'js/models.js',
                 included: false,
                 served: true
