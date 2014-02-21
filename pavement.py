@@ -205,8 +205,7 @@ def archive():
         'cleanup' : True
     })
     # Create archive
-    with open('version.txt', 'r') as version:
-        filename = 'quarry-webui' + '.tar.gz'
+    filename = 'quarry-webui.tar.gz'
     chdir(BUILD_DIR)
     tarball = TarFile.open(filename, 'w:gz')
     tarball.add('quarry')
