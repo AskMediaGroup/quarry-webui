@@ -16,7 +16,7 @@ module.exports = function (config) {
             'js/sha256.js',
             'js/bootstrap.min.js',
             'js/handlebars.js',
-            'js/ember-1.3.1.js',
+            'js/ember-1.4.0.js',
             'js/mantel.js',
             'js/quarry-data.js',
             'test/lib/jquery.mockjax.js',
