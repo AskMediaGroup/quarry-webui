@@ -20,7 +20,7 @@ test('page view', function () {
     QuarryTest.ajaxStub('/cardrunner/cardstacks*', 'GET',
         this.fixtures.cardstacks.data, this.fixtures.cardstacks.response);
     QuarryTest.ajaxStub('/vm/hypervisors*', 'GET',
-        this.fixtures.hypervisorFind.data, this.fixtures.hypervisorFind.response);
+        this.fixtures.hypervisors.data, this.fixtures.hypervisors.response);
     Em.run(App, 'advanceReadiness');
     visit("/").then(function () {
         equal(find('#LAX').text(), '1 hypervisors in LAX', 'Hypervisors stats error!');
