@@ -1845,7 +1845,7 @@ Quarry.initModels = function () {
                             $.each(obj.data, function (i, role) {
                                 roles.pushObject(role);
                             });
-                            return roles;
+                            return Em.A(roles).sortBy(name);
                         }
                         return Em.Object.create(obj.data[0]);
                     },
