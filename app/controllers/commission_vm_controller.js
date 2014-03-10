@@ -43,90 +43,38 @@ App.CommissionVmController = Em.ObjectController.extend({
 
     actions: {
         buildHostSpecs: function () {
-            var modelArr = [], i, completeHostname = '', numSuffix;
+            var modelArr = [], i, hostname = '', numSuffix, j, vmAttrs;
             if (this.get('willAppendNumSeq')) {
                 this.set('numHosts', this.get('numHostsAuto'));
             }
             for (i = 0; i < this.get('numHosts'); i += 1) {
                 if (this.get('hostnamePrefix')) {
-                    completeHostname = this.get('hostnamePrefix');
+                    hostname = this.get('hostnamePrefix');
                     if (this.get('willAppendNumSeq')) {
                         numSuffix = String(parseInt(this.get('startNumSuffix'),
                             10) + i);
                         while (numSuffix.length < 3) {
                             numSuffix = "0" + numSuffix;
                         }
-                        completeHostname += numSuffix;
+                        hostname += numSuffix;
                     }
                     if (this.get('willAppendDc')) {
-                        completeHostname += this.get('dcSuffix');
+                        hostname += this.get('dcSuffix');
+                    }
+                    if (hostname) {
+                        this.set('hostname', hostname);
                     }
                 }
                 if (this.get('controllers.commissionVmSpecs.content')[i]) {
-                    if (completeHostname) {
-                        this.get(
-                            'controllers.commissionVmSpecs.content'
-                        )[i].set('hostname', completeHostname);
-                    }
-                    if (this.get('pool')) {
-                        this.get(
-                            'controllers.commissionVmSpecs.content'
-                        )[i].set('pool', this.get('pool'));
-                    }
-                    if (this.get('kickstart')) {
-                        this.get(
-                            'controllers.commissionVmSpecs.content'
-                        )[i].set('kickstart', this.get('kickstart'));
-                    }
-                    if (this.get('ram')) {
-                        this.get(
-                            'controllers.commissionVmSpecs.content'
-                        )[i].set('ram', this.get('ram'));
-                    }
-                    if (this.get('cores')) {
-                        this.get(
-                            'controllers.commissionVmSpecs.content'
-                        )[i].set('cores', this.get('cores'));
-                    }
-                    if (this.get('storage')) {
-                        this.get(
-                            'controllers.commissionVmSpecs.content'
-                        )[i].set('storage', this.get('storage'));
-                    }
-                    if (this.get('layout')) {
-                        this.get(
-                            'controllers.commissionVmSpecs.content'
-                        )[i].set('layout', this.get('layout'));
-                    }
-                    if (this.get('application')) {
-                        this.get(
-                            'controllers.commissionVmSpecs.content'
-                        )[i].set('application', this.get('application'));
-                    }
-                    if (this.get('prodType')) {
-                        this.get(
-                            'controllers.commissionVmSpecs.content'
-                        )[i].set('prodType', this.get('prodType'));
-                    }
-                    if (this.get('businessUnit')) {
-                        this.get(
-                            'controllers.commissionVmSpecs.content'
-                        )[i].set('businessUnit', this.get('businessUnit'));
-                    }
-                    if (this.get('ownerEmail')) {
-                        this.get(
-                            'controllers.commissionVmSpecs.content'
-                        )[i].set('ownerEmail', this.get('ownerEmail'));
-                    }
-                    if (this.get('ownerGroup')) {
-                        this.get(
-                            'controllers.commissionVmSpecs.content'
-                        )[i].set('ownerGroup', this.get('ownerGroup'));
-                    }
-                    if (this.get('chefRole')) {
-                        this.get(
-                            'controllers.commissionVmSpecs.content'
-                        )[i].set('chefRole', this.get('chefRole'));
+                    vmAttrs = ['hostname', 'pool', 'kickstart', 'ram', 'cores',
+                        'storage', 'layout', 'application', 'prodType', 'businessUnit',
+                        'ownerEmail', 'ownerGroup', 'chefRole'];
+                    for (j = 0; j < vmAttrs.length; j += 1) {
+                        if (this.get(vmAttrs[j])) {
+                            this.get(
+                                'controllers.commissionVmSpecs.content'
+                            )[i].set(vmAttrs[j], this.get(vmAttrs[j]));
+                        }
                     }
                     modelArr.pushObject(
                         this.get('controllers.commissionVmSpecs.content')[i]
@@ -134,7 +82,7 @@ App.CommissionVmController = Em.ObjectController.extend({
                 } else {
                     modelArr.pushObject(App.CommissionVmSpecs.create({
                         index: i + 1,
-                        hostname: completeHostname,
+                        hostname: this.get('hostname'),
                         pool: this.get('pool'),
                         kickstart: this.get('kickstart'),
                         ram: this.get('ram'),
@@ -164,6 +112,18 @@ App.CommissionVmController = Em.ObjectController.extend({
         });
     },
 
+    isDistinct: function (attr) {
+        if (this.get('controllers.commissionVmSpecs.content')[0]) {
+            return !this.get(
+                'controllers.commissionVmSpecs.content'
+            ).everyProperty(
+                attr,
+                this.get('controllers.commissionVmSpecs.content')[0][attr]
+            );
+        }
+        return false;
+    },
+
     numHostsAuto: function () {
         var totalNum = parseInt(this.get('endNumSuffix') -
             this.get('startNumSuffix'), 10) + 1;
@@ -183,161 +143,55 @@ App.CommissionVmController = Em.ObjectController.extend({
     }.property('controllers.commissionVmSpecs.hypervisorsReserved'),
 
     distinctHostnames: function () {
-        if (this.get('controllers.commissionVmSpecs.content')[0]) {
-            return !this.get(
-                'controllers.commissionVmSpecs.content'
-            ).everyProperty(
-                'hostname',
-                this.get('controllers.commissionVmSpecs.content')[0].hostname
-            );
-        }
-        return false;
+        return this.isDistinct('hostname');
     }.property('controllers.commissionVmSpecs.content.@each.hostname'),
 
     distinctPools: function () {
-        if (this.get('controllers.commissionVmSpecs.content')[0]) {
-            return !this.get(
-                'controllers.commissionVmSpecs.content'
-            ).everyProperty(
-                'pool',
-                this.get('controllers.commissionVmSpecs.content')[0].pool
-            );
-        }
-        return false;
+        return this.isDistinct('pool');
     }.property('controllers.commissionVmSpecs.content.@each.pool'),
 
     distinctKickstarts: function () {
-        if (this.get('controllers.commissionVmSpecs.content')[0]) {
-            return !this.get(
-                'controllers.commissionVmSpecs.content'
-            ).everyProperty(
-                'kickstart',
-                this.get('controllers.commissionVmSpecs.content')[0].kickstart
-            );
-        }
-        return false;
+        return this.isDistinct('kickstart');
     }.property('controllers.commissionVmSpecs.content.@each.kickstart'),
 
     distinctRam: function () {
-        if (this.get('controllers.commissionVmSpecs.content')[0]) {
-            return !this.get(
-                'controllers.commissionVmSpecs.content'
-            ).everyProperty(
-                'ram',
-                this.get('controllers.commissionVmSpecs.content')[0].ram
-            );
-        }
-        return false;
+        return this.isDistinct('ram');
     }.property('controllers.commissionVmSpecs.content.@each.ram'),
 
     distinctCores: function () {
-        if (this.get('controllers.commissionVmSpecs.content')[0]) {
-            return !this.get(
-                'controllers.commissionVmSpecs.content'
-            ).everyProperty(
-                'cores',
-                this.get('controllers.commissionVmSpecs.content')[0].cores
-            );
-        }
-        return false;
+        return this.isDistinct('cores');
     }.property('controllers.commissionVmSpecs.content.@each.cores'),
 
     distinctStorage: function () {
-        if (this.get('controllers.commissionVmSpecs.content')[0]) {
-            return !this.get(
-                'controllers.commissionVmSpecs.content'
-            ).everyProperty(
-                'storage',
-                this.get('controllers.commissionVmSpecs.content')[0].storage
-            );
-        }
-        return false;
+        return this.isDistinct('storage');
     }.property('controllers.commissionVmSpecs.content.@each.storage'),
 
     distinctLayouts: function () {
-        if (this.get('controllers.commissionVmSpecs.content')[0]) {
-            return !this.get(
-                'controllers.commissionVmSpecs.content'
-            ).everyProperty(
-                'layout',
-                this.get('controllers.commissionVmSpecs.content')[0].layout
-            );
-        }
-        return false;
+        return this.isDistinct('layout');
     }.property('controllers.commissionVmSpecs.content.@each.layout'),
 
     distinctApplications: function () {
-        if (this.get('controllers.commissionVmSpecs.content')[0]) {
-            return !this.get(
-                'controllers.commissionVmSpecs.content'
-            ).everyProperty(
-                'application',
-                this.get('controllers.commissionVmSpecs.content')[0].application
-            );
-        }
-        return false;
+        return this.isDistinct('application');
     }.property('controllers.commissionVmSpecs.content.@each.application'),
 
     distinctProdTypes: function () {
-        if (this.get('controllers.commissionVmSpecs.content')[0]) {
-            return !this.get(
-                'controllers.commissionVmSpecs.content'
-            ).everyProperty(
-                'prodType',
-                this.get('controllers.commissionVmSpecs.content')[0].prodType
-            );
-        }
-        return false;
+        return this.isDistinct('prodType');
     }.property('controllers.commissionVmSpecs.content.@each.prodType'),
 
     distinctBusinessUnits: function () {
-        if (this.get('controllers.commissionVmSpecs.content')[0]) {
-            return !this.get(
-                'controllers.commissionVmSpecs.content'
-            ).everyProperty(
-                'businessUnit',
-                this.get(
-                    'controllers.commissionVmSpecs.content'
-                )[0].businessUnit
-            );
-        }
-        return false;
+        return this.isDistinct('businessUnit');
     }.property('controllers.commissionVmSpecs.content.@each.businessUnit'),
 
     distinctOwnerEmails: function () {
-        if (this.get('controllers.commissionVmSpecs.content')[0]) {
-            return !this.get(
-                'controllers.commissionVmSpecs.content'
-            ).everyProperty(
-                'ownerEmail',
-                this.get('controllers.commissionVmSpecs.content')[0].ownerEmail
-            );
-        }
-        return false;
+        return this.isDistinct('ownerEmail');
     }.property('controllers.commissionVmSpecs.content.@each.ownerEmail'),
 
     distinctOwnerGroups: function () {
-        if (this.get('controllers.commissionVmSpecs.content')[0]) {
-            return !this.get(
-                'controllers.commissionVmSpecs.content'
-            ).everyProperty(
-                'ownerGroup',
-                this.get('controllers.commissionVmSpecs.content')[0].ownerGroup
-            );
-        }
-        return false;
+        return this.isDistinct('ownerGroup');
     }.property('controllers.commissionVmSpecs.content.@each.ownerGroup'),
 
     distinctChefRoles: function () {
-        if (this.get('controllers.commissionVmSpecs.content')[0]) {
-            return !this.get(
-                'controllers.commissionVmSpecs.content'
-            ).everyProperty(
-                'chefRole',
-                this.get('controllers.commissionVmSpecs.content')[0].chefRole
-            );
-        }
-        return false;
+        return this.isDistinct('chefRole');
     }.property('controllers.commissionVmSpecs.content.@each.chefRole'),
 
     optionsReady: function () {

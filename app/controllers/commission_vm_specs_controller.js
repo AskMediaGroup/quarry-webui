@@ -138,6 +138,24 @@ App.CommissionVmSpecsController = Em.ArrayController.extend({
         return dict;
     }.property('layouts'),
 
+    /*
+     * Ensures that distinct vm attribute values are not overwritten by the
+     * general-purpose vm template
+     */
+    protectDistinct: function (attr) {
+        if (!this.get('content').everyProperty(
+            attr,
+            this.get('content')[0][attr]
+        )) {
+            this.get('controllers.commissionVm').set(attr, null);
+        } else {
+            this.get('controllers.commissionVm').set(
+                attr,
+                this.get('content')[0][attr]
+            );
+        }
+    },
+
     reconcileTemplateFields: function () {
         /***
          * Checks each field property for uniqueness across the hosts array
@@ -147,7 +165,14 @@ App.CommissionVmSpecsController = Em.ArrayController.extend({
          * value will overwrite the various distinct values to the template
          * value.
          */
-        // The hostname field
+        var vmAttrs, i;
+        vmAttrs = ['pool', 'kickstart', 'ram', 'cores',
+            'storage', 'layout', 'application', 'prodType', 'businessUnit',
+            'ownerEmail', 'ownerGroup', 'chefRole'];
+        for (i = 0; i < vmAttrs.length; i += 1) {
+            this.protectDistinct(vmAttrs[i]);
+        }
+        // We deal with the hostname field a little differently
         if (!this.get('controllers.commissionVm').get('willAppendNumSeq')) {
             if (!this.get('content').everyProperty(
                     'hostname',
@@ -160,150 +185,6 @@ App.CommissionVmSpecsController = Em.ArrayController.extend({
                     this.get('content')[0].hostname
                 );
             }
-        }
-        // The pools field
-        if (!this.get('content').everyProperty(
-                'pool',
-                this.get('content')[0].pool
-            )) {
-            this.get('controllers.commissionVm').set('pool', null);
-        } else {
-            this.get('controllers.commissionVm').set(
-                'pool',
-                this.get('content')[0].pool
-            );
-        }
-        // The kickstart (OS) field
-        if (!this.get('content').everyProperty(
-                'kickstart',
-                this.get('content')[0].kickstart
-            )) {
-            this.get('controllers.commissionVm').set('kickstart', null);
-        } else {
-            this.get('controllers.commissionVm').set(
-                'kickstart',
-                this.get('content')[0].kickstart
-            );
-        }
-        // The ram field
-        if (!this.get('content').everyProperty(
-                'ram',
-                this.get('content')[0].ram
-            )) {
-            this.get('controllers.commissionVm').set('ram', null);
-        } else {
-            this.get('controllers.commissionVm').set(
-                'ram',
-                this.get('content')[0].ram
-            );
-        }
-        // The cores field
-        if (!this.get('content').everyProperty(
-                'cores',
-                this.get('content')[0].cores
-            )) {
-            this.get('controllers.commissionVm').set('cores', null);
-        } else {
-            this.get('controllers.commissionVm').set(
-                'cores',
-                this.get('content')[0].cores
-            );
-        }
-        // The storage field
-        if (!this.get('content').everyProperty(
-                'storage',
-                this.get('content')[0].storage
-            )) {
-            this.get('controllers.commissionVm').set('storage', null);
-        } else {
-            this.get('controllers.commissionVm').set(
-                'storage',
-                this.get('content')[0].storage
-            );
-        }
-        // The layout field
-        if (!this.get('content').everyProperty(
-                'layout',
-                this.get('content')[0].layout
-            )) {
-            this.get('controllers.commissionVm').set('layout', null);
-        } else {
-            this.get('controllers.commissionVm').set(
-                'layout',
-                this.get('content')[0].layout
-            );
-        }
-        // The application field
-        if (!this.get('content').everyProperty(
-                'application',
-                this.get('content')[0].application
-            )) {
-            this.get('controllers.commissionVm').set('application', null);
-        } else {
-            this.get('controllers.commissionVm').set(
-                'application',
-                this.get('content')[0].application
-            );
-        }
-        // The prodType field
-        if (!this.get('content').everyProperty(
-                'prodType',
-                this.get('content')[0].prodType
-            )) {
-            this.get('controllers.commissionVm').set('prodType', null);
-        } else {
-            this.get('controllers.commissionVm').set(
-                'prodType',
-                this.get('content')[0].prodType
-            );
-        }
-        // The businessUnit field
-        if (!this.get('content').everyProperty(
-                'businessUnit',
-                this.get('content')[0].businessUnit
-            )) {
-            this.get('controllers.commissionVm').set('businessUnit', null);
-        } else {
-            this.get('controllers.commissionVm').set(
-                'businessUnit',
-                this.get('content')[0].businessUnit
-            );
-        }
-        // The ownerEmail field
-        if (!this.get('content').everyProperty(
-                'ownerEmail',
-                this.get('content')[0].ownerEmail
-            )) {
-            this.get('controllers.commissionVm').set('ownerEmail', null);
-        } else {
-            this.get('controllers.commissionVm').set(
-                'ownerEmail',
-                this.get('content')[0].ownerEmail
-            );
-        }
-        // The ownerGroup field
-        if (!this.get('content').everyProperty(
-                'ownerGroup',
-                this.get('content')[0].ownerGroup
-            )) {
-            this.get('controllers.commissionVm').set('ownerGroup', null);
-        } else {
-            this.get('controllers.commissionVm').set(
-                'ownerGroup',
-                this.get('content')[0].ownerGroup
-            );
-        }
-        // The chefRole field
-        if (!this.get('content').everyProperty(
-            'chefRole',
-            this.get('content')[0].chefRole
-        )) {
-            this.get('controllers.commissionVm').set('chefRole', null);
-        } else {
-            this.get('controllers.commissionVm').set(
-                'chefRole',
-                this.get('content')[0].chefRole
-            );
         }
     },
 
