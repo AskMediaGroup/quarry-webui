@@ -15,7 +15,8 @@
                     Application Type: <strong>{{application}}</strong><br>
                     BU: <strong>{{businessUnit}}</strong><br>
                     Owner E-mail: <strong>{{ownerEmail}}</strong><br>
-                    Owning Group: <strong>{{ownerGroup}}</strong><br><br>
+                    Owning Group: <strong>{{ownerGroup}}</strong><br>
+                    Chef Role: <strong>{{chefRole}}</strong><br><br>
                 </dd>
                 <dt>Hypervisor:</dt>
                 <dd>{{view Em.Select
@@ -180,6 +181,13 @@
                     <label>Owning Group</label>
                     {{view Em.TextField
                     valueBinding="ownerGroup" class="span3"}}
+                </div>
+                <div class="span3">
+                    <label>Chef Role</label>
+                    {{view Em.Select
+                    prompt="Select a role...."
+                    contentBinding="controller.roles"
+                    valueBinding="chefRole" class="span3"}}
                 </div>
             </div>
         </div>

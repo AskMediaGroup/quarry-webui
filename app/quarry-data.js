@@ -202,6 +202,10 @@
  * @property {string} cardstack Cardstack name
  * @property {Array.<CardOutput>} cards Array of card output objects
  */
+/**
+ * A chef role model object
+ * @typedef {Object} ChefRole
+ */
 
 /** Quarry data persistence layer
  * @namespace {Ember.Namespace} Quarry
@@ -997,7 +1001,7 @@ Quarry.initModels = function () {
              * describing the OS storage specs
              * @returns {Job} Job object created by the commission execution
              */
-            commission: function (asset, kickstart, vm, layout) {
+            commission: function (asset, kickstart, vm, layout, role) {
                 var path, params = {}, settings, that = this;
                 path = '/mortar/commission/vm';
                 settings = {
@@ -1006,7 +1010,8 @@ Quarry.initModels = function () {
                         'asset': asset,
                         'kstarget': kickstart,
                         'vm': vm,
-                        'layout': layout
+                        'layout': layout,
+                        'role': role
                     })
                 };
                 return this.ajax(path, params, settings).then(
@@ -1811,6 +1816,38 @@ Quarry.initModels = function () {
                 return this.ajax(path).then(
                     function (obj) {
                         return obj.data[0];
+                    },
+                    that.errorCallback
+                );
+            }
+        }
+    );
+    /**
+     * Quarry.Blade class
+     * @class Quarry.Blade
+     * @extends Quarry.Model
+     * @classdesc Quarry Chef API connector
+     */
+    this.Blade = Quarry.Model.extend().reopenClass(
+        /** @lends Quarry.Blade.prototype */
+        {
+            /**
+             * Get a list of role names
+             * @returns {Array.<String>} array of role names
+             */
+            roles: function () {
+                var path, that = this;
+                path = '/blade/roles';
+                return this.ajax(path).then(
+                    function (obj) {
+                        if (obj.data.length > 1) {
+                            var roles = [];
+                            $.each(obj.data, function (i, role) {
+                                roles.pushObject(role);
+                            });
+                            return roles;
+                        }
+                        return Em.Object.create(obj.data[0]);
                     },
                     that.errorCallback
                 );

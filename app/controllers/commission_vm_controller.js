@@ -1,10 +1,11 @@
 /*global console, App, Em, $ */
 App.CommissionVmController = Em.ObjectController.extend({
     content: {},
-    needs: ['kickstarts', 'layouts', 'commissionVmSpecs', 'pools'],
+    needs: ['kickstarts', 'layouts', 'commissionVmSpecs', 'blade', 'pools'],
     poolsBinding: 'controllers.pools.content',
     kickstartsBinding: 'controllers.kickstarts.content',
     layoutsBinding: 'controllers.layouts.content',
+    rolesBinding: 'controllers.blade.roles',
 
     // values for select elements
     prodTypeOptions: function () {
@@ -122,6 +123,11 @@ App.CommissionVmController = Em.ObjectController.extend({
                             'controllers.commissionVmSpecs.content'
                         )[i].set('ownerGroup', this.get('ownerGroup'));
                     }
+                    if (this.get('chefRole')) {
+                        this.get(
+                            'controllers.commissionVmSpecs.content'
+                        )[i].set('chefRole', this.get('chefRole'));
+                    }
                     modelArr.pushObject(
                         this.get('controllers.commissionVmSpecs.content')[i]
                     );
@@ -139,7 +145,8 @@ App.CommissionVmController = Em.ObjectController.extend({
                         prodType: this.get('prodType'),
                         businessUnit: this.get('businessUnit'),
                         ownerEmail: this.get('ownerEmail'),
-                        ownerGroup: this.get('ownerGroup')
+                        ownerGroup: this.get('ownerGroup'),
+                        chefRole: this.get('chefRole')
                     }));
                 }
             }
@@ -320,6 +327,18 @@ App.CommissionVmController = Em.ObjectController.extend({
         }
         return false;
     }.property('controllers.commissionVmSpecs.content.@each.ownerGroup'),
+
+    distinctChefRoles: function () {
+        if (this.get('controllers.commissionVmSpecs.content')[0]) {
+            return !this.get(
+                'controllers.commissionVmSpecs.content'
+            ).everyProperty(
+                'chefRole',
+                this.get('controllers.commissionVmSpecs.content')[0].chefRole
+            );
+        }
+        return false;
+    }.property('controllers.commissionVmSpecs.content.@each.chefRole'),
 
     optionsReady: function () {
         return (

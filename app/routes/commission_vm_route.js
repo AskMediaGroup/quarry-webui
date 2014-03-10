@@ -10,6 +10,7 @@ App.CommissionVmRoute = Em.Route.extend({
     },
 
     setupController: function (controller, model) {
+        this.controllerFor('blade').refreshRoles();
         this.controllerFor('kickstarts').refresh();
         this.controllerFor('layouts').refresh();
         this.controllerFor('pools').refresh();

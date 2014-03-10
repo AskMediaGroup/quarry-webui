@@ -1,10 +1,11 @@
 /*global console, App, Em, $ */
 App.CommissionVmSpecsController = Em.ArrayController.extend({
     content: [],
-    needs: ['commissionVm', 'kickstarts', 'layouts', 'pools'],
+    needs: ['commissionVm', 'kickstarts', 'layouts', 'blade', 'pools'],
     showTemplateBinding: 'controllers.commissionVm.showTemplate',
     kickstartsBinding: 'controllers.kickstarts.content',
     layoutsBinding: 'controllers.layouts.content',
+    rolesBinding: 'controllers.blade.roles',
     poolsBinding: 'controllers.pools.content',
 
     // values for select elements
@@ -33,7 +34,7 @@ App.CommissionVmSpecsController = Em.ArrayController.extend({
         submitCommission: function () {
             var that = this;
             this.get('content').forEach(function (item, index, enumerable) {
-                var fqdn, asset, kickstart, layout, vm;
+                var fqdn, asset, kickstart, vm, layout, role;
 
                 fqdn = item.hostname + App.DOMAIN_SUFFIX;
 
@@ -66,7 +67,9 @@ App.CommissionVmSpecsController = Em.ArrayController.extend({
                         ).partlayout_id
                 });
 
-                App.Mortar.commission(asset, kickstart, vm, layout).then(
+                role = item.chefRole || undefined;
+
+                App.Mortar.commission(asset, kickstart, vm, layout, role).then(
                     function (response) {
                         return App.Job.create(response);
                     }
@@ -288,6 +291,18 @@ App.CommissionVmSpecsController = Em.ArrayController.extend({
             this.get('controllers.commissionVm').set(
                 'ownerGroup',
                 this.get('content')[0].ownerGroup
+            );
+        }
+        // The chefRole field
+        if (!this.get('content').everyProperty(
+            'chefRole',
+            this.get('content')[0].chefRole
+        )) {
+            this.get('controllers.commissionVm').set('chefRole', null);
+        } else {
+            this.get('controllers.commissionVm').set(
+                'chefRole',
+                this.get('content')[0].chefRole
             );
         }
     },

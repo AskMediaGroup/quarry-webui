@@ -12,6 +12,7 @@ App.CommissionVmSpecs = Em.Object.extend({
     prodType: null,
     ownerEmail: null,
     ownerGroup: null,
+    chefRole: null,
     application: null,
     businessUnit: null,
     memory: null,
