@@ -1,242 +1,255 @@
-{{#if validated}}
-    <div class="well well-small">
-        <p class="lead">Are you sure you want to commission the following virtual hosts?</p>
-        <dl class="dl-horizontal font-awesome-dt">
-            {{#each controller}}
-                <hr>
-                <dt>{{icon name="vm"}}</dt>
-                <dd>FQDN: <strong>{{hostname}}{{controller.domainSuffix}}</strong><br>
-                    OS: <strong>{{kickstart}}</strong><br>
-                    RAM: <strong>{{ram}}</strong><br>
-                    CPU Cores: <strong>{{cores}}</strong><br>
-                    Storage: <strong>{{storage}}</strong><br>
-                    Layout: <strong>{{layout}}</strong><br>
-                    Production Type: <strong>{{prodType}}</strong><br>
-                    Application Type: <strong>{{application}}</strong><br>
-                    BU: <strong>{{businessUnit}}</strong><br>
-                    Owner E-mail: <strong>{{ownerEmail}}</strong><br>
-                    Owning Group: <strong>{{ownerGroup}}</strong><br>
-                    Chef Role: <strong>{{chefRole}}</strong><br><br>
-                </dd>
-                <dt>Hypervisor:</dt>
-                <dd>{{view Em.Select
-                      contentBinding="hypervisors"
-                      optionValuePath="content.name"
-                      optionLabelPath="content.name"
-                      valueBinding="hypervisor"
-                      class="span4"}}<br>
-                    Avail Memory: <strong>{{hypervisorDetails.freeMemGiB}}</strong><br>
-                    Avail Storage: <strong>{{hypervisorDetails.freeStorageGiB}}</strong><br>
-                    Avail VMs: <strong>{{hypervisorDetails.availVms}}</strong><br><br>
-                    Currently hosting these {{hypervisorDetails.vms.length}} VMs:
-                    <br><br>
-                    <ul>
-                        <small>{{#each vm in hypervisorDetails.vms}}
-                            <li>{{vm.name}}</li>
-                        {{/each}}</small>
-                    </ul>
-                </dd>
-            {{/each}}
-        </dl>
-    </div>
-    <form class="form-horizontal">
-        <div class="btn-group">
-            <button class="btn" type="button" {{action "editSpecs"}}>
-                {{icon name="back"}} Edit Details</button>
-            <button class="btn btn-primary" type="submit" {{action "submitCommission"}}>
-                {{icon name="vm"}} Submit VM Commission
-                {{icon name="start"}}</button>
+{{#if content}}
+    {{#if validated}}
+        <div class="well well-small">
+            <p class="lead">Are you sure you want to commission the following virtual hosts?</p>
+            <dl class="dl-horizontal font-awesome-dt">
+                {{#each controller}}
+                    <hr>
+                    <dt>{{icon name="vm"}}</dt>
+                    <dd>FQDN: <strong>{{hostname}}{{controller.domainSuffix}}</strong><br>
+                        OS: <strong>{{kickstart}}</strong><br>
+                        RAM: <strong>{{ram}}</strong><br>
+                        CPU Cores: <strong>{{cores}}</strong><br>
+                        Storage: <strong>{{storage}}</strong><br>
+                        Layout: <strong>{{layout}}</strong><br>
+                        Production Type: <strong>{{prodType}}</strong><br>
+                        Application Type: <strong>{{application}}</strong><br>
+                        BU: <strong>{{businessUnit}}</strong><br>
+                        Owner E-mail: <strong>{{ownerEmail}}</strong><br>
+                        Owning Group: <strong>{{ownerGroup}}</strong><br>
+                        Chef Role: <strong>{{chefRole}}</strong><br><br>
+                    </dd>
+                    <dt>Hypervisor:</dt>
+                    <dd>{{view Em.Select
+                    contentBinding="hypervisors"
+                    optionValuePath="content.name"
+                    optionLabelPath="content.name"
+                    valueBinding="hypervisor"
+                    class="span4"}}<br>
+                        Avail Memory: <strong>{{hypervisorDetails.freeMemGiB}}</strong><br>
+                        Avail Storage: <strong>{{hypervisorDetails.freeStorageGiB}}</strong><br>
+                        Avail VMs: <strong>{{hypervisorDetails.availVms}}</strong><br><br>
+                        Currently hosting these {{hypervisorDetails.vms.length}} VMs:
+                        <br><br>
+                        <ul>
+                            <small>{{#each vm in hypervisorDetails.vms}}
+                                <li>{{vm.name}}</li>
+                            {{/each}}</small>
+                        </ul>
+                    </dd>
+                {{/each}}
+            </dl>
         </div>
-    </form>
-{{else}}
-    <p>Bulk commission template for <span class="badge badge-important">{{numHosts}}</span> hosts:</p>
-    {{#each controller}}
-        <br>
-        <div class="well well-large">
-            <div class="row">
-                <div class="commissionWellEnumerator">
-                    <span class="badge">{{index}}</span>
-                </div>
+        <form class="form-horizontal">
+            <div class="btn-group">
+                <button class="btn" type="button" {{action "editSpecs"}}>
+                    {{icon name="back"}} Edit Details</button>
+                <button class="btn btn-primary" type="submit" {{action "submitCommission"}}>
+                    {{icon name="vm"}} Submit VM Commission
+                    {{icon name="start"}}</button>
             </div>
-            {{#if hypervisorNotFound}}
-                <div class="alert alert-error">
-                    An available hypervisor could not be reserved!
-                </div>
-                <div class="alert alert-info">
-                    Try reducing RAM, CPUs, or storage requirements; or select an alternate pool;<br>
-                    or perhaps remove the cluster regex to allow multiple peer hosts on a single hypervisor.
-                </div>
-            {{/if}}
-            <div class="row-fluid">
-                <div class="span4 input-append">
-                    <label>Hostname</label>
-                    {{view Em.TextField
-                    valueBinding="hostname" placeholder="No hostname entered!"}}
-                    <span class="add-on">{{App.DOMAIN_SUFFIX}}</span>
-                </div>
-                {{#if hypervisor}}
-                    <div class="span3 offset1">
-                        <label>Hypervisor (Pool <em>{{pool}}</em>)</label>
-                        <strong>{{hypervisor}}</strong>
+        </form>
+    {{else}}
+        <p>Bulk commission template for <span class="badge badge-important">{{numHosts}}</span> hosts:</p>
+        {{#each controller}}
+            <br>
+            <div class="well well-large">
+                <div class="row">
+                    <div class="commissionWellEnumerator">
+                        <span class="badge">{{index}}</span>
                     </div>
-                {{else}}
-                    <div class="span3 offset1">
-                        <label>Hypervisor Pool</label>
-                        {{view Em.Select
-                        prompt="Select a pool...."
-                        contentBinding="controller.pools"
-                        optionValuePath="content.name"
-                        optionLabelPath="content.name"
-                        valueBinding="pool"}}
+                </div>
+                {{#if hypervisorNotFound}}
+                    <div class="alert alert-error">
+                        An available hypervisor could not be reserved!
                     </div>
-                    <div class="span3">
-                        <label>Cluster Regex</label>
-                        {{clusterPrefix}}
+                    <div class="alert alert-info">
+                        Try reducing RAM, CPUs, or storage requirements; or select an alternate pool;<br>
+                        or perhaps remove the cluster regex to allow multiple peer hosts on a single hypervisor.
                     </div>
                 {{/if}}
-            </div>
-            <hr>
-            <div class="row">
-                <div class="span3">
-                    <label>Operating System</label>
-                    {{view Em.Select
-                    prompt="Select an OS build...."
-                    contentBinding="controller.kickstarts"
-                    optionValuePath="content.name"
-                    optionLabelPath="content.name"
-                    valueBinding="kickstart"}}
-                </div>
-                <div class="span1">
-                    <label>RAM </label>
-                    {{#if hypervisor}}
-                        <strong>{{ram}}<br></strong>
-                    {{else}}
+                <div class="row-fluid">
+                    <div class="span4 input-append">
+                        <label>Hostname</label>
                         {{view Em.TextField
-                        valueBinding="ram" maxlength="3" class="span1"}}<br>
-                    {{/if}}
-                    <small>(GiB)</small>
-                </div>
-                <div class="span1">
-                    <label>CPUs</label>
+                        valueBinding="hostname" placeholder="No hostname entered!"}}
+                        <span class="add-on">{{App.DOMAIN_SUFFIX}}</span>
+                    </div>
                     {{#if hypervisor}}
-                        <strong>{{cores}}</strong>
+                        <div class="span3 offset1">
+                            <label>Hypervisor (Pool <em>{{pool}}</em>)</label>
+                            <strong>{{hypervisor}}</strong>
+                        </div>
                     {{else}}
-                        {{view Em.TextField
-                        valueBinding="cores" maxlength="2" class="span1"}}
+                        <div class="span3 offset1">
+                            <label>Hypervisor Pool</label>
+                            {{view Em.Select
+                            prompt="Select a pool...."
+                            contentBinding="controller.pools"
+                            optionValuePath="content.name"
+                            optionLabelPath="content.name"
+                            valueBinding="pool"}}
+                        </div>
+                        <div class="span3">
+                            <label>Cluster Regex</label>
+                            {{clusterPrefix}}
+                        </div>
                     {{/if}}
                 </div>
-                <div class="span2">
-                    <label>Total Storage</label>
-                    {{#if hypervisor}}
-                        <strong>{{storage}}<br></strong>
-                    {{else}}
+                <hr>
+                <div class="row">
+                    <div class="span3">
+                        <label>Operating System</label>
+                        {{view Em.Select
+                        prompt="Select an OS build...."
+                        contentBinding="controller.kickstarts"
+                        optionValuePath="content.name"
+                        optionLabelPath="content.name"
+                        valueBinding="kickstart"}}
+                    </div>
+                    <div class="span1">
+                        <label>RAM </label>
+                        {{#if hypervisor}}
+                            <strong>{{ram}}<br></strong>
+                        {{else}}
+                            {{view Em.TextField
+                            valueBinding="ram" maxlength="3" class="span1"}}<br>
+                        {{/if}}
+                        <small>(GiB)</small>
+                    </div>
+                    <div class="span1">
+                        <label>CPUs</label>
+                        {{#if hypervisor}}
+                            <strong>{{cores}}</strong>
+                        {{else}}
+                            {{view Em.TextField
+                            valueBinding="cores" maxlength="2" class="span1"}}
+                        {{/if}}
+                    </div>
+                    <div class="span2">
+                        <label>Total Storage</label>
+                        {{#if hypervisor}}
+                            <strong>{{storage}}<br></strong>
+                        {{else}}
+                            {{view Em.TextField
+                            valueBinding="storage" maxlength="4" class="span1"}}<br>
+                        {{/if}}
+                        <small>(GiB)</small>
+                    </div>
+                    <div class="span4">
+                        <label>Partition Layout</label>
+                        {{view Em.Select
+                        prompt="Select a disk layout...."
+                        contentBinding="controller.layouts"
+                        optionValuePath="content.name"
+                        optionLabelPath="content.name"
+                        valueBinding="layout" class="span3"}}
+                        <br>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="span3">
+                        <label>Application Type</label>
+                        {{view Em.Select
+                        prompt="Select an app type...."
+                        contentBinding="controller.applicationTypeOptions"
+                        valueBinding="application" class="span3"}}
+                    </div>
+                    <div class="span3">
+                        <label>Production Type</label>
+                        {{view Em.Select
+                        prompt="Select a prod type...."
+                        contentBinding="controller.prodTypeOptions"
+                        valueBinding="prodType" class="span3"}}
+                    </div>
+                    <div class="span3">
+                        <label>Business Unit</label>
+                        {{view Em.Select
+                        prompt="Select a BU...."
+                        contentBinding="controller.businessUnitOptions"
+                        valueBinding="businessUnit" class="span3"}}
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="span3">
+                        <label>Owner</label>
                         {{view Em.TextField
-                        valueBinding="storage" maxlength="4" class="span1"}}<br>
-                    {{/if}}
-                    <small>(GiB)</small>
-                </div>
-                <div class="span4">
-                    <label>Partition Layout</label>
-                    {{view Em.Select
-                    prompt="Select a disk layout...."
-                    contentBinding="controller.layouts"
-                    optionValuePath="content.name"
-                    optionLabelPath="content.name"
-                    valueBinding="layout" class="span3"}}
-                    <br>
-                </div>
-            </div>
-            <hr>
-            <div class="row">
-                <div class="span3">
-                    <label>Application Type</label>
-                    {{view Em.Select
-                    prompt="Select an app type...."
-                    contentBinding="controller.applicationTypeOptions"
-                    valueBinding="application" class="span3"}}
-                </div>
-                <div class="span3">
-                    <label>Production Type</label>
-                    {{view Em.Select
-                    prompt="Select a prod type...."
-                    contentBinding="controller.prodTypeOptions"
-                    valueBinding="prodType" class="span3"}}
-                </div>
-                <div class="span3">
-                    <label>Business Unit</label>
-                    {{view Em.Select
-                    prompt="Select a BU...."
-                    contentBinding="controller.businessUnitOptions"
-                    valueBinding="businessUnit" class="span3"}}
+                        valueBinding="ownerEmail" class="span3"}}
+                    </div>
+                    <div class="span3">
+                        <label>Owning Group</label>
+                        {{view Em.TextField
+                        valueBinding="ownerGroup" class="span3"}}
+                    </div>
+                    <div class="span3">
+                        <label>Chef Role</label>
+                        {{view Em.Select
+                        prompt="Select a role...."
+                        contentBinding="controller.roles"
+                        valueBinding="chefRole" class="span3"}}
+                    </div>
                 </div>
             </div>
-            <hr>
-            <div class="row">
-                <div class="span3">
-                    <label>Owner</label>
-                    {{view Em.TextField
-                    valueBinding="ownerEmail" class="span3"}}
-                </div>
-                <div class="span3">
-                    <label>Owning Group</label>
-                    {{view Em.TextField
-                    valueBinding="ownerGroup" class="span3"}}
-                </div>
-                <div class="span3">
-                    <label>Chef Role</label>
-                    {{view Em.Select
-                    prompt="Select a role...."
-                    contentBinding="controller.roles"
-                    valueBinding="chefRole" class="span3"}}
-                </div>
+        {{/each}}
+        {{#if missingHostnames}}
+            <div class="alert alert-error">
+                You must include a hostname value for each virtual host!
             </div>
+        {{/if}}
+        {{#if duplicateHostnames}}
+            <div class="alert alert-error">
+                Duplicate hostnames detected!  Each hostname must be unique.
+            </div>
+        {{/if}}
+        {{#each fqdn in nonAvailFqdns}}
+            <div class="alert alert-error">
+                {{fqdn}} already exists!<br>
+            </div>
+        {{/each}}
+        {{#if poolAlert}}
+            <div class="alert alert-error">
+                You must select a hypervisor pool for each virtual host!
+            </div>
+        {{/if}}
+        {{#if hypervisorsNotFound}}
+            <div class="alert alert-error">
+                Unable to assign a hypervisor to at least one virtual host!
+            </div>
+        {{/if}}
+        {{#if osAlert}}
+            <div class="alert alert-error">
+                You must select a OS for each virtual host!
+            </div>
+        {{/if}}
+        {{#if layoutAlert}}
+            <div class="alert alert-error">
+                You must select a storage layout for each virtual host!
+            </div>
+        {{/if}}
+        <br>
+        <div class="btn-group">
+            <button class="btn btn-primary" type="button" {{action "editInputTemplate"}}>
+                {{icon name="back"}} Edit Template</button>
+            <button class="btn" type="button" {{action "cancel"}}>
+                {{icon name="cancel"}} Cancel</button>
+            {{#unless hostnameErrors}}
+                <button class="btn btn-warning" type="button" {{action "validateRequest"}}>
+                    {{icon name="vm"}} Commission</button>
+            {{/unless}}
         </div>
-    {{/each}}
-    {{#if missingHostnames}}
-        <div class="alert alert-error">
-            You must include a hostname value for each virtual host!
-        </div>
+        <br><br>
     {{/if}}
-    {{#if duplicateHostnames}}
-        <div class="alert alert-error">
-            Duplicate hostnames detected!  Each hostname must be unique.
-        </div>
-    {{/if}}
-    {{#each fqdn in nonAvailFqdns}}
-        <div class="alert alert-error">
-            {{fqdn}} already exists!<br>
-        </div>
-    {{/each}}
-    {{#if poolAlert}}
-        <div class="alert alert-error">
-            You must select a hypervisor pool for each virtual host!
-        </div>
-    {{/if}}
-    {{#if hypervisorsNotFound}}
-        <div class="alert alert-error">
-            Unable to assign a hypervisor to at least one virtual host!
-        </div>
-    {{/if}}
-    {{#if osAlert}}
-        <div class="alert alert-error">
-            You must select a OS for each virtual host!
-        </div>
-    {{/if}}
-    {{#if layoutAlert}}
-        <div class="alert alert-error">
-            You must select a storage layout for each virtual host!
-        </div>
-    {{/if}}
-    <br>
-    <div class="btn-group">
-        <button class="btn btn-primary" type="button" {{action "editInputTemplate"}}>
-            {{icon name="back"}} Edit Template</button>
-        <button class="btn" type="button" {{action "cancel"}}>
-            {{icon name="cancel"}} Cancel</button>
-        {{#unless hostnameErrors}}
-            <button class="btn btn-warning" type="button" {{action "validateRequest"}}>
-                {{icon name="vm"}} Commission</button>
-        {{/unless}}
+{{else}}
+    <div class="alert alert-error">
+        No virtual host commission specs defined!
     </div>
-    <br><br>
+    <ul class="pager">
+        <li class="previous">
+            <a href="#" {{action "resetInputTemplate"}}>
+                &larr; Create specs from template
+            </a>
+        </li>
+    </ul>
 {{/if}}

@@ -1,5 +1,5 @@
 /*global App, Em */
-App.CommissionVmSpecs = Em.Object.extend({
+App.CommissionVmHostSpecs = Em.Object.extend({
     index: null,
     hostname: null,
     FQDN: function () {

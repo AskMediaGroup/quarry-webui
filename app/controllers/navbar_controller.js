@@ -21,7 +21,7 @@ App.NavbarController = Em.ObjectController.extend({
                     this.get('serp').forEach(
                         function (item, index, enumerable) {
                             i += 1;
-                            modelArr.pushObject(App.CommissionVmSpecs.create({
+                            modelArr.pushObject(App.CommissionVmHostSpecs.create({
                                 index: i,
                                 hostname: item.get('hostname'),
                                 prodType: item.ProdType,
@@ -47,7 +47,7 @@ App.NavbarController = Em.ObjectController.extend({
                 this.transitionToRoute('commissionVm.index');
                 break;
             case 'asset.index':
-                modelArr.pushObject(App.CommissionVmSpecs.create({
+                modelArr.pushObject(App.CommissionVmHostSpecs.create({
                     index: 1,
                     hostname: this.get('asset.hostname'),
                     prodType: this.get('asset.ProdType'),

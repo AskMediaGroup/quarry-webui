@@ -92,6 +92,11 @@ App.CommissionVmSpecsController = Em.ArrayController.extend({
             this.reconcileTemplateFields();
             this.transitionToRoute('commissionVm');
         },
+        resetInputTemplate: function () {
+            this.set('showTemplate', true);
+            this.get('controllers.commissionVm').freshen();
+            this.transitionToRoute('commissionVm');
+        },
         cancel: function () {
             this.setProperties({
                 nonAvailFqdns: [],

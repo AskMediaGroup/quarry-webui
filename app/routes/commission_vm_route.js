@@ -1,7 +1,8 @@
 /*global console, App, Em, $ */
 App.CommissionVmRoute = Em.Route.extend({
     model: function (params) {
-        return App.CommissionVmSpecs.create();
+        this.controllerFor('commissionVm').freshen();
+        return App.CommissionVmHostSpecs.create();
     },
 
     renderTemplate: function () {

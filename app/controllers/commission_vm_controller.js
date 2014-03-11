@@ -80,7 +80,7 @@ App.CommissionVmController = Em.ObjectController.extend({
                         this.get('controllers.commissionVmSpecs.content')[i]
                     );
                 } else {
-                    modelArr.pushObject(App.CommissionVmSpecs.create({
+                    modelArr.pushObject(App.CommissionVmHostSpecs.create({
                         index: i + 1,
                         hostname: this.get('hostname'),
                         pool: this.get('pool'),
