@@ -361,17 +361,52 @@ Quarry.Model = Em.Object.extend().reopenClass(
     /** @lends Quarry.Model.prototype */
     {
         /**
+         * Generate a URI query string from an object
+         * @returns {String} queryString a URL query string
+         *
+         * Takes an object whose properties map to URI query string names
+         * and whose values should be JSON.stringified
+         * e.g., { foo: 'bar' } becomes 'foo=bar'
+         */
+        objToUriParams: function (obj) {
+            var prop, queryString = '';
+            for (prop in obj) {
+                if (obj.hasOwnProperty(prop)) {
+                    // Ignore all non-string properties
+                    if (typeof prop === "string") {
+                        queryString += prop + '=';
+                        if (typeof obj[prop] === "string") {
+                            queryString += obj[prop] + '&';
+                        } else {
+                            queryString += JSON.stringify(obj[prop]) + '&';
+                        }
+                    }
+                }
+            }
+            return queryString.slice(0, -1);
+        },
+        /**
          * Ajax convenience that respects the Ember runloop
          * @returns {Object} Ember.Deferred.promise Ember promise object
          */
         ajax: function (path, params, settings) {
+            // if no params arg, initialize to an empty object
             params = params || {};
+            // if no settings arg, initialize to an empty object
             settings = settings || {};
             var queryString, doAjax;
-            params.key = this.key;
-            params.sig = this.sig();
+            // did we prepare a 'params' object ?
+            // (or, if we didn't pass one in, we'll have an empty object)
+            if (typeof params === "object") {
+                params.key = this.key;
+                params.sig = this.sig();
+                params = this.objToUriParams(params);
+            // or did we receive a manually composed url parameter string?
+            } else if (typeof params === "string") {
+                params += '&key=' + this.key + '&sig=' + this.sig();
+            }
             queryString = this.urlScheme + this.urlHost + path +
-                '?' + $.param(params);
+                '?' + params;
             doAjax = function (promise) {
                 settings = {
                     type: settings.type || 'GET',
@@ -398,6 +433,137 @@ Quarry.Model = Em.Object.extend().reopenClass(
         errorCallback: function (jqXHR) {
             console.log(jqXHR);
             return jqXHR;
+        },
+        /**
+         * Generate generic find callback function
+         * @param {Object} that Model instance
+         * @returns {Function} The callback function
+         */
+        findCallback: function (that) {
+            /**
+             * Generic find callback function
+             * @param {Object} data API Response data
+             * @returns {Object|Array.<Object>} A single model object if API
+             * response included only one data[] array element, or an array of
+             * model objects if the data[] array length > 1
+             */
+            return function(data) {
+                var ret;
+                if (typeof data.data === "object") {
+                    if (data.data.length === 1) {
+                        ret = that.create(data.data[0]);
+                    } else {
+                        ret = [];
+                        $.each(data.data, function (i, datum) {
+                            ret.pushObject(that.create(datum));
+                        });
+                    }
+                }
+                return ret;
+            };
+        },
+        /**
+         * Generate generic API response callback function
+         * @param {Object} that Model instance
+         * @returns {Function} The callback function
+         */
+        apiCallback: function (that) {
+            /**
+             * Generic API response callback function
+             * @param {Object} data API Response data
+             * @returns {Object} A model object of the affected record
+             */
+            return function (data) {
+                return that.create(data.data[0]);
+            };
+        },
+        /**
+         * Generate generic update callback function
+         * @param {Object} that Model instance
+         * @returns {Function} The generic API response callback function
+         */
+        updateCallback: function (that) {
+            return this.apiCallback(that);
+        },
+        /**
+         * Generate generic add callback function
+         * @param {Object} that Model instance
+         * @returns {Function} The generic API response callback function
+         */
+        addCallback: function (that) {
+            return this.apiCallback(that);
+        },
+        /**
+         * Generate generic remove callback function
+         * @param {Object} that Model instance
+         * @returns {Function} The generic API response callback function
+         */
+        removeCallback: function (that) {
+            return this.apiCallback(that);
+        },
+        /**
+         * Generic find
+         * @param {string=} name Object name
+         * @returns {Function}
+         */
+        find: function (name) {
+            var path, that = this;
+            path = name ? this.appPath + name : this.appPath;
+            return this.ajax(path).then(
+                this.findCallback(that),
+                this.errorCallback
+            );
+        },
+        /**
+         * Generic update
+         * @param {string} name Record name to update
+         * @param {Object} data Data object describing changes
+         * @returns {Object} Record object with updates applied
+         */
+        update: function (name, data) {
+            var path, params = {}, settings, that = this;
+            path = this.appPath + name;
+            settings = {
+                type: 'POST',
+                data: JSON.stringify(data)
+            };
+            return this.ajax(path, params, settings).then(
+                this.updateCallback(that),
+                this.errorCallback
+            );
+        },
+        /**
+         * Generic add
+         * @param {Object} obj Object describing new record
+         * @returns {Object} New record object
+         */
+        add: function (obj) {
+            var path, params = {}, settings, that = this;
+            path = this.appPath;
+            settings = {
+                type: 'POST',
+                data: JSON.stringify(obj)
+            };
+            return this.ajax(path, params, settings).then(
+                this.addCallback(that),
+                this.errorCallback
+            );
+        },
+        /**
+         * Generic remove
+         * @param {string} name Name of record to delete
+         * @returns {Object} Deleted record object
+         */
+        remove: function (name) {
+            var path, params = {}, settings, that = this;
+            path = this.appPath + name;
+            settings = {
+                type: 'DELETE'
+            };
+            return this.ajax(path, params, settings).then(
+                this.removeCallback(that),
+                this.errorCallback
+            );
         }
     }
 );
@@ -415,87 +581,7 @@ Quarry.initModels = function () {
     this.Meta = Quarry.Model.extend().reopenClass(
         /** @lends Quarry.Meta.prototype */
         {
-            /**
-             * Get metadata record
-             * @param {string=} name Metadata record name
-             * @returns {Meta|Array.<Meta>} Meta object
-             * if name string was passed in, otherwise an array of Meta objects
-             */
-            find: function (name) {
-                var path, that = this;
-                path = name ? '/meta/' + name : '/meta/';
-                return this.ajax(path).then(
-                    function (obj) {
-                        if (name) {
-                            return that.create(obj.data[0]);
-                        }
-                        var metadata = [];
-                        $.each(obj.data, function (i, metadatum) {
-                            metadata.pushObject(that.create(metadatum));
-                        });
-                        return metadata;
-
-                    },
-                    that.errorCallback
-                );
-            },
-            /**
-             * Update metadata record
-             * @param {string} name Metadata record name to update
-             * @param {Object} data Data object describing changes
-             * @returns {Meta} Meta object with updates applied
-             */
-            update: function (name, data) {
-                var path, params = {}, settings, that = this;
-                path = '/meta/' + name;
-                settings = {
-                    type: 'POST',
-                    data: JSON.stringify(data)
-                };
-                return this.ajax(path, params, settings).then(
-                    function (obj) {
-                        return that.create(obj.data[0]);
-                    },
-                    that.errorCallback
-                );
-            },
-            /**
-             * Add a new metadata record
-             * @param {Meta} meta Meta object describing new metadata record
-             * @returns {Meta} New meta object
-             */
-            add: function (meta) {
-                var path, params = {}, settings, that = this;
-                path = '/meta/';
-                settings = {
-                    type: 'POST',
-                    data: JSON.stringify(meta)
-                };
-                return this.ajax(path, params, settings).then(
-                    function (obj) {
-                        return that.create(obj.data[0]);
-                    },
-                    that.errorCallback
-                );
-            },
-            /**
-             * Remove metadata record
-             * @param {string} name Name of metadata record to delete
-             * @returns {Meta} Deleted meta object
-             */
-            remove: function (name) {
-                var path, params = {}, settings, that = this;
-                path = '/meta/' + name;
-                settings = {
-                    type: 'DELETE'
-                };
-                return this.ajax(path, params, settings).then(
-                    function (obj) {
-                        return that.create(obj.data[0]);
-                    },
-                    that.errorCallback
-                );
-            }
+            appPath: '/meta/'
         }
     );
     /**
@@ -548,37 +634,36 @@ Quarry.initModels = function () {
     this.Job = Quarry.Model.extend().reopenClass(
         /** @lends Quarry.Job.prototype */
         {
+            appPath: '/jobs',
             /**
-             * Get a job
-             * @param {string} uuid Job UUID
-             * @returns {Array.<Job>} Array of Job objects matching the
-             * uuid criterion, including all existent child jobs
+             * Generate custom find callback function for 'jobs'
+             * @param {Object} that Model instance
+             * @returns {Function} The callback function
              */
-            find: function (uuid) {
-                var path, job, that = this;
-                path = '/job/' + uuid;
-
-                return this.ajax(path).then(
-                    function (obj) {
-                        job = that.create(obj.data[0]);
-                        if ($.inArray(
-                                obj.data[0].func,
-                                ['bulk_run', 'sync_zones']
-                            ) > -1) {
-                            return that.children(job.get('uuid')).then(
-                                function success(children) {
-                                    job.set('children', children);
-                                    return job;
-                                },
-                                function failure(jqXHR) {
-                                    return job;
-                                }
-                            );
-                        }
-                        return job;
-                    },
-                    that.errorCallback
-                );
+            findCallback: function (that) {
+                /**
+                 * Job 'find' success (fulfilled Promise) callback function
+                 * @param {Object} data API Response data
+                 * @returns {Job} A Job object, including all existent child jobs
+                 */
+                return function (data) {
+                    var job = that.create(data.data[0]);
+                    if ($.inArray(
+                        data.data[0].func,
+                        ['bulk_run', 'sync_zones']
+                    ) > -1) {
+                        return this.children(job.get('uuid')).then(
+                            function success(children) {
+                                job.set('children', children);
+                                return job;
+                            },
+                            function failure(jqXHR) {
+                                return job;
+                            }
+                        );
+                    }
+                    return job;
+                };
             },
             /**
              * Get all of the logged-in user's created jobs
@@ -586,7 +671,7 @@ Quarry.initModels = function () {
              */
             mine: function () {
                 var path, that = this;
-                path = '/job/mine';
+                path = '/jobs/mine';
 
                 return this.ajax(path).then(
                     function (obj) {
@@ -606,7 +691,7 @@ Quarry.initModels = function () {
              */
             children: function (uuid) {
                 var path, that = this;
-                path = '/job/' + uuid + '/children';
+                path = '/jobs/' + uuid + '/children';
                 return this.ajax(path).then(
                     function (obj) {
                         var jobs = [];
@@ -636,16 +721,12 @@ Quarry.initModels = function () {
              * containing assets that match the search criteria
              */
             search: function (searchTerms) {
-                var path, params = {}, settings, that = this;
-                path = '/asset/search';
-                settings = {
-                    type: 'POST',
-                    data: JSON.stringify(
-                        searchTerms.getProperties('asset', 'ips', 'limit',
-                            'offset', 'sort', 'desc')
-                    )
-                };
-                return this.ajax(path, params, settings).then(
+                var path, params, that = this;
+                path = '/quarry/assets/';
+                // compose a URI query string object
+                params = searchTerms.getProperties('sort', 'limit', 'offset');
+                params.where = searchTerms.get('asset');
+                return this.ajax(path, params).then(
                     function (obj) {
                         var serp;
                         serp = {
@@ -671,40 +752,7 @@ Quarry.initModels = function () {
     this.Asset = Quarry.Model.extend().reopenClass(
         /** @lends Quarry.Asset.prototype */
         {
-            /**
-             * Get an asset
-             * @param {string} asset_identifier Either an asset 'id' or 'FQDN'
-             * @returns {Asset} the asset matching the id criterion
-             */
-            find: function (asset_identifier) {
-                var path, that = this;
-                path = '/asset/' + asset_identifier;
-                return this.ajax(path).then(
-                    function (obj) {
-                        return that.create(obj.data[0]);
-                    },
-                    that.errorCallback
-                );
-            },
-            /**
-             * Update an asset
-             * @param {Object} asset An Asset object
-             * @returns {Asset} the updated asset
-             */
-            update: function (asset) {
-                var path, params = {}, settings, that = this;
-                path = '/asset/' + asset.id;
-                settings = {
-                    type: 'PUT',
-                    data: JSON.stringify(asset)
-                };
-                return this.ajax(path, params, settings).then(
-                    function (obj) {
-                        return that.create(obj.data[0]);
-                    },
-                    that.errorCallback
-                );
-            }
+            appPath: '/quarry/assets/',
         }
     );
     /**
@@ -746,31 +794,7 @@ Quarry.initModels = function () {
     this.Network = Quarry.Model.extend().reopenClass(
         /** @lends Quarry.Network.prototype */
         {
-            /**
-             * Get networks
-             * @param {string=} gateway Optional gateway string
-             * (no gateway string implies wildcard search)
-             * @returns {Network|Array.<Network>} Network object if gateway string
-             * was passed in, otherwise an array of Network objects
-             */
-            find: function (gateway) {
-                var path, that = this;
-                path = gateway ? '/ipdb/network/' + gateway
-                    : '/ipdb/network';
-                return this.ajax(path).then(
-                    function (obj) {
-                        if (gateway) {
-                            return that.create(obj.data[0]);
-                        }
-                        var networks = [];
-                        $.each(obj.data, function (i, network) {
-                            networks.pushObject(that.create(network));
-                        });
-                        return networks;
-                    },
-                    that.errorCallback
-                );
-            },
+            appPath: '/ipdb/network/',
             /**
              * Update a network
              * @param {string} gateway Gateway string (network identifier)
@@ -1224,21 +1248,7 @@ Quarry.initModels = function () {
     this.Vm = Quarry.Model.extend().reopenClass(
         /** @lends Quarry.Vm.prototype */
         {
-            /**
-             * Get a vm object
-             * @param {string} fqdn FQDN query to send to vm api
-             * @returns {Vm} Vm object
-             */
-            find: function (fqdn) {
-                var path, that = this;
-                path = '/vm/guests/' + fqdn;
-                return this.ajax(path).then(
-                    function (data, textStatus, jqXHR) {
-                        return that.create(data.data[0]);
-                    },
-                    that.errorCallback
-                );
-            }
+            appPath: '/vm/guests/'
         }
     );
     /**
@@ -1340,86 +1350,7 @@ Quarry.initModels = function () {
     this.Pool = Quarry.Model.extend().reopenClass(
         /** @lends Quarry.Pool.prototype */
         {
-            /**
-             * Get pools
-             * @param {string=} name Pool name
-             * @returns {Pool|Array.<Pool>} Pool object
-             * if name string was passed in, otherwise an array of Pool objects
-             */
-            find: function (name) {
-                var path, that = this;
-                path = name ? '/vm/pools/' + name : '/vm/pools';
-                return this.ajax(path).then(
-                    function (obj) {
-                        if (name) {
-                            return that.create(obj.data[0]);
-                        }
-                        var pools = [];
-                        $.each(obj.data, function (i, pool) {
-                            pools.pushObject(that.create(pool));
-                        });
-                        return pools;
-                    },
-                    that.errorCallback
-                );
-            },
-            /**
-             * Update pool
-             * @param {string} name Pool name to update
-             * @param {Object} data Data object describing changes
-             * @returns {Pool} Pool object with updates applied
-             */
-            update: function (name, data) {
-                var path, params = {}, settings, that = this;
-                path = '/vm/pools/' + name;
-                settings = {
-                    type: 'POST',
-                    data: JSON.stringify(data)
-                };
-                return this.ajax(path, params, settings).then(
-                    function (obj) {
-                        return that.create(obj.data[0]);
-                    },
-                    that.errorCallback
-                );
-            },
-            /**
-             * Add a new pool
-             * @param {Pool} pool Pool object describing new pool
-             * @returns {Pool} New pool object
-             */
-            add: function (pool) {
-                var path, params = {}, settings, that = this;
-                path = '/vm/pools';
-                settings = {
-                    type: 'POST',
-                    data: JSON.stringify(pool)
-                };
-                return this.ajax(path, params, settings).then(
-                    function (obj) {
-                        return that.create(obj.data[0]);
-                    },
-                    that.errorCallback
-                );
-            },
-            /**
-             * Remove pool
-             * @param {string} name Name of pool to delete
-             * @returns {Pool} Deleted pool object
-             */
-            remove: function (name) {
-                var path, params = {}, settings, that = this;
-                path = '/vm/pools/' + name;
-                settings = {
-                    type: 'DELETE'
-                };
-                return this.ajax(path, params, settings).then(
-                    function (data, textStatus, jqXHR) {
-                        return that.create(data.data[0]);
-                    },
-                    that.errorCallback
-                );
-            },
+            appPath: '/vm/pools/',
             /**
              * Get hypervisors in a pool
              * @param {string} name Name of pool
@@ -1477,71 +1408,7 @@ Quarry.initModels = function () {
     this.Cardstack = Quarry.Model.extend().reopenClass(
         /** @lends Quarry.Cardstack.prototype */
         {
-            /**
-             * Get cardstacks
-             * @param {string=} id Cardstack id
-             * @returns {Cardstack|Array.<Cardstack>} Cardstack object if id
-             * string was passed in, otherwise an array of Cardstack objects
-             */
-            find: function (id) {
-                var path, that = this;
-                path = id ? '/cardrunner/cardstacks/' + id :
-                        '/cardrunner/cardstacks';
-
-                return this.ajax(path).then(
-                    function (obj) {
-                        if (id) {
-                            return that.create(obj.data[0]);
-                        }
-                        var cardstacks = [];
-                        $.each(obj.data, function (i, cardstack) {
-                            cardstacks.pushObject(that.create(cardstack));
-                        });
-                        return cardstacks;
-                    },
-                    that.errorCallback
-                );
-            },
-            /**
-             * Add a new cardstack
-             * @param {Cardstack} cardstack Cardstack object
-             * describing new cardstack
-             * @returns {Cardstack} New cardstack object
-             */
-            add: function (cardstack) {
-                var path, params = {}, settings, that = this;
-                path = '/cardrunner/cardstacks';
-                settings = {
-                    type: 'POST',
-                    data: JSON.stringify(cardstack)
-                };
-                return this.ajax(path, params, settings).then(
-                    function (obj) {
-                        return that.create(obj.data[0]);
-                    },
-                    that.errorCallback
-                );
-            },
-            /**
-             * Update cardstack
-             * @param {string} id Cardstack id to update
-             * @param {Object} data Data object describing changes
-             * @returns {Cardstack} Cardstack object with updates applied
-             */
-            update: function (id, data) {
-                var path, params = {}, settings, that = this;
-                path = '/cardrunner/cardstacks/' + id;
-                settings = {
-                    type: 'POST',
-                    data: JSON.stringify(data)
-                };
-                return this.ajax(path, params, settings).then(
-                    function (obj) {
-                        return that.create(obj.data[0]);
-                    },
-                    that.errorCallback
-                );
-            },
+            appPath: '/cardrunner/cardstacks/',
             /**
              * Add a card to a cardstack
              * @param {string} cardstack_id Cardstack id
@@ -1550,7 +1417,7 @@ Quarry.initModels = function () {
              */
             add_card: function (cardstack_id, card_id) {
                 var path, params = {}, settings, that = this;
-                path = '/cardrunner/cardstacks/' + cardstack_id +
+                path = this.appPath + cardstack_id +
                     '/add_card/' + card_id;
                 settings = {
                     type: 'POST'
@@ -1571,7 +1438,7 @@ Quarry.initModels = function () {
              */
             remove_card: function (cardstack_id, card_id, order) {
                 var path, params = {}, settings, that = this;
-                path = '/cardrunner/cardstacks/' + cardstack_id +
+                path = this.appPath + cardstack_id +
                     '/remove_card/' + card_id + '/' + order;
                 settings = {
                     type: 'DELETE'
@@ -1592,7 +1459,7 @@ Quarry.initModels = function () {
              */
             promote_card: function (cardstack_id, card_id) {
                 var path, params = {}, settings, that = this;
-                path = '/cardrunner/cardstacks/' + cardstack_id +
+                path = this.appPath + cardstack_id +
                     '/promote/' + card_id;
                 settings = {
                     type: 'POST'
@@ -1613,28 +1480,10 @@ Quarry.initModels = function () {
              */
             demote_card: function (cardstack_id, card_id) {
                 var path, params = {}, settings, that = this;
-                path = '/cardrunner/cardstacks/' + cardstack_id +
+                path = this.appPath + cardstack_id +
                     '/demote/' + card_id;
                 settings = {
                     type: 'POST'
-                };
-                return this.ajax(path, params, settings).then(
-                    function (obj) {
-                        return that.create(obj.data[0]);
-                    },
-                    that.errorCallback
-                );
-            },
-            /**
-             * Remove a cardstack from the db
-             * @param {string} id Cardstack id
-             * @returns {Cardstack} Deleted cardstack object
-             */
-            remove: function (id) {
-                var path, params = {}, settings, that = this;
-                path = '/cardrunner/cardstacks/' + id;
-                settings = {
-                    type: 'DELETE'
                 };
                 return this.ajax(path, params, settings).then(
                     function (obj) {
@@ -1651,7 +1500,7 @@ Quarry.initModels = function () {
              */
             run: function (cardstack_id, query) {
                 var path, params = {}, settings, that = this;
-                path = '/cardrunner/cardstacks/' + cardstack_id + '/run';
+                path = this.appPath + cardstack_id + '/run';
                 settings = {
                     type: 'POST',
                     data: JSON.stringify({
@@ -1672,7 +1521,7 @@ Quarry.initModels = function () {
              */
             get_output: function (oid) {
                 var path, that = this;
-                path = '/cardrunner/cardstacks/output/' + oid;
+                path = this.appPath + 'output/' + oid;
                 return this.ajax(path).then(
                     function (obj) {
                         return obj.data[0];
@@ -1691,86 +1540,7 @@ Quarry.initModels = function () {
     this.Card = Quarry.Model.extend().reopenClass(
         /** @lends Quarry.Card.prototype */
         {
-            /**
-             * Get cards
-             * @param {string=} id Card id
-             * @returns {Card|Array.<Card>} Card object if id string
-             * was passed in, otherwise an array of Card objects
-             */
-            find: function (id) {
-                var path, that = this;
-                path = id ? '/cardrunner/cards/' + id : '/cardrunner/cards';
-                return this.ajax(path).then(
-                    function (obj) {
-                        if (id) {
-                            return that.create(obj.data[0]);
-                        }
-                        var cards = [];
-                        $.each(obj.data, function (i, card) {
-                            cards.pushObject(that.create(card));
-                        });
-                        return cards;
-                    },
-                    that.errorCallback
-                );
-            },
-            /**
-             * Add a new card
-             * @param {Card} card Card object describing new card
-             * @returns {Card} New card object
-             */
-            add: function (card) {
-                var path, params = {}, settings, that = this;
-                path = '/cardrunner/cards';
-                settings = {
-                    type: 'POST',
-                    data: JSON.stringify(card)
-                };
-                return this.ajax(path, params, settings).then(
-                    function (obj) {
-                        return that.create(obj.data[0]);
-                    },
-                    that.errorCallback
-                );
-            },
-            /**
-             * Update card
-             * @param {string} id Card id to update
-             * @param {Object} data Data object describing changes
-             * @returns {Card} Card object with updates applied
-             */
-            update: function (id, data) {
-                var path, params = {}, settings, that = this;
-                path = '/cardrunner/cards/' + id;
-                settings = {
-                    type: 'POST',
-                    data: JSON.stringify(data)
-                };
-                return this.ajax(path, params, settings).then(
-                    function (obj) {
-                        return that.create(obj.data[0]);
-                    },
-                    that.errorCallback
-                );
-            },
-            /**
-             * Remove a card from the db
-             * @param {string} id Card id
-             * @returns {Card} Deleted card object
-             */
-            remove: function (id) {
-                var path, params = {}, settings, that = this;
-                path = '/cardrunner/cards/' + id;
-                settings = {
-                    type: 'DELETE'
-                };
-                return this.ajax(path, params, settings).then(
-                    function (obj) {
-                        return that.create(obj.data[0]);
-                    },
-                    that.errorCallback
-                );
-            }
+            appPath: '/cardrunner/cards'
         }
     );
     /**
