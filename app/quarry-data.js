@@ -443,23 +443,42 @@ Quarry.Model = Em.Object.extend().reopenClass(
             /**
              * Generic find callback function
              * @param {Object} data API Response data
-             * @returns {Object|Array.<Object>} A single model object if API
-             * response included only one data[] array element, or an array of
-             * model objects if the data[] array length > 1
+             * @returns {Object} A model object
              */
             return function(data) {
                 var ret;
-                if (typeof data.data === "object") {
+                if ($.isArray(data.data)) {
+                    // The data.data array should always have 1 element
                     if (data.data.length === 1) {
                         ret = that.create(data.data[0]);
+                    // Otherwise we return an empty model object
                     } else {
-                        ret = [];
-                        $.each(data.data, function (i, datum) {
-                            ret.pushObject(that.create(datum));
-                        });
+                        ret = that.create();
                     }
                 }
                 return ret;
+            };
+        },
+        /**
+         * Generate generic "find all" callback function
+         * @param {Object} that Model instance
+         * @returns {Function} The callback function
+         */
+        findAllCallback: function (that) {
+            /**
+             * Generic "find all" callback function
+             * @param {Object} data API Response data
+             * @returns {Array.<Object>} An array of model objects
+             */
+            return function(data) {
+                var ret;
+                if ($.isArray(data.data)) {
+                    ret = [];
+                    $.each(data.data, function (i, datum) {
+                        ret.pushObject(that.create(datum));
+                    });
+                }
+                return Em.A(ret);
             };
         },
         /**
@@ -510,7 +529,7 @@ Quarry.Model = Em.Object.extend().reopenClass(
             var path, that = this;
             path = name ? this.appPath + name : this.appPath;
             return this.ajax(path).then(
-                this.findCallback(that),
+                name ? this.findCallback(that) : this.findAllCallback(that),
                 this.errorCallback
             );
         },
@@ -752,7 +771,7 @@ Quarry.initModels = function () {
     this.Asset = Quarry.Model.extend().reopenClass(
         /** @lends Quarry.Asset.prototype */
         {
-            appPath: '/quarry/assets/',
+            appPath: '/quarry/assets/'
         }
     );
     /**
