@@ -2,7 +2,7 @@
 App.CommissionVmSpecsRoute = Em.Route.extend({
     model: function (params) {
         // TODO: enable URL route support
-        return Em.A();
+        return [];
     },
 
     serialize: function (model, params) {

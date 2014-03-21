@@ -70,7 +70,7 @@ App.AdvancedSearchController = Em.ObjectController.extend({
     },
 
     assetFields: function () {
-        var assetProp, arr = Em.A();
+        var assetProp, arr = [];
         for (assetProp in App.assetSchema) {
             if (App.assetSchema.hasOwnProperty(assetProp)) {
                 arr.push(assetProp);

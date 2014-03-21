@@ -10,7 +10,7 @@ App.Job = Quarry.Job.extend({
 
     jobRefreshId: null,
 
-    children: Em.A(),
+    children: [],
 
     hasOutputJson: function () {
         if (this.get('output')) {

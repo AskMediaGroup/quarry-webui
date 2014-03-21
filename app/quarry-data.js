@@ -500,7 +500,7 @@ Quarry.Model = Em.Object.extend().reopenClass(
                         ret.pushObject(that.create(datum));
                     });
                 }
-                return sort ? Em.A(ret).sortBy(sort) : Em.A(ret);
+                return sort ? ret.sortBy(sort) : ret;
             };
         },
         /**
@@ -663,16 +663,13 @@ Quarry.initModels = function () {
                 };
                 return this.ajax(path, params).then(
                     function (data) {
-                        var log, entries;
-                        log = {
-                            entries: Em.A(),
-                            total: data.total
+                        var log = {
+                            total: data.total,
+                            entries: []
                         };
-                        entries = [];
                         $.each(data.data, function (i, entry) {
-                            entries.pushObject(that.create(entry));
+                            log.entries.pushObject(that.create(entry));
                         });
-                        log.entries = entries;
                         return log;
                     },
                     that.errorCallback
@@ -783,14 +780,14 @@ Quarry.initModels = function () {
                 params.where = searchTerms.get('asset');
                 return this.ajax(path, params).then(
                     function (data) {
-                        var assets = [];
+                        var serp = {
+                            total: data.total,
+                            assets: []
+                        };
                         $.each(data.data, function (i, asset) {
-                            assets.pushObject(that.create(asset));
+                            serp.assets.pushObject(that.create(asset));
                         });
-                        return Em.Object.create({
-                            assets: Em.A(assets),
-                            total: data.total
-                        });
+                        return serp;
                     },
                     that.errorCallback
                 );
@@ -1452,7 +1449,7 @@ Quarry.initModels = function () {
                         $.each(data.data, function (i, role) {
                             roles.pushObject(role);
                         });
-                        return Em.A(roles).sort();
+                        return roles.sort();
                     },
                     this.errorCallback
                 );

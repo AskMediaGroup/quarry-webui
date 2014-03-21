@@ -34,5 +34,5 @@ App.LocaleStats = Em.Mixin.create({
     memory_used_style: function () {
         return 'width: ' + (100 - Number(this.get('memory_percent_free')).toFixed()) + '%';
     }.property('memory_percent_free'),
-    hypervisors: Em.A()
+    hypervisors: []
 });

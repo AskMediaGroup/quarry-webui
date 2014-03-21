@@ -1,16 +1,16 @@
 /*global console, App, Quarry, Em, $ */
 App.CloudStatsController = Em.ObjectController.extend({
     content: {},
-    cloud: Em.A(),
-    bogon: Em.A(),
+    cloud: [],
+    bogon: [],
 
     getCloudStats: function () {
         var regex, dc, that = this;
-        this.set('cloud', Em.A());
+        this.set('cloud', []);
         App.CLOUD_LOCALES.forEach(function (item, index, enumerable) {
             that.get('cloud').pushObject(App.CloudStats.create({
                 locale: item.toUpperCase(),
-                hypervisors: Em.A()
+                hypervisors: []
             }));
         });
         regex = App.DC_REGEX_MATCH;

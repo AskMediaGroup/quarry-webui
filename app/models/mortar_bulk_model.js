@@ -52,7 +52,7 @@ App.MortarBulk = Quarry.MortarBulk.extend({
 
     fqdnArr: function () {
         if (this.get('assets')) {
-            var newArr = Em.A([]);
+            var newArr = [];
             this.get('assets').forEach(function (item, index, enumerable) {
                 newArr.pushObject(Em.Object.create({
                     fqdn: item[0]
