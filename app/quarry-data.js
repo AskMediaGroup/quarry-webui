@@ -604,11 +604,11 @@ Quarry.Model = Em.Object.extend().reopenClass(
             );
         },
         /**
-         * Generic jqXHR to the api
+         * Generic jqXHR wrapper for retrieving the 'data' array from the API
          * @param {string} name Name of record to delete
          * @returns {Object} Deleted record object
          */
-        api: function (verb, path, params, data) {
+        apiData: function (verb, path, params, data) {
             var settings = {
                 type: verb
             };
@@ -1174,7 +1174,7 @@ Quarry.initModels = function () {
             vms: function (name) {
                 var path;
                 path = this.appPath + name + '/vms';
-                return this.api('GET', path);
+                return this.apiData('GET', path);
             },
             /**
              * Get a list of hypervisor candidates
@@ -1222,7 +1222,7 @@ Quarry.initModels = function () {
             get_hypervisors: function (name) {
                 var path;
                 path = '/vm/pools/' + name + '/hypervisors';
-                return this.api('GET', path);
+                return this.apiData('GET', path);
             }
         }
     );
