@@ -86,13 +86,13 @@ App.SerpController = Em.ArrayController.extend({
             sort: App.DEFAULT_SERP_SORT,
             desc: App.DEFAULT_SERP_DESC
         });
-        return this.search();
+        return this.find();
     },
 
-    search: function () {
+    find: function () {
         var that = this;
         this.set('isLoading', true);
-        return App.Serp.search(this.get('searchTerms')).then(
+        return App.Serp.find(this.get('searchTerms')).then(
             function (response) {
                 that.setProperties({
                     total: response.total,
@@ -106,7 +106,7 @@ App.SerpController = Em.ArrayController.extend({
 
     refresh: function () {
         var that = this;
-        this.search().then(
+        this.find().then(
             function (response) {
                 that.set('content', response);
             }

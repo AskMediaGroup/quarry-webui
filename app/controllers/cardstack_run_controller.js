@@ -22,7 +22,7 @@ App.CardstackRunController = Em.ObjectController.extend({
     getAssets: function () {
         var that = this, query = this.get('query') ||
             this.get('controllers.serp').get('searchTerms');
-        App.Serp.search(query).then(
+        App.Serp.find(query).then(
             function (response) {
                 that.set('assets', response.assets);
             }

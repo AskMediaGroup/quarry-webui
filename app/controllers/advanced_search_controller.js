@@ -38,7 +38,7 @@ App.AdvancedSearchController = Em.ObjectController.extend({
                 ips: App.getNonEmptyArrIndices(this.get('searchTerms.ips'))
             });
             this.transitionToRoute('serp.index');
-            this.get('controllers.serp').search().then(
+            this.get('controllers.serp').find().then(
                 function (response) {
                     that.transitionToRoute('serp.index', response);
                 }

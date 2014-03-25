@@ -177,7 +177,7 @@ App.NavbarController = Em.ObjectController.extend({
                 break;
             }
         },
-        search: function () {
+        fqdnSearch: function () {
             var that = this;
             this.transitionToRoute('serp.index');
             this.get(

@@ -5,13 +5,13 @@ App.LocaleStatsController = Em.ObjectController.extend({
     searchTermsBinding: 'controllers.serp.searchTerms',
 
     actions: {
-        search: function () {
+        find: function () {
             var that = this;
             this.get('searchTerms').setProperties({
                 asset: App.getNonEmptyAttrs(this.get('localeAsset'))
             });
             this.transitionToRoute('serp.index');
-            this.get('controllers.serp').search().then(
+            this.get('controllers.serp').find().then(
                 function (response) {
                     that.transitionToRoute('serp.index', response);
                 }

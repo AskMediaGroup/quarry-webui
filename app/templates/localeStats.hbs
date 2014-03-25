@@ -1,7 +1,7 @@
 <div class="well">
     <p class="lead">
         {{#if locale}}
-            <a href="#" {{action "search"}}><span {{bind-attr id=locale}}>{{hypervisors.length}} hypervisors in {{locale}}</span></a>
+            <a href="#" {{action "find"}}><span {{bind-attr id=locale}}>{{hypervisors.length}} hypervisors in {{locale}}</span></a>
         {{else}}
             {{hypervisors.length}} hypervisors
         {{/if}}

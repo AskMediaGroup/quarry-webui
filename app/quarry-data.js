@@ -772,12 +772,16 @@ Quarry.initModels = function () {
              * @returns {Serp} serp object
              * containing assets that match the search criteria
              */
-            search: function (searchTerms) {
-                var path, params, that = this;
+            find: function (searchTerms) {
+                var path, params = {}, that = this;
                 path = '/quarry/assets/';
                 // compose a URI query string object
-                params = searchTerms.getProperties('sort', 'limit', 'offset');
-                params.where = searchTerms.get('asset');
+                if (searchTerms) {
+                    params = searchTerms.getProperties(
+                        'sort', 'limit', 'offset'
+                    );
+                    params.where = searchTerms.get('asset');
+                }
                 return this.ajax(path, params).then(
                     function (data) {
                         var serp = {

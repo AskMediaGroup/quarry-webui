@@ -60,7 +60,7 @@ App.ExportController = Em.ArrayController.extend({
                     offset: this.get('offset'),
                     limit: this.get('SEARCH_ITER_LIMIT')
                 });
-                App.Serp.search(searchTerms).then(
+                App.Serp.find(searchTerms).then(
                     function (response) {
                         that.incrementProperty('offset', response.assets.length);
                         that.get('content').pushObjects(response.assets);
