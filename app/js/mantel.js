@@ -118,7 +118,7 @@ Mantel = {
      @returns {callback}
      */
     acquireExistingSecret: function(connection, callback) {
-        var targetUrl = "http://" + connection.getHost() + ":" + connection.getPort() + "/user/secret";
+        var targetUrl = "http://" + connection.getHost() + ":" + connection.getPort() + "/users/secret";
         var userJson = '{"user":"' + connection.getUserid() + '","passwd":"' + connection.getPasswd() + '"}';
 
         var jqxhr = $.ajax({
@@ -152,7 +152,7 @@ Mantel = {
      @returns {callback}
      */
     acquireNewSecret: function(connection,callback) {
-        var targetUrl = "http://" + connection.getHost() + ":" + connection.getPort() + "/user/secret";
+        var targetUrl = "http://" + connection.getHost() + ":" + connection.getPort() + "/users/secret";
         var userJson = '{"user":"' + connection.getUserid() + '","passwd":"' + connection.getPasswd() + '"}';
 
         var jqxhr = $.ajax({
