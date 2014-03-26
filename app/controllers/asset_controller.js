@@ -98,7 +98,7 @@ App.AssetController = Em.ObjectController.extend({
                 Switch: model.Switch,
                 SW_RAID: this.get('isSwRaid') ? 1 : 0
             });
-            App.Asset.update(App.getNotNullAttrs(asset)).then(
+            App.Asset.update(asset.id, App.getNotNullAttrs(asset)).then(
                 function success(response) {
                     that.set('status', { updated: true });
                 },
