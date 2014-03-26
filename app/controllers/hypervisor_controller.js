@@ -18,10 +18,14 @@ App.HypervisorController = Em.ObjectController.extend({
     }.property('vms.@each'),
 
     vms_allocated_style: function () {
-        return 'width: ' + Number(this.get('percentFull')).toFixed() + '%';
+        return 'width: ' + this.get('percentFull') ?
+            this.get('percentFull').toFixed() + '%' :
+            '0%';
     }.property('percentFull'),
 
     vms_avail_style: function () {
-        return 'width: ' + (100 - Number(this.get('percentFull')).toFixed()) + '%';
+        return 'width: ' + this.get('percentFull') ?
+            (100 - +this.get('percentFull').toFixed()) + '%' :
+            '0%';
     }.property('percentFull')
 });

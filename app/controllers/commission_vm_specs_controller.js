@@ -282,9 +282,9 @@ App.CommissionVmSpecsController = Em.ArrayController.extend({
             if (!item.get('hypervisor')) {
                 App.Hypervisor.schedule({
                     name: item.hostname + App.DOMAIN_SUFFIX,
-                    memory: Number(item.ram),
-                    capacity: Number(item.storage),
-                    cpus: Number(item.cores)
+                    memory: +item.ram,
+                    capacity: +item.storage,
+                    cpus: +item.cores
                 }, item.get('pool'), item.get('clusterPrefix'), true).then(
                     function success(hypervisors) {
                         if (hypervisors.length > 0) {

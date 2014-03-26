@@ -57,12 +57,12 @@ App.LayoutController = Em.ObjectController.extend({
                     partlayoutentry_id: item.partlayoutentry_id,
                     partlayout_id: item.partlayout_id,
                     fs: item.fs || undefined,
-                    level: Number(item.level) || undefined,
+                    level: +item.level || undefined,
                     mnt: item.mnt || undefined,
                     dev: item.dev || undefined,
-                    order: Number(item.order) || undefined,
+                    order: +item.order || undefined,
                     grow: item.willGrow ? 1 : 0,
-                    size: Number(item.size) || undefined
+                    size: +item.size || undefined
                 });
             });
             this.get('newEntries').forEach(function (item, index, enumerable) {
@@ -70,12 +70,12 @@ App.LayoutController = Em.ObjectController.extend({
                     that.get('partlayout_id'),
                     App.getNonEmptyAttrs(App.LayoutEntry.create({
                         fs: item.fs || undefined,
-                        level: Number(item.level) || undefined,
+                        level: +item.level || undefined,
                         mnt: item.mnt || undefined,
                         dev: item.dev || undefined,
-                        order: Number(item.order) || undefined,
+                        order: +item.order || undefined,
                         grow: item.willGrow ? 1 : 0,
-                        size: Number(item.size) || undefined
+                        size: +item.size || undefined
                     }))
                 );
             });

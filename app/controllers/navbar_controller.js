@@ -31,11 +31,11 @@ App.NavbarController = Em.ObjectController.extend({
                                 businessUnit: item.Business_Unit,
                                 ram: Math.ceil(item.RAM_Total / 1073.741824),
                                 storage:
-                                    (item.Disk0 ? Number(item.Disk0.split('G')[0]) : 0) +
-                                        (item.Disk1 ? Number(item.Disk1.split('G')[0]) : 0) +
-                                        (item.Disk2 ? Number(item.Disk2.split('G')[0]) : 0) +
-                                        (item.Disk3 ? Number(item.Disk3.split('G')[0]) : 0) +
-                                        (item.Disk4 ? Number(item.Disk4.split('G')[0]) : 0),
+                                    (item.Disk0 ? +item.Disk0.split('G')[0] : 0) +
+                                        (item.Disk1 ? +item.Disk1.split('G')[0] : 0) +
+                                        (item.Disk2 ? +item.Disk2.split('G')[0] : 0) +
+                                        (item.Disk3 ? +item.Disk3.split('G')[0] : 0) +
+                                        (item.Disk4 ? +item.Disk4.split('G')[0] : 0),
                                 cores: item.CPU_Cores
                             }));
                         }
@@ -57,11 +57,11 @@ App.NavbarController = Em.ObjectController.extend({
                     businessUnit: this.get('asset.Business_Unit'),
                     ram: Math.ceil(this.get('asset.RAM_Total') / 1073.741824),
                     storage:
-                        (this.get('asset.Disk0') ? Number(this.get('asset.Disk0').split('G')[0]) : 0) +
-                            (this.get('asset.Disk1') ? Number(this.get('asset.Disk1').split('G')[0]) : 0) +
-                            (this.get('asset.Disk2') ? Number(this.get('asset.Disk2').split('G')[0]) : 0) +
-                            (this.get('asset.Disk3') ? Number(this.get('asset.Disk3').split('G')[0]) : 0) +
-                            (this.get('asset.Disk4') ? Number(this.get('asset.Disk4').split('G')[0]) : 0),
+                        (this.get('asset.Disk0') ? +this.get('asset.Disk0').split('G')[0] : 0) +
+                            (this.get('asset.Disk1') ? +this.get('asset.Disk1').split('G')[0] : 0) +
+                            (this.get('asset.Disk2') ? +this.get('asset.Disk2').split('G')[0] : 0) +
+                            (this.get('asset.Disk3') ? +this.get('asset.Disk3').split('G')[0] : 0) +
+                            (this.get('asset.Disk4') ? +this.get('asset.Disk4').split('G')[0] : 0),
                     cores: this.get('asset.CPU_Cores')
                 }));
                 this.transitionToRoute('commissionVm.specs', modelArr);
