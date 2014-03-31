@@ -24,6 +24,13 @@ App.AddPhysicalSpecsController = Em.ArrayController.extend({
             this.set('fqdnsChecked', 0);
             this.reconcileTemplateFields();
             this.transitionToRoute('addPhysical');
+            this.get('content').forEach(function(item, index, enumerable) {
+                item.setProperties({
+                    selectApplication: false,
+                    selectProdType: false,
+                    selectBU: false
+                });
+            });
         },
         cancel: function () {
             this.set('content', []);

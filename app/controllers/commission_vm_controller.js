@@ -84,6 +84,7 @@ App.CommissionVmController = Em.ObjectController.extend({
                         index: i + 1,
                         hostname: this.get('hostname'),
                         pool: this.get('pool'),
+                        poolArr: [this.get('pool')],
                         kickstart: this.get('kickstart'),
                         ram: this.get('ram'),
                         cores: this.get('cores'),
@@ -200,5 +201,15 @@ App.CommissionVmController = Em.ObjectController.extend({
             this.get('kickstart') &&
             this.get('hypervisor') ? true : false
         );
-    }.property('layout', 'kickstart', 'hypervisor')
+    }.property('layout', 'kickstart', 'hypervisor'),
+
+    /**
+     * As long as we're asking the user to endure this blocking effects
+     * of rendering the commissionVmSpecs template, we may as well give
+     * them an expectation of how long they'll be waiting
+     * @type {ComputedProperty}
+     */
+    timeToBuild: function () {
+        return this.get('numHosts') ? +this.get('numHosts') * 0.7 : undefined;
+    }.property('numHosts')
 });

@@ -83,12 +83,17 @@
                     {{else}}
                         <div class="span3 offset1">
                             <label>Hypervisor Pool</label>
-                            {{view Em.Select
-                            prompt="Select a pool...."
-                            contentBinding="controller.pools"
-                            optionValuePath="content.name"
-                            optionLabelPath="content.name"
-                            valueBinding="pool"}}
+                            {{#if selectPool}}
+                                {{view Em.Select
+                                prompt="Select a pool...."
+                                contentBinding="controller.pools"
+                                optionValuePath="content.name"
+                                optionLabelPath="content.name"
+                                valueBinding="pool"}}
+                            {{else}}
+                                {{view App.OnClickSelectRevealer
+                                valueBinding="pool" revealBinding="selectPool"}}
+                            {{/if}}
                         </div>
                         <div class="span3">
                             <label>Cluster Regex</label>
@@ -100,12 +105,17 @@
                 <div class="row">
                     <div class="span3">
                         <label>Operating System</label>
-                        {{view Em.Select
-                        prompt="Select an OS build...."
-                        contentBinding="controller.kickstarts"
-                        optionValuePath="content.name"
-                        optionLabelPath="content.name"
-                        valueBinding="kickstart"}}
+                        {{#if selectOS}}
+                            {{view Em.Select
+                            prompt="Select an OS build...."
+                            contentBinding="controller.kickstarts"
+                            optionValuePath="content.name"
+                            optionLabelPath="content.name"
+                            valueBinding="kickstart"}}
+                        {{else}}
+                            {{view App.OnClickSelectRevealer
+                            valueBinding="kickstart" revealBinding="selectOS"}}
+                        {{/if}}
                     </div>
                     <div class="span1">
                         <label>RAM </label>
@@ -138,12 +148,17 @@
                     </div>
                     <div class="span4">
                         <label>Partition Layout</label>
-                        {{view Em.Select
-                        prompt="Select a disk layout...."
-                        contentBinding="controller.layouts"
-                        optionValuePath="content.name"
-                        optionLabelPath="content.name"
-                        valueBinding="layout" class="span3"}}
+                        {{#if selectLayout}}
+                            {{view Em.Select
+                            prompt="Select a disk layout...."
+                            contentBinding="controller.layouts"
+                            optionValuePath="content.name"
+                            optionLabelPath="content.name"
+                            valueBinding="layout" class="span3"}}
+                        {{else}}
+                            {{view App.OnClickSelectRevealer
+                            valueBinding="layout" revealBinding="selectLayout"}}
+                        {{/if}}
                         <br>
                     </div>
                 </div>
@@ -151,24 +166,39 @@
                 <div class="row">
                     <div class="span3">
                         <label>Application Type</label>
-                        {{view Em.Select
-                        prompt="Select an app type...."
-                        contentBinding="controller.applicationTypeOptions"
-                        valueBinding="application" class="span3"}}
+                        {{#if selectApplication}}
+                            {{view Em.Select
+                            prompt="Select an app type...."
+                            contentBinding="controller.applicationTypeOptions"
+                            valueBinding="application" class="span3"}}
+                        {{else}}
+                            {{view App.OnClickSelectRevealer
+                            valueBinding="application" revealBinding="selectApplication"}}
+                        {{/if}}
                     </div>
                     <div class="span3">
                         <label>Production Type</label>
-                        {{view Em.Select
-                        prompt="Select a prod type...."
-                        contentBinding="controller.prodTypeOptions"
-                        valueBinding="prodType" class="span3"}}
+                        {{#if selectProdType}}
+                            {{view Em.Select
+                            prompt="Select a prod type...."
+                            contentBinding="controller.prodTypeOptions"
+                            valueBinding="prodType" class="span3"}}
+                        {{else}}
+                            {{view App.OnClickSelectRevealer
+                            valueBinding="prodType" revealBinding="selectProdType"}}
+                        {{/if}}
                     </div>
                     <div class="span3">
                         <label>Business Unit</label>
-                        {{view Em.Select
-                        prompt="Select a BU...."
-                        contentBinding="controller.businessUnitOptions"
-                        valueBinding="businessUnit" class="span3"}}
+                        {{#if selectBU}}
+                            {{view Em.Select
+                            prompt="Select a BU...."
+                            contentBinding="controller.businessUnitOptions"
+                            valueBinding="businessUnit" class="span3"}}
+                        {{else}}
+                            {{view App.OnClickSelectRevealer
+                            valueBinding="businessUnit" revealBinding="selectBU"}}
+                        {{/if}}
                     </div>
                 </div>
                 <hr>
@@ -185,10 +215,15 @@
                     </div>
                     <div class="span3">
                         <label>Chef Role</label>
-                        {{view Em.Select
-                        prompt="Select a role...."
-                        contentBinding="controller.roles"
-                        valueBinding="chefRole" class="span3"}}
+                        {{#if selectRole}}
+                            {{view Em.Select
+                            prompt="Select a role...."
+                            contentBinding="controller.roles"
+                            valueBinding="chefRole" class="span3"}}
+                        {{else}}
+                            {{view App.OnClickSelectRevealer
+                            valueBinding="chefRole" revealBinding="selectRole"}}
+                        {{/if}}
                     </div>
                 </div>
             </div>

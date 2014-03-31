@@ -90,6 +90,17 @@ App.CommissionVmSpecsController = Em.ArrayController.extend({
                 this.get('numHosts')
             );
             this.reconcileTemplateFields();
+            this.get('content').forEach(function(item, index, enumerable) {
+                item.setProperties({
+                    selectPool: false,
+                    selectOS: false,
+                    selectLayout: false,
+                    selectApplication: false,
+                    selectProdType: false,
+                    selectBU: false,
+                    selectRole: false
+                });
+            });
             this.transitionToRoute('commissionVm');
         },
         resetInputTemplate: function () {

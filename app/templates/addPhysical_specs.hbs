@@ -40,24 +40,39 @@
         <div class="row">
             <div class="span3">
                 <label>Application Type</label>
-                {{view Em.Select
-                prompt="Select an app type...."
-                contentBinding="controller.applicationTypeOptions"
-                valueBinding="application" class="span3"}}
+                {{#if selectApplication}}
+                    {{view Em.Select
+                    prompt="Select an app type...."
+                    contentBinding="controller.applicationTypeOptions"
+                    valueBinding="application" class="span3"}}
+                {{else}}
+                    {{view App.OnClickSelectRevealer
+                    valueBinding="application" revealBinding="selectApplication"}}
+                {{/if}}
             </div>
             <div class="span3">
                 <label>Production Type</label>
-                {{view Em.Select
-                prompt="Select a prod type...."
-                contentBinding="controller.prodTypeOptions"
-                valueBinding="prodType" class="span3"}}
+                {{#if selectProdType}}
+                    {{view Em.Select
+                    prompt="Select a prod type...."
+                    contentBinding="controller.prodTypeOptions"
+                    valueBinding="prodType" class="span3"}}
+                {{else}}
+                    {{view App.OnClickSelectRevealer
+                    valueBinding="prodType" revealBinding="selectProdType"}}
+                {{/if}}
             </div>
             <div class="span3">
                 <label>Business Unit</label>
-                {{view Em.Select
-                prompt="Select a BU...."
-                contentBinding="controller.businessUnitOptions"
-                valueBinding="businessUnit" class="span3"}}
+                {{#if selectBU}}
+                    {{view Em.Select
+                    prompt="Select a BU...."
+                    contentBinding="controller.businessUnitOptions"
+                    valueBinding="businessUnit" class="span3"}}
+                {{else}}
+                    {{view App.OnClickSelectRevealer
+                    valueBinding="businessUnit" revealBinding="selectBU"}}
+                {{/if}}
             </div>
         </div>
         <hr>
