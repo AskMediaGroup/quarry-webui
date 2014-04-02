@@ -175,7 +175,7 @@ def build(options):
 
     # build ES5 strict quarry-data.js
     with open(OUTPUT_JS_DIR + 'quarry-data.js', 'w') as quarrydatajs:
-        files = [SRC_DIR + 'quarry-data.js',]
+        files = (SRC_DIR + 'quarry-data.js',)
         es5_strictify(files, quarrydatajs, 'Quarry', JSLINT_GLOBALS)
     if not jslint(BUILD_DIR + 'app.js', True):
         raise Exception("app.js didn't pass jslint!")
