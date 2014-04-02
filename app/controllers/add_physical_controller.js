@@ -1,4 +1,4 @@
-/*global console, App, Em, $ */
+/*global App, Em */
 App.AddPhysicalController = Em.ObjectController.extend({
     content: {},
     needs: ['networks', 'addPhysicalSpecs'],

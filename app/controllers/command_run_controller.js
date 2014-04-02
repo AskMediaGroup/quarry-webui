@@ -1,4 +1,4 @@
-/*global console, App, Em, $ */
+/*global App, Em */
 App.CommandRunController = Em.ObjectController.extend({
     content: {},
     needs: ['command', 'serp', 'confirmation'],

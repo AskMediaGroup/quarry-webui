@@ -1,5 +1,4 @@
-/*global console, App, Em, $, Blob */
-/*jslint browser: true*/
+/*global window, App, Em */
 App.ExportController = Em.ArrayController.extend({
     content: [],
     needs: [ 'serp'],
@@ -147,7 +146,7 @@ App.ExportController = Em.ArrayController.extend({
         // Now it's all starting to come together
         csvString = csvArray.join('');
         this.set('csvString', csvString);
-        blob = new Blob([csvString], {type: 'text/csv'});
+        blob = new window.Blob([csvString], {type: 'text/csv'});
         windowUrl = window.URL || window.webkitURL;
         this.setProperties({
             downloadLink: windowUrl.createObjectURL(blob),

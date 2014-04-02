@@ -1,4 +1,4 @@
-/*global console, App, Quarry, Em, $ */
+/*global App, Em */
 App.CardsNewRoute = Em.Route.extend({
     model: function () {
         this.controllerFor('cards.new').set('status', undefined);

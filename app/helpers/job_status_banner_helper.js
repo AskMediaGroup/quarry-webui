@@ -1,4 +1,4 @@
-/*global Handlebars, Em, $ */
+/*global App, Em, Handlebars */
 Em.Handlebars.registerBoundHelper('jobStatusBanner', function (job) {
     var banner;
     if (job) {

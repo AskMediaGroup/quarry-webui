@@ -1,4 +1,4 @@
-/*global console, App, Quarry, Em, $ */
+/*global App, Em */
 App.LayoutDeleteRoute = Em.Route.extend({
     model: function () {
         return this.modelFor('layout');

@@ -1,4 +1,4 @@
-/*global console, App, Em, $, clearInterval */
+/*global App, Em */
 App.JobRoute = Em.Route.extend({
     model: function (params) {
         var that = this;

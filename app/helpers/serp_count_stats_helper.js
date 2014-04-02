@@ -1,4 +1,4 @@
-/*global Handlebars, Em, $ */
+/*global App, Em, Handlebars */
 Em.Handlebars.registerBoundHelper('serpCountStats', function (searchTerms, options) {
     if (searchTerms) {
         var offset = searchTerms.get('offset'),

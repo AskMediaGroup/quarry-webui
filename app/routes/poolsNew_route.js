@@ -1,4 +1,4 @@
-/*global console, App, Quarry, Em, $ */
+/*global App, Em */
 App.PoolsNewRoute = Em.Route.extend({
     model: function () {
         return App.Pool.create(App.poolSchema);

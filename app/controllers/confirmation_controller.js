@@ -1,4 +1,4 @@
-/*global console, App, Em, $ */
+/*global App, Em */
 App.ConfirmationController = Em.ObjectController.extend({
     content: {},
 

@@ -1,4 +1,4 @@
-/*global console, App, Em, $ */
+/*global App, Em */
 App.AssetCardstackController = Em.ObjectController.extend({
     content: {},
     needs: ['asset', 'confirmation'],

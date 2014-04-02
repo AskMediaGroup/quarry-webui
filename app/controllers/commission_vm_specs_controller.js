@@ -1,4 +1,4 @@
-/*global console, App, Em, $ */
+/*global App, Em, $ */
 App.CommissionVmSpecsController = Em.ArrayController.extend({
     content: [],
     needs: ['commissionVm', 'kickstarts', 'layouts', 'blade', 'pools'],

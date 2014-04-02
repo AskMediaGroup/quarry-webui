@@ -1,4 +1,4 @@
-/*global console, App, Em, $ */
+/*global App, Em */
 App.NetworksController = Em.ArrayController.extend({
     content: [],
     needs: ['application'],

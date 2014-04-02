@@ -1,4 +1,4 @@
-/*global console, App, Em, $ */
+/*global App, Em */
 App.RekickRoute = Em.Route.extend({
     model: function (params) {
         var rekickTargets = [];

@@ -1,4 +1,4 @@
-/*global console, App, Em, $ */
+/*global App, Em */
 App.AssetCleanupController = Em.ObjectController.extend({
     content: {},
     need: ['confirmation'],

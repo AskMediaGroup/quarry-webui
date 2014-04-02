@@ -1,4 +1,4 @@
-/*global console, App, Em, $ */
+/*global App, Em */
 App.CardstackDeleteController = Em.ObjectController.extend({
     content: {},
     needs: ['cardstack', 'confirmation'],

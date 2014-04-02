@@ -1,4 +1,4 @@
-/*global console, App, Quarry, Em, $ */
+/*global App, Em */
 App.NetworksNewRoute = Em.Route.extend({
     model: function () {
         return App.Network.create(App.networkSchema);

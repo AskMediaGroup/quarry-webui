@@ -1,4 +1,4 @@
-/*global console, App, Em, $ */
+/*global App, Em */
 App.CommissionVmRoute = Em.Route.extend({
     model: function (params) {
         this.controllerFor('commissionVm').freshen();

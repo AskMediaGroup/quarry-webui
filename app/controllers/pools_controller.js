@@ -1,4 +1,4 @@
-/*global console, App, Quarry, Em, $ */
+/*global App, Em, $ */
 App.PoolsController = Em.ArrayController.extend({
     content: [],
 

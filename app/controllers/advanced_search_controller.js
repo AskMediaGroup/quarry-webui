@@ -1,4 +1,4 @@
-/*global console, App, Em, $ */
+/*global App, Em */
 App.AdvancedSearchController = Em.ObjectController.extend({
     content: {},
     needs: 'serp',

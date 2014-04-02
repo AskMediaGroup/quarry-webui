@@ -1,3 +1,3 @@
-/*global console, App, Em, $ */
+/*global App, Em */
 App.ApplicationController = Em.Controller.extend({
 });

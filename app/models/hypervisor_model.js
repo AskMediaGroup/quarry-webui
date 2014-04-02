@@ -1,4 +1,4 @@
-/*global App, Quarry, Em, DS, $ */
+/*global App, Em */
 App.Hypervisor = Quarry.Hypervisor.extend({
     freeMemGiB: function () {
         return typeof (this.get('memory_free')) === 'number' ?

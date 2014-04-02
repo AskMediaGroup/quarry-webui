@@ -1,4 +1,4 @@
-/*global console, App, Quarry, Em, $ */
+/*global App, Em */
 App.MetadatumRoute = Em.Route.extend({
     model: function (params) {
         return App.Metadatum.find(params.name).then(

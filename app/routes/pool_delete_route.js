@@ -1,4 +1,4 @@
-/*global console, App, Quarry, Em, $ */
+/*global App, Em */
 App.PoolDeleteRoute = Em.Route.extend({
     model: function () {
         return this.modelFor('pool');

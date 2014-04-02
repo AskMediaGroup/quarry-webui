@@ -1,4 +1,4 @@
-/*global console, App, Quarry, Em, $ */
+/*global App, Em */
 App.MetadataNewController = Em.ObjectController.extend({
     content: {},
 

@@ -1,4 +1,4 @@
-/*global console, App, Quarry, Em, $ */
+/*global App, Em */
 App.LayoutRoute = Em.Route.extend({
     model: function (params) {
         return App.Layout.find(params.id).then(

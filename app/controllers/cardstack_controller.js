@@ -1,4 +1,4 @@
-/*global console, App, Quarry, Em, $ */
+/*global App, Em, $ */
 App.CardstackController = Em.ObjectController.extend({
     content: {},
     needs: ['application', 'cards'],

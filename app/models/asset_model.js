@@ -1,4 +1,4 @@
-/*global App, Quarry, Em, DS, $ */
+/*global App, Em */
 /**
  * App.Asset class
  * @class App.Asset

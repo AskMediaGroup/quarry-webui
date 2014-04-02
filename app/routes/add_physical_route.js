@@ -1,4 +1,4 @@
-/*global console, App, Em, $ */
+/*global App, Em */
 App.AddPhysicalRoute = Em.Route.extend({
     model: function (params) {
         return App.AddPhysicalSpecs.create();

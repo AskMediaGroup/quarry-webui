@@ -1,4 +1,4 @@
-/*global console, App, Em, $ */
+/*global App, Em */
 App.ExportRoute = Em.Route.extend({
     setupController: function (controller, model) {
         controller.setProperties({

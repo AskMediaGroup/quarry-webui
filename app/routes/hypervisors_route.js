@@ -1,4 +1,4 @@
-/*global console, App, Em, $ */
+/*global App, Em */
 App.HypervisorsRoute = Em.Route.extend({
     setupController: function (controller, model) {
         controller.find().then(

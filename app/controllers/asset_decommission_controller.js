@@ -1,4 +1,4 @@
-/*global console, App, Em, $ */
+/*global App, Em */
 App.AssetDecommissionController = Em.ObjectController.extend({
     content: {},
     needs: ['confirmation'],

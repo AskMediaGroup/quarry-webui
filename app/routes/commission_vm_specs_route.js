@@ -1,4 +1,4 @@
-/*global console, App, Em, $ */
+/*global App, Em */
 App.CommissionVmSpecsRoute = Em.Route.extend({
     model: function (params) {
         // TODO: enable URL route support

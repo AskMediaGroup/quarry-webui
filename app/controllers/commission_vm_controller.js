@@ -1,4 +1,4 @@
-/*global console, App, Em, $ */
+/*global App, Em */
 App.CommissionVmController = Em.ObjectController.extend({
     content: {},
     needs: ['kickstarts', 'layouts', 'commissionVmSpecs', 'blade', 'pools'],

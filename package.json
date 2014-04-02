@@ -1,6 +1,7 @@
 {
     "dependencies": {
         "jslint": "*",
+        "uglify-js": "*",
         "karma": "*",
         "karma-qunit": "*",
         "karma-ember-preprocessor": "*",

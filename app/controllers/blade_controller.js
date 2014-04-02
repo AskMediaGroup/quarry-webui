@@ -1,4 +1,4 @@
-/*global console, App, Quarry, Em, $ */
+/*global App, Em */
 App.BladeController = Em.ObjectController.extend({
     content: {},
     roles: [],
@@ -6,7 +6,7 @@ App.BladeController = Em.ObjectController.extend({
     findRoles: function () {
         var that = this;
         this.set('isLoading', true);
-        return Quarry.Blade.roles().then(
+        return App.Blade.roles().then(
             function (response) {
                 that.set('isLoading', false);
                 return response;

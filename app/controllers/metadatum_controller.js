@@ -1,4 +1,4 @@
-/*global console, App, Quarry, Em, $ */
+/*global App, Em */
 App.MetadatumController = Em.ObjectController.extend({
     content: {},
     needs: ['application'],

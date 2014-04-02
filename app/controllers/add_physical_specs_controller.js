@@ -1,4 +1,4 @@
-/*global console, App, Em, $ */
+/*global App, Em */
 App.AddPhysicalSpecsController = Em.ArrayController.extend({
     content: [],
     needs: ['addPhysical', 'networks', 'mortarBulk'],

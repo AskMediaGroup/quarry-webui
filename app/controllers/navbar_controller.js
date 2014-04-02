@@ -1,4 +1,4 @@
-/*global console, App, Em, $ */
+/*global App, Em */
 App.NavbarController = Em.ObjectController.extend({
     content: {},
     needs: ['application', 'serp', 'asset', 'mortarBulk', 'commissionVm',

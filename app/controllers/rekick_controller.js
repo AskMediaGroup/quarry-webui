@@ -1,4 +1,4 @@
-/*global console, App, Em, $ */
+/*global App, Em */
 App.RekickController = Em.ArrayController.extend({
     content: [],
     needs: ['kickstarts', 'layouts', 'serp'],

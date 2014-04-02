@@ -1,4 +1,4 @@
-/*global Handlebars, Em, $ */
+/*global App, Em, Handlebars */
 Em.Handlebars.registerBoundHelper('powerIcon', function (action) {
     // This type checking is to deal with passing in literal strings
     // to the helper, e.g. {{powerIcon action="icon-off"}}

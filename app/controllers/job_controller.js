@@ -1,5 +1,4 @@
-/*global console, App, Em, $, Math */
-/*jslint browser: true*/
+/*global window, App, Em */
 App.JobController = Em.ObjectController.extend({
     content: {},
     needs: ['application'],

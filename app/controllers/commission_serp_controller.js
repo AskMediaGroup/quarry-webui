@@ -1,4 +1,4 @@
-/*global console, App, Em, $ */
+/*global App, Em */
 App.CommissionSerpController = Em.ArrayController.extend({
     content: [],
     needs: 'commissionVm',

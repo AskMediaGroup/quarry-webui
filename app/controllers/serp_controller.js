@@ -1,4 +1,4 @@
-/*global console, App, Quarry, Em, $ */
+/*global App, Em */
 App.SerpController = Em.ArrayController.extend({
     content: [],
     needs: ['asset'],

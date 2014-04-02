@@ -1,4 +1,4 @@
-/*global App, Quarry, Em, DS, $ */
+/*global App, Em */
 App.MortarBulk = Quarry.MortarBulk.extend({
     /** MortarBulk will return an 'assets' array with one index
         for each asset target in the bulk job */

@@ -1,4 +1,4 @@
-/*global console, App, Em, $ */
+/*global App, Em */
 App.MortarBulkController = Em.ObjectController.extend({
     content: {},
     needs: ['kickstarts', 'layouts', 'confirmation'],

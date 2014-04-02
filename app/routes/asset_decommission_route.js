@@ -1,4 +1,4 @@
-/*global console, App, Em, $ */
+/*global App, Em */
 App.AssetDecommissionRoute = Em.Route.extend({
     model: function () {
         return this.modelFor('asset');

@@ -1,2 +1,2 @@
-/*global App, Quarry, Em, DS, $ */
+/*global App, Em */
 App.Kickstart = Quarry.Kickstart.extend({});

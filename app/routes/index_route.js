@@ -1,4 +1,4 @@
-/*global console, App, Em, $ */
+/*global App, Em */
 App.IndexRoute = Em.Route.extend({
     setupController: function (controller, model) {
         if (!this.controllerFor('jobs').get('loaded')) {

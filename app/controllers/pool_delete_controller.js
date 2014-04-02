@@ -1,4 +1,4 @@
-/*global console, App, Em, $ */
+/*global App, Em */
 App.PoolDeleteController = Em.ObjectController.extend({
     content: {},
     needs: ['pool', 'confirmation'],

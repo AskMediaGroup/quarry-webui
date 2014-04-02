@@ -1,4 +1,4 @@
-/*global console, App, Quarry, Em, $ */
+/*global App, Em */
 App.MetadataNewRoute = Em.Route.extend({
     model: function () {
         return App.Meta.create(App.metaSchema);

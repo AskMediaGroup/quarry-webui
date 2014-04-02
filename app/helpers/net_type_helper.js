@@ -1,4 +1,4 @@
-/*global Handlebars, Em, App, $ */
+/*global App, Em, Handlebars */
 Em.Handlebars.registerBoundHelper('netType', function (type) {
     if (type) {
         var str = App.IP_TYPES[type];

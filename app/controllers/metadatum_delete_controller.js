@@ -1,4 +1,4 @@
-/*global console, App, Em, $ */
+/*global App, Em */
 App.MetadatumDeleteController = Em.ObjectController.extend({
     content: {},
     needs: ['metadatum', 'confirmation'],

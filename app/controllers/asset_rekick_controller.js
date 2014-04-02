@@ -1,4 +1,4 @@
-/*global console, App, Em, $ */
+/*global App, Em */
 App.AssetRekickController = Em.ObjectController.extend({
     content: {},
     needs: ['kickstarts', 'layouts', 'confirmation'],

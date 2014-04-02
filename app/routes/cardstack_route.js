@@ -1,4 +1,4 @@
-/*global console, App, Em, $ */
+/*global App, Em, $ */
 App.CardstackRoute = Em.Route.extend({
     model: function (params) {
         this.controllerFor('cardstack').set('isLoading', true);

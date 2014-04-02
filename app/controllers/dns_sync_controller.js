@@ -1,4 +1,4 @@
-/*global console, App, Em, $ */
+/*global App, Em */
 App.DnsSyncController = Em.ObjectController.extend({
     actions: {
         sync: function () {

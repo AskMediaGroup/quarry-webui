@@ -1,4 +1,4 @@
-/*global console, App, Em, $ */
+/*global App, Em */
 App.RenameController = Em.ArrayController.extend({
     content: [],
     needs: ['confirmation'],

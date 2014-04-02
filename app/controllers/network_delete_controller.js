@@ -1,4 +1,4 @@
-/*global console, App, Em, $ */
+/*global App, Em */
 App.NetworkDeleteController = Em.ObjectController.extend({
     content: {},
     needs: ['network', 'confirmation'],

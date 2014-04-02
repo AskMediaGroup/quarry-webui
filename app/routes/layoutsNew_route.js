@@ -1,4 +1,4 @@
-/*global console, App, Quarry, Em, $ */
+/*global App, Em */
 App.LayoutsNewRoute = Em.Route.extend({
     model: function () {
         return App.Layout.create(App.layoutSchema);

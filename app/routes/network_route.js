@@ -1,4 +1,4 @@
-/*global console, App, Quarry, Em, $ */
+/*global App, Em */
 App.NetworkRoute = Em.Route.extend({
     model: function (params) {
         return App.Network.find(params.gateway).then(

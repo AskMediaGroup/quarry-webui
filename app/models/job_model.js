@@ -1,4 +1,4 @@
-/*global App, Quarry, Em, DS, $ */
+/*global App, Em */
 App.Job = Quarry.Job.extend({
     JOB_CODES: {
         0: "Created",

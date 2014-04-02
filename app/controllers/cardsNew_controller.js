@@ -1,4 +1,4 @@
-/*global console, App, Quarry, Em, $ */
+/*global App, Em */
 App.CardsNewController = Em.ObjectController.extend({
     content: {},
 

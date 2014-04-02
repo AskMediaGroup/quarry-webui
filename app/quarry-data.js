@@ -1,5 +1,4 @@
-/*global console, Mantel, Em, $, document */
-/*jslint browser: true*/
+/*global window, console, Mantel, Em, $, document */
 /**
  * A metadata record model object
  * @typedef {Object} Meta

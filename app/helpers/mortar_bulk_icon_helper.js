@@ -1,4 +1,4 @@
-/*global Handlebars, Em, $ */
+/*global App, Em, Handlebars */
 Em.Handlebars.registerBoundHelper('mortarBulkIcon', function (func) {
     var iconString;
     switch (func) {

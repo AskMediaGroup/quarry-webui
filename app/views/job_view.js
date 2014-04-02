@@ -1,4 +1,4 @@
-/*global App, Em, document, $, setInterval */
+/*global App, Em, $ */
 App.JobView = Em.View.extend({
 
     didInsertElement: function () {

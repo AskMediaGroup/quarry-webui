@@ -1,4 +1,4 @@
-/*global console, App, Em, $, setInterval */
+/*global App, Em */
 App.MetadataController = Em.ArrayController.extend({
     content: [],
     needs: ['application'],

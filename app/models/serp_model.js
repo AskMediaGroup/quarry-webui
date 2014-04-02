@@ -1,4 +1,4 @@
-/*global App, Quarry, Em, DS, $ */
+/*global App, Em */
 App.Serp = Quarry.Serp.extend({
     FQDN_MAX_LENGTH: 24,
     CHASSIS_MAX_LENGTH: 9,

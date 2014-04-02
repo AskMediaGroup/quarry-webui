@@ -1,4 +1,4 @@
-/*global Handlebars, Em, $ */
+/*global App, Em, Handlebars */
 Em.Handlebars.registerBoundHelper('icon', function (name) {
     var icon, addStyles, insertIntoStack, icons;
     // This is to deal with passing in literal strings to the helper

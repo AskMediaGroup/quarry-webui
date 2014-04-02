@@ -1,4 +1,4 @@
-// ==========================================================================
+/*global App, Em */
 // Project:  mantel.js
 // Copyright: ©2012 Ask.com
 // TODO: Please Replace Me!

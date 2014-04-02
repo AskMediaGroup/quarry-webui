@@ -1,4 +1,4 @@
-/*global console, App, Em, $ */
+/*global App, Em */
 App.LayoutEntryDeleteController = Em.ObjectController.extend({
     content: {},
     needs: ['layout', 'confirmation'],

@@ -1,4 +1,4 @@
-/*global console, App, Quarry, Em, $ */
+/*global App, Em */
 App.PoolsNewController = Em.ObjectController.extend({
     content: {},
     needs: ['networks'],

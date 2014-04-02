@@ -1,4 +1,4 @@
-/*global App */
+/*global App, Em */
 App.boolToInt = function (bool) {
     if (bool === true) {
         return 1;

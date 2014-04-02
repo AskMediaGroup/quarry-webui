@@ -12,6 +12,7 @@ import re
 from os import remove, chdir, makedirs, environ
 import subprocess, shlex
 import json
+from itertools import chain
 
 SRC_DIR = 'app/'
 VERSION_VIEW = SRC_DIR + 'views/version_view.js'
@@ -30,36 +31,53 @@ JS_DIRS = ('mixins/', 'helpers/', 'utilities/', 'classes/', 'routes/',
 JSDOC_SRC = 'jsdoc/'
 JSDOC_CONFIG = JSDOC_SRC + 'conf.json'
 JSDOC_DIR = OUTPUT_DIR + 'jsdoc/'
+JSLINT_GLOBALS = '/*global window, document, console, Em, App, Handlebars, '\
+                 'Mantel, QuarryTest, $ */'
 
-def append_file(path, fd):
-    ''' append to file descriptor fd '''
-    with open(path, 'r') as src_fd:
-        copyfileobj(src_fd, fd)
-
-def append_js_file(path, fd):
-    ''' append to file descriptor fd, stripping out jslint comments  '''
-    jslint_pattern = re.compile(r"/\*global.*\*/|/\*jslint browser.*\*/")
-    with open(path, 'r') as src_fd:
-        for line in src_fd:
-            fd.write(re.sub(jslint_pattern, '', line))
-
-def jslint(path):
-    ''' Run jslint and then strip out the Ember.js stuff we don't care about
+def append_file(src_path, dest_fd):
     '''
-    # These jslint errors we want to ignore:
-    # 1)
-    #     Unexpected '.'.
-    #     }.property('var'),
-    # 2)
-    #     Unexpected '.'.
-    #     }.observes('var'),
+    append to file descriptor fd
+
+    @param src_path: source file pathname string
+    @param dest_fd: open file descriptor with write permissions
+    '''
+    with open(src_path, 'r') as src_fd:
+        for line in src_fd:
+            dest_fd.write(line)
+
+def src_js_files():
+    ''' returns an iterable containing all source js files, in a sane order '''
+    app_init_files = (SRC_DIR + 'app.js', SRC_DIR + 'router.js')
+    js_files = (file for dir in JS_DIRS for file in iglob(SRC_DIR + dir + '*.js'))
+    return chain(app_init_files, js_files)
+
+def jslint(path, strict=False):
+    '''
+    Run jslint and then strip out the Ember.js stuff we don't care about
+
+    These jslint errors we want to ignore:
+    1)
+         Unexpected '.'.
+         }.property('var'),
+    2)
+         Unexpected '.'.
+         }.observes('var'),
+
+    @param path: source file pathname string
+    @keyword strict: enforce ES5 strict mode?
+    '''
     ignore = re.compile(r"Unexpected '\.'|\.property|\.observes")
     # --stupid means we want to ignore function names matching the *Sync* pattern
     # --sloppy means we don't care about the 'use strict' pragma
     # --white means we tolerate messy white space
     # --unparam means we tolerate unused function parameters
     # --todo means we tolerate TODO comments
-    jslint_args = shlex.split('jslint --stupid --sloppy --white --unparam --todo --maxerr=1000 ' + path)
+    if strict:
+        jslint_args = shlex.split('jslint --stupid --white --unparam '
+                                  '--todo --maxerr=1000 ' + path)
+    else:
+        jslint_args = shlex.split('jslint --stupid --white --sloppy --unparam '
+                                  '--todo --maxerr=1000 ' + path)
     jslint = subprocess.Popen(jslint_args, stdout=subprocess.PIPE)
     out, err = jslint.communicate()
     # we're going to capture all lines that don't match our regex 'ignore' pattern
@@ -71,6 +89,57 @@ def jslint(path):
             print line
         return False
     return True
+
+def version_view_fooify(fd):
+    '''
+    Inject build information into App.VersionView
+
+    @param fd: open 'r+' file descriptor
+    '''
+    orig = fd.read()
+    version_view_stamped = orig.replace(
+        "Version DEFAULT",
+        "Jenkins build number: "
+        + environ['BUILD_NUMBER']
+        + ", Jenkins build ID: "
+        + environ['BUILD_ID']
+        + ", Git branch: "
+        + environ['GIT_BRANCH'])
+    fd.seek(0)
+    fd.write(version_view_stamped)
+
+def es5_strictify(src_files, dest_fd, namespace, globals=None):
+    '''
+    Enclose a JavaScript file/module inside a namespaced function closure
+
+    @param src_files: enumerable that contains file pathname strings
+    @param dest_fd: open file descriptor with write permissions
+    @param namespace: namespace string, e.g., 'Quarry'
+    @keyword globals: jslint /*global*/ directive, e.g., '/*global App*/'
+    '''
+    if globals:
+        dest_fd.write(globals + '\n')
+    # we're going to wrap the namespace inside a function closure
+    dest_fd.write('var ' + namespace + ' = (function () {\n')
+    # and enforce ES5 strict across it
+    dest_fd.write('"use strict";')
+    for file in src_files:
+        append_file(file, dest_fd)
+    # we return the local App var inside our function closure
+    dest_fd.write('\nreturn ' + namespace + ';\n')
+    dest_fd.write('}());')
+
+def minify(src, dest):
+    '''
+    Minify function, featuring uglifyjs
+
+    @param src: source file pathname string (the original .js file)
+    @param dest: destination file pathname string (the minified file)
+    '''
+    uglifyjs_args = shlex.split('uglifyjs ' + src + ' -o ' + dest)
+    uglifyjs = subprocess.Popen(uglifyjs_args, stdout=subprocess.PIPE)
+    if uglifyjs.wait() != 0:
+        print 'Failed to minify!'
 
 @task
 def clean():
@@ -85,62 +154,45 @@ def clean():
 def build(options):
     ''' Build '''
 
-    # Build app.js
+    # make output directories
     for dirpath in (OUTPUT_JS_DIR, OUTPUT_CSS_DIR):
         makedirs(dirpath)
-    # Run jslint on app.js, router.js, and quarry-data.js
-    for file in [SRC_DIR + 'app.js', SRC_DIR + 'router.js', SRC_DIR + 'quarry-data.js']:
+
+    # run jslint on original source files
+    for file in src_js_files():
         if not jslint(file):
             raise Exception(file + ' failed to pass jslint!')
+
+    # Special foo for App.VersionView if we're building from Jenkins
+    if ('BUILD_NUMBER' in environ and 'BUILD_ID' in environ
+        and 'GIT_BRANCH' in environ):
+        with open(VERSION_VIEW, 'r+') as version_view:
+            version_view_fooify(version_view)
+
+    # build ES5 strict app.js
     with open(OUTPUT_JS_DIR + 'app.js', 'w') as appjs:
-        append_file(SRC_DIR + 'app.js', appjs)
-        append_js_file(SRC_DIR + 'router.js', appjs)
-        copy(SRC_DIR + 'quarry-data.js', OUTPUT_JS_DIR)
-        for jsdir in JS_DIRS:
-            for file in iglob(SRC_DIR + jsdir + '*.js'):
-                # Run jslint on every .js file before appending to app.js
-                if not jslint(file):
-                    raise Exception(file + ' failed to pass jslint!')
-                # Special foo for 'version_view.js'
-                if file.split('/')[-1] == 'version_view.js':
-                    # Inject build information into 'version_view.js'
-                    # if env has it (e.g., built by jenkins)
-                    if ('BUILD_NUMBER' in environ and 'BUILD_ID' in environ
-                        and 'GIT_BRANCH' in environ):
-                        TEMP_FILE = 'version_view_temp.js'
-                        with open(TEMP_FILE, 'w') as temp:
-                            with open(VERSION_VIEW, 'r') as orig:
-                                view = orig.read()
-                                version_view_stamped = view.replace(
-                                    "Version DEFAULT",
-                                    "Jenkins build number: "
-                                    + environ['BUILD_NUMBER']
-                                    + ", Jenkins build ID: "
-                                    + environ['BUILD_ID']
-                                    + ", Git branch: "
-                                    + environ['GIT_BRANCH'])
-                            temp.write(version_view_stamped)
-                        append_js_file(TEMP_FILE, appjs)
-                        remove(TEMP_FILE)
-                    # If no build info (e.g., manual build), do nothing special
-                    else:
-                        append_js_file(file, appjs)
-                # All other .js files get concatenated to 'app.js' as-is
-                else:
-                    append_js_file(file, appjs)
-    if not jslint(OUTPUT_JS_DIR + 'app.js'):
+        es5_strictify(src_js_files(), appjs, 'App', JSLINT_GLOBALS)
+
+    # build ES5 strict quarry-data.js
+    with open(OUTPUT_JS_DIR + 'quarry-data.js', 'w') as quarrydatajs:
+        files = [SRC_DIR + 'quarry-data.js',]
+        es5_strictify(files, quarrydatajs, 'Quarry', JSLINT_GLOBALS)
+    if not jslint(BUILD_DIR + 'app.js', True):
         raise Exception("app.js didn't pass jslint!")
+
     # Process handlebars template files
     with open(OUTPUT_JS_DIR + 'templates.js', 'w') as templatejs:
         for hbs_filepath in iglob(TEMPLATES_DIR + '*.hbs'):
             with open(hbs_filepath, 'r') as hbs_code:
-                templatejs.write('Em.TEMPLATES["%s"] = Em.Handlebars.compile("%s");'
+                templatejs.write('Em.TEMPLATES["%s"] = '
+                                 'Em.Handlebars.compile("%s");'
                 % (splitext(basename(hbs_filepath))[0].replace('_', '/'),
                    re.escape(hbs_code.read())))
+
     # Concatenate all model .js files into one
     with open(OUTPUT_JS_DIR + 'models.js', 'w') as models:
         for filename in iglob(SRC_DIR + 'models/*.js'):
-            append_js_file(filename, models)
+            append_file(filename, models)
 
     # Copy html files to build dir
     for htmlpath in iglob(SRC_DIR + 'html/*.html'):
@@ -170,6 +222,13 @@ def build(options):
         raise subprocess.CalledProcessError(jsdoc, [JSDOC_SRC + 'jsdoc',
                                                         '-c', JSDOC_CONFIG,
                                                         '-d', JSDOC_DIR])
+    # Minify
+    for file in [OUTPUT_JS_DIR + filename for filename in ['app.js',
+            'quarry-data.js', 'models.js', 'mantel.js']]:
+        orig = file.split('.')
+        minify(file, orig[0] + '.min.' + orig[1])
+        # Clean up original, non-minified file
+        remove(file)
 
 @task
 @needs('build')

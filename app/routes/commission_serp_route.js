@@ -1,4 +1,4 @@
-/*global console, App, Em, $ */
+/*global App, Em */
 App.CommissionSerpRoute = Em.Route.extend({
     model: function (params) {
         return this.controllerFor('commissionVm.specs').get('content');

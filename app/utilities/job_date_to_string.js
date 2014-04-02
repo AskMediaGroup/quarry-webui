@@ -1,4 +1,4 @@
-/*global App */
+/*global App, Em */
 App.jobDateToString = function (epochSeconds) {
     /**
      * Returns a friendly date string

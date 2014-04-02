@@ -1,5 +1,4 @@
-/*global console, App, Em, $ */
-/*jslint browser: true*/
+/*global window, App, Em, $ */
 App.CardstacksController = Em.ArrayController.extend({
     content: [],
     needs: ['application'],

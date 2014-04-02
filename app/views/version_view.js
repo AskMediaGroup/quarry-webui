@@ -1,4 +1,4 @@
-/*global App, Em, document, $ */
+/*global App, Em, $, document */
 // Display the current version number when hovering of the Quarry title
 App.VersionView = Em.View.extend({
     attributeBindings: ['rel', 'data-content', 'data-original-title'],

@@ -1,4 +1,4 @@
-/*global console, App, Em, $ */
+/*global App, Em, $ */
 App.AssetCardstackRoute = Em.Route.extend({
     model: function (params) {
         return App.Cardstack.find(params.cardstack_id).then(

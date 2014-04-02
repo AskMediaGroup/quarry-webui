@@ -1,4 +1,4 @@
-/*global console, App, Quarry, Em, $ */
+/*global App, Em, $ */
 App.AssetRoute = Em.Route.extend({
     model: function (params) {
         this.controllerFor('asset').set('isLoading', true);

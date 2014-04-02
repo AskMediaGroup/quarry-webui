@@ -1,4 +1,4 @@
-/*global Handlebars, Em, $ */
+/*global App, Em, Handlebars */
 Em.Handlebars.registerBoundHelper('searchString',
     function (searchTerms) {
         var key, strArr = [], asset = searchTerms.get('asset');

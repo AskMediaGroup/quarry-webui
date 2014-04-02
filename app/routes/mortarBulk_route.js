@@ -1,4 +1,4 @@
-/*global console, App, Em, $ */
+/*global App, Em */
 App.MortarBulkRoute = Em.Route.extend({
     serialize: function (model, params) {
         return { bulk_id: model.bulk_id };

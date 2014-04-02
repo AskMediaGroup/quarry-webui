@@ -1,3 +1,3 @@
-/*global App, Em, document, $ */
+/*global App, Em */
 App.LayoutsView = Em.View.extend({
 });

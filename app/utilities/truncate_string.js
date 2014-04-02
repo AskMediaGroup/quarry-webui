@@ -1,4 +1,4 @@
-/*global App */
+/*global App, Em */
 App.truncateStringAtWord = function (str, maxLength) {
     /**
      * Takes a string of and a max character length, and truncates it to be

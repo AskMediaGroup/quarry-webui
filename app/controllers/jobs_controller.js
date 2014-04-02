@@ -1,4 +1,4 @@
-/*global console, App, Em, $, setInterval */
+/*global App, Em */
 /**
  * The Jobs Controller
  * @class App.JobsController

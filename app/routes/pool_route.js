@@ -1,4 +1,4 @@
-/*global console, App, Em, $ */
+/*global App, Em, $ */
 App.PoolRoute = Em.Route.extend({
     model: function (params) {
         this.controllerFor('pool').set('isLoading', true);

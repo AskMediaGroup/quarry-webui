@@ -1,4 +1,4 @@
-/*global App, Em, document, $ */
+/*global App, Em */
 /*jslint nomen: true*/
 App.OnClickSelectRevealer = Em.View.extend({
     classNames: ['ember-text-field'],

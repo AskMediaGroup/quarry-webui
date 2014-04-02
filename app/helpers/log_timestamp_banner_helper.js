@@ -1,4 +1,4 @@
-/*global Handlebars, Em, $ */
+/*global App, Em, Handlebars */
 Em.Handlebars.registerBoundHelper('logTimestampBanner', function (logEntry) {
     var banner;
     switch (logEntry.level) {

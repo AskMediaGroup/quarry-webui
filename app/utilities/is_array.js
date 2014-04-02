@@ -1,4 +1,4 @@
-/*global App */
+/*global App, Em */
 /* A helper function to determine if an Ember.Controller's
    'content' object is empty
 */

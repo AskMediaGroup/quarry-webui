@@ -1,4 +1,4 @@
-/*global console, App, Em, $ */
+/*global App, Em */
 App.CardsController = Em.ArrayController.extend({
     content: [],
 

@@ -1,4 +1,4 @@
-/*global App, $ */
+/*global App, Em, $ */
 // Takes a subnet mask and converts to CIDR
 // Assumes a valid subnet mask: 4 integers between 0-255 delimited by '.'
 App.netmaskToCidr = function (netmask) {

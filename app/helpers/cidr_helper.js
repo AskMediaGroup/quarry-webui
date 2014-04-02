@@ -1,4 +1,4 @@
-/*global Handlebars, Em, $ */
+/*global App, Em, Handlebars, $ */
 Em.Handlebars.registerBoundHelper('cidr', function (netmask) {
     if (netmask) {
         var cidr, netmaskArray;

@@ -1,4 +1,4 @@
-/*global Handlebars, Em, $ */
+/*global App, Em, Handlebars, $ */
 Em.Handlebars.registerBoundHelper('hostIp', function (ipsArray) {
     // Returns the first ip address of type 1 that is found
     var hostIp;

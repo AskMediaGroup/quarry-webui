@@ -1,4 +1,4 @@
-/*global App */
+/*global App, Em */
 App.isEmptyObject = function (object) {
     var key;
     for (key in object) {

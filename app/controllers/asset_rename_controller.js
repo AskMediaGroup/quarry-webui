@@ -1,4 +1,4 @@
-/*global console, App, Em, $ */
+/*global App, Em */
 App.AssetRenameController = Em.ObjectController.extend({
     content: {},
     needs: ['confirmation'],
