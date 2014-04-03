@@ -788,7 +788,7 @@ Quarry.initModels = function () {
                             assets: []
                         };
                         for (i = 0, k = data.data.length; i < k; i += 1) {
-                            serp.assets.pushObject(data.data[i]);
+                            serp.assets.pushObject(that.create(data.data[i]));
                         }
                         return serp;
                     },

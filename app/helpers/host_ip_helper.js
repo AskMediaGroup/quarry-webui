@@ -5,7 +5,6 @@ Em.Handlebars.registerBoundHelper('hostIp', function (ipsArray) {
     for (i = 0, k = ipsArray.length; i < k; i += 1) {
         if (ipsArray[i].type === 1) {
             hostIp = ipsArray[i].ip;
-            return;
         }
     }
     if (hostIp) {
