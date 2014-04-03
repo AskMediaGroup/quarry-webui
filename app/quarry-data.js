@@ -488,16 +488,16 @@ Quarry.Model = Em.Object.extend().reopenClass(
          */
         modelsCallback: function (that, sort) {
             /**
-             * Generic model response callback function
+             * Generic "array of models" response callback function
              * @param {Object} data API Response data
-             * @returns {Object} A model object of the affected record
+             * @returns {Array} An array of model objects
              */
             return function(data) {
-                var ret = [];
+                var ret = [], i, k;
                 if ($.isArray(data.data)) {
-                    $.each(data.data, function (i, datum) {
-                        ret.pushObject(that.create(datum));
-                    });
+                    for (i = 0, k = data.data.length; i < k; i += 1) {
+                        ret.pushObject(that.create(data.data[i]));
+                    }
                 }
                 return sort ? ret.sortBy(sort) : ret;
             };
@@ -662,13 +662,13 @@ Quarry.initModels = function () {
                 };
                 return this.ajax(path, params).then(
                     function (data) {
-                        var log = {
+                        var i, k, log = {
                             total: data.total,
                             entries: []
                         };
-                        $.each(data.data, function (i, entry) {
-                            log.entries.pushObject(that.create(entry));
-                        });
+                        for (i = 0, k = data.data.length; i < k; i += 1) {
+                            log.entries.pushObject(that.create(data.data[i]));
+                        }
                         return log;
                     },
                     that.errorCallback
@@ -726,10 +726,10 @@ Quarry.initModels = function () {
 
                 return this.ajax(path).then(
                     function (data) {
-                        var jobs = [];
-                        $.each(data.data, function (i, job) {
-                            jobs.pushObject(that.create(job));
-                        });
+                        var jobs = [], i, k;
+                        for (i = 0, k = data.data.length; i < k; i += 1) {
+                            jobs.pushObject(that.create(data.data[i]));
+                        }
                         return jobs;
                     },
                     that.errorCallback
@@ -745,10 +745,10 @@ Quarry.initModels = function () {
                 path = this.appPath + uuid + '/children';
                 return this.ajax(path).then(
                     function (data) {
-                        var jobs = [];
-                        $.each(data.data, function (i, job) {
-                            jobs.pushObject(that.create(job));
-                        });
+                        var jobs = [], i, k;
+                        for (i = 0, k = data.data.length; i < k; i += 1) {
+                            jobs.pushObject(that.create(data.data[i]));
+                        }
                         return jobs;
                     },
                     that.errorCallback
@@ -783,13 +783,13 @@ Quarry.initModels = function () {
                 }
                 return this.ajax(path, params).then(
                     function (data) {
-                        var serp = {
+                        var i, k, serp = {
                             total: data.total,
                             assets: []
                         };
-                        $.each(data.data, function (i, asset) {
-                            serp.assets.pushObject(that.create(asset));
-                        });
+                        for (i = 0, k = data.data.length; i < k; i += 1) {
+                            serp.assets.pushObject(data.data[i]);
+                        }
                         return serp;
                     },
                     that.errorCallback
@@ -1448,10 +1448,10 @@ Quarry.initModels = function () {
                 path = this.appPath + 'roles';
                 return this.ajax(path).then(
                     function (data) {
-                        var roles = [];
-                        $.each(data.data, function (i, role) {
-                            roles.pushObject(role);
-                        });
+                        var i, k, roles = [];
+                        for (i = 0, k = data.data.length; i < k; i += 1) {
+                            roles.pushObject(data.data[i]);
+                        }
                         return roles.sort();
                     },
                     this.errorCallback

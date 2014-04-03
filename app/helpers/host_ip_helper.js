@@ -1,13 +1,13 @@
 /*global App, Em, Handlebars, $ */
 Em.Handlebars.registerBoundHelper('hostIp', function (ipsArray) {
     // Returns the first ip address of type 1 that is found
-    var hostIp;
-    $.each(ipsArray, function (i, ipData) {
-        if (ipData.type === 1) {
-            hostIp = ipData.ip;
+    var i, k, hostIp;
+    for (i = 0, k = ipsArray.length; i < k; i += 1) {
+        if (ipsArray[i].type === 1) {
+            hostIp = ipsArray[i].ip;
             return;
         }
-    });
+    }
     if (hostIp) {
         return new Handlebars.SafeString(hostIp);
     }

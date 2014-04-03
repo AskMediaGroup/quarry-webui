@@ -280,13 +280,11 @@ App.CommissionVmSpecsController = Em.ArrayController.extend({
         this.set('hypervisorsReserved', 0);
         this.get('content').forEach(function (item, index, enumerable) {
             App.Pool.get_hypervisors(item.get('pool')).then(
-                function success(data, textStatus, jqXHR) {
-                    var hypervisors = [];
-                    $.each(data, function (i, hypervisor) {
-                        hypervisors.pushObject(
-                            App.Hypervisor.create(hypervisor)
-                        );
-                    });
+                function (data) {
+                    var i, k, hypervisors = [];
+                    for (i = 0, k = data.length; i < k; i += 1) {
+                        hypervisors.pushObject(App.Hypervisor.create(data[i]));
+                    }
                     item.set('hypervisors', hypervisors);
                 }
             );

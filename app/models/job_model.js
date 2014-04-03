@@ -61,37 +61,37 @@ App.Job = Quarry.Job.extend({
 
     cardstackOutput: function () {
         if (this.get('hasCardstackOutput')) {
-            var rawOutput = this.get('output_docstore'),
+            var i, k, rawOutput = this.get('output_docstore'),
                 output = {
                     cardstack: rawOutput.cardstack,
                     cards: []
                 };
-            $.each(rawOutput.cards, function (i, card) {
+            for (i = 0, k = rawOutput.cards.length; i < k; i += 1) {
                 var key;
                 output.cards.pushObject({
-                    card_id: card.card_id,
-                    command: card.card_command,
-                    name: card.card_name
+                    card_id: rawOutput.cards[i].card_id,
+                    command: rawOutput.cards[i].card_command,
+                    name: rawOutput.cards[i].card_name
                 });
                 output.cards[i].hosts = [];
-                for (key in card.hosts) {
-                    if (card.hosts.hasOwnProperty(key)) {
-                        if (typeof (card.hosts[key]) === 'object') {
+                for (key in rawOutput.cards[i].hosts) {
+                    if (rawOutput.cards[i].hosts.hasOwnProperty(key)) {
+                        if (typeof (rawOutput.cards[i].hosts[key]) === 'object') {
                             output.cards[i].hosts.pushObject({
                                 fqdn: key,
-                                code: card.hosts[key].code,
-                                stdout: card.hosts[key].stdout,
-                                stderr: card.hosts[key].stderr
+                                code: rawOutput.cards[i].hosts[key].code,
+                                stdout: rawOutput.cards[i].hosts[key].stdout,
+                                stderr: rawOutput.cards[i].hosts[key].stderr
                             });
-                        } else if (typeof (card.hosts[key]) === 'string') {
+                        } else if (typeof (rawOutput.cards[i].hosts[key]) === 'string') {
                             output.cards[i].hosts.pushObject({
                                 fqdn: key,
-                                api_response: card.hosts[key]
+                                api_response: rawOutput.cards[i].hosts[key]
                             });
                         }
                     }
                 }
-            });
+            }
             return output;
         } else {
             return undefined;

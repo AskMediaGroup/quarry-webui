@@ -64,15 +64,14 @@ App.Serp = Quarry.Serp.extend({
 
     allIps: function () {
         // TODO migrate to Handlebars Helper
-        var ips, ipsString, that;
+        var ips, ipsString, i, k, type;
         ips = this.get('ips');
         ipsString = '';
-        that = this;
-        $.each(ips, function (i, ipData) {
-            var type = App.IP_TYPES[ipData.type];
+        for (i = 0, k = ips.length; i < k; i += 1) {
+            type = App.IP_TYPES[ips[i].type];
             ipsString = ipsString + '<strong>' + type + '</strong>: ' +
-                ipData.ip + '<br>';
-        });
+                ips[i].ip + '<br>';
+        }
         if (ipsString === '') {
             ipsString = 'This asset has no associated IP address.';
         }

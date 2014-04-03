@@ -102,11 +102,11 @@ App.CardstackController = Em.ObjectController.extend({
         this.set('isLoading', true);
         App.Cardstack.find(this.get('cardstack_id')).then(
             function (cardstack) {
-                var cards = [];
-                $.each(cardstack.cards, function (i, card) {
-                    cards.pushObject(App.Card.create(card));
+                var i, k, cards = [];
+                for (i = 0, k = cardstack.cards.length; i < k; i += 1) {
+                    cards.pushObject(App.Card.create(cardstack.cards[i]));
                     cards[i].set('order', i + 1);
-                });
+                }
                 cardstack.set('cards', cards);
                 that.set('content', cardstack);
                 that.setProperties({

@@ -32,14 +32,15 @@ App.CardstacksController = Em.ArrayController.extend({
         var that = this;
         this.set('isLoading', true);
         return App.Cardstack.find().then(function (cardstacks) {
-            $.each(cardstacks, function (i, cardstack) {
-                var cards = [];
-                $.each(cardstack.cards, function (i, card) {
-                    cards.pushObject(App.Card.create(card));
-                    cards[i].set('order', i + 1);
-                });
-                cardstack.set('cards', cards);
-            });
+            var i, k, j, l, cards;
+            for (i = 0, k = cardstacks.length; i < k; i += 1) {
+                cards = [];
+                for (j = 0, l = cardstacks[i].cards.length; j < l; j += 1) {
+                    cards.pushObject(App.Card.create(cardstacks[i].cards[j]));
+                    cards[j].set('order', j + 1);
+                }
+                cardstacks[i].set('cards', cards);
+            }
             that.setProperties({
                 isLoading: false,
                 loaded: true
@@ -58,11 +59,11 @@ App.CardstacksController = Em.ArrayController.extend({
     composeCardstack: function (id) {
         return App.Cardstack.find(id).then(
             function (cardstack) {
-                var cards = [];
-                $.each(cardstack.cards, function (i, card) {
-                    cards.pushObject(App.Card.create(card));
+                var i, k, cards = [];
+                for (i = 0, k = cardstack.cards.length; i < k; i += 1) {
+                    cards.pushObject(App.Card.create(cardstack.cards[i]));
                     cards[i].set('order', i + 1);
-                });
+                }
                 cardstack.set('cards', cards);
                 return cardstack;
             }

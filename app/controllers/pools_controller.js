@@ -10,21 +10,21 @@ App.PoolsController = Em.ArrayController.extend({
                 var pools = [];
                 pools_data.forEach(function (pool, index, enumerable) {
                     App.Pool.get_hypervisors(pool.get('name')).then(
-                        function (hypervisors_data) {
-                            var hypervisors = [];
-                            $.each(hypervisors_data, function (i, hypervisor) {
+                        function (data) {
+                            var i, k, hypervisors = [];
+                            for (i = 0, k = data.length; i < k; i += 1) {
                                 pool.incrementProperty('storage_free',
-                                    hypervisor.storage_free);
+                                    data[i].storage_free);
                                 pool.incrementProperty('storage_total',
-                                    hypervisor.storage_total);
+                                    data[i].storage_total);
                                 pool.incrementProperty('memory_free',
-                                    hypervisor.memory_free);
+                                    data[i].memory_free);
                                 pool.incrementProperty('memory_total',
-                                    hypervisor.memory_total);
+                                    data[i].memory_total);
                                 hypervisors.pushObject(
-                                    App.Hypervisor.create(hypervisor)
+                                    App.Hypervisor.create(data[i])
                                 );
-                            });
+                            }
                             pool.set('hypervisors', hypervisors);
                             pools.pushObject(pool);
                         }

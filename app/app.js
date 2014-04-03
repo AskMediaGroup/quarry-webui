@@ -36,14 +36,14 @@ var App = Em.Application.create(
             var that = this;
             return Quarry.Meta.find('QUARRY_UI').then(
                 function (data) {
-                    $.each(data.value.constants, function (i, constantObj) {
-                        var name;
-                        for (name in constantObj) {
-                            if (constantObj.hasOwnProperty(name)) {
-                                that.set(name, constantObj[name]);
+                    var i, k, name;
+                    for (i = 0, k = data.value.constants.length;i < k; i += 1) {
+                        for (name in data.value.constants[i]) {
+                            if (data.value.constants[i].hasOwnProperty(name)) {
+                                that.set(name, data.value.constants[i][name]);
                             }
                         }
-                    });
+                    }
                 }
             );
         }

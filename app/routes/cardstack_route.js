@@ -4,11 +4,11 @@ App.CardstackRoute = Em.Route.extend({
         this.controllerFor('cardstack').set('isLoading', true);
         return App.Cardstack.find(params.cardstack_id).then(
             function (cardstack) {
-                var cards = [];
-                $.each(cardstack.cards, function (i, card) {
-                    cards.pushObject(App.Card.create(card));
+                var i, k, cards = [];
+                for (i = 0, k = cardstack.cards.length; i < k; i += 1) {
+                    cards.pushObject(App.Card.create(cardstack.cards[i]));
                     cards[i].set('order', i + 1);
-                });
+                }
                 cardstack.set('cards', cards);
                 return cardstack;
             }

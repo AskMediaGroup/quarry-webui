@@ -5,13 +5,13 @@ App.PoolRoute = Em.Route.extend({
         return App.Pool.find(params.name).then(
             function (pool) {
                 return App.Pool.get_hypervisors(pool.get('name')).then(
-                    function success(data, textStatus, jqXHR) {
-                        var hypervisors = [];
-                        $.each(data, function (i, hypervisor) {
+                    function (data) {
+                        var i, k, hypervisors = [];
+                        for (i = 0, k = data.length; i < k; i += 1) {
                             hypervisors.pushObject(
-                                App.Hypervisor.create(hypervisor)
+                                App.Hypervisor.create(data[i])
                             );
-                        });
+                        }
                         pool.set('hypervisors', hypervisors);
                         return pool;
                     }
@@ -29,13 +29,13 @@ App.PoolRoute = Em.Route.extend({
             function (response) {
                 model.set('newName', model.get('name'));
                 App.Pool.get_hypervisors(model.get('name')).then(
-                    function success(data, textStatus, jqXHR) {
-                        var hypervisors = [];
-                        $.each(data, function (i, hypervisor) {
+                    function (data) {
+                        var i, k, hypervisors = [];
+                        for (i = 0, k = data.length; i < k; i += 1) {
                             hypervisors.pushObject(
-                                App.Hypervisor.create(hypervisor)
+                                App.Hypervisor.create(data[i])
                             );
-                        });
+                        }
                         model.set('hypervisors', hypervisors);
                         // While we're storing exclusive value lists in memory
                         // as constant arrays we need to account for the fact that the db
