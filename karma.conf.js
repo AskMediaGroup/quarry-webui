@@ -17,12 +17,12 @@ module.exports = function (config) {
             'js/bootstrap.min.js',
             'js/handlebars.js',
             'js/ember-1.4.0.js',
-            'js/mantel.js',
-            'js/quarry-data.js',
+            'js/mantel.min.js',
+            'js/quarry-data.min.js',
             'test/lib/jquery.mockjax.js',
             'test/quarry-test.js',
             'test/mocks/*.js',
-            'js/app.js',
+            'js/app.min.js',
             'test/init.js',
             'test/templates/*.hbs',
             {
@@ -31,7 +31,7 @@ module.exports = function (config) {
                 served: true
             },
             {
-                pattern: 'js/models.js',
+                pattern: 'js/models.min.js',
                 included: false,
                 served: true
             },

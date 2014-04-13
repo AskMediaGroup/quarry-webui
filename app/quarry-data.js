@@ -220,132 +220,43 @@ var Quarry = Em.Namespace.create(
         toString: function () {
             return "Quarry";
         },
-        /** Relative link to auth app
-         * @type {string}
+        /** Credentials object
+         * @type {Object}
+         */
+        creds: Mantel,
+        /** Configuration file to use
+         * @type {String}
          * @constant
          */
-        AUTHENTICATE_RELATIVE_LINK: "/#/authenticate",
-        /**
-         * Configure Quarry
+        CONFIG_FILE: 'config.json',
+        /** Backend API to use
+         * @type {String}
+         * @constant
          */
-        configure: function (callback) {
-            var that = this;
-            this.getConfig(function (config) {
-                that.applyConfig(config, callback);
-            });
-        },
+        BACKEND: 'woodstove',
         /**
-         * Get configuration data from config.json
+         * Configure Quarry Model API
          */
-        getConfig: function (callback) {
-            var config = "config.json";
-            Em.$.ajax({
+        configureApi: function (backend) {
+            var config = Quarry.CONFIG_FILE, that = this;
+            return Em.$.ajax({
                 type: 'GET',
                 url: config,
                 dataType: 'json',
-                success: function (data) { return callback(data); },
+                success: function (data) {
+                    Quarry.Model.reopenClass({
+                        urlScheme: data.datasources[backend].scheme
+                            || 'http://',
+                        apiHost: data.datasources[backend].host || '',
+                        apiPort: data.datasources[backend].port || ''
+
+                    });
+                    Quarry.initModels();
+                },
                 error: function (data, textStatus, jqXHR) {
                     console.log("Error retrieving config.json: " + textStatus);
                 }
             });
-        },
-        /**
-         * Apply config to Quarry namespace constants
-         */
-        applyConfig: function (config, callback) {
-            this.WOODSTOVE_HOST = config.datasources.woodstove.host;
-            this.WOODSTOVE_PORT = config.datasources.woodstove.port;
-            return callback();
-        },
-        /**
-         * Get a stored cookie by name
-         */
-        getCookie: function (name) {
-            var nameEq, ca, i, c;
-            nameEq = name + "=";
-            ca = document.cookie.split(';');
-            for (i = 0; i < ca.length; i += 1) {
-                c = ca[i];
-                while (c.charAt(0) === ' ') {
-                    c = c.substring(1, c.length);
-                }
-                if (c.indexOf(nameEq) === 0) {
-                    return c.substring(nameEq.length, c.length);
-                }
-            }
-            return null;
-        },
-        /**
-         * Store a cookie
-         */
-        setCookie: function (name, value, days) {
-            var expires, date;
-            expires = null;
-            if (days) {
-                date = new Date();
-                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-                expires = "; expires=" + date.toGMTString();
-            } else {
-                expires = "";
-            }
-            document.cookie = name + "=" + value + expires + "; path=/";
-        },
-        /**
-         * Determine whether or not to begin authentication process
-         * (if there is a stored cookie called 'brickoven_secret'
-         */
-        authenticated: function (callback) {
-            var secret, path, tool;
-            secret = this.getCookie('brickoven_secret');
-            if (!secret) {
-                // Set a target tool cookie
-                path = window.location.pathname.split('/');
-                if (path[path.length - 1] === 'index.html') {
-                    tool = path[path.length - 2];
-                } else {
-                    tool = path[path.length - 1];
-                }
-                this.setCookie('target', tool, 0);
-                // redirect to the log in page
-                window.location.replace(this.AUTHENTICATE_RELATIVE_LINK);
-            } else {
-                return callback();
-            }
-        },
-        /**
-         * Setup the Mantel instance
-         */
-        mantelSetup: function (callback) {
-            // Setup the Mantel connection
-            this.api = new Mantel.Connection(
-                this.WOODSTOVE_HOST,
-                this.WOODSTOVE_PORT,
-                this.getCookie('brickoven_user_id'),
-                ''
-            );
-            this.api.setSecret(this.getCookie('brickoven_secret'));
-            this.api.setSignature(this.getCookie('brickoven_signature'));
-            return callback();
-        },
-        /**
-         * Bootstrap API
-         */
-        apiSetup: function (result, callback) {
-            if (result.authenticated) {
-                this.Model.reopenClass({
-                    sig: function () {
-                        return String(Quarry.api.getSignature());
-                    },
-                    key: this.api.getUserid(),
-                    urlScheme: 'http://',
-                    urlHost: this.api.getHost() + ':' + this.api.getPort()
-                });
-                Quarry.initModels();
-                return callback();
-            }
-            console.log(
-                'Could not estabalish an authenticated API connection!'
-            );
         }
     }
 );
@@ -359,6 +270,27 @@ var Quarry = Em.Namespace.create(
 Quarry.Model = Em.Object.extend().reopenClass(
     /** @lends Quarry.Model.prototype */
     {
+        /**
+         * Returns the userid in the Quarry credentials object
+         * @returns {String} userid
+         */
+        key: function () {
+            return Quarry.creds.getUserid();
+        },
+        /**
+         * Generates an authentication signature
+         * @returns {String} generated signature string
+         */
+        sig: function () {
+            return Quarry.creds.getSignature();
+        },
+        /**
+         * Returns the host + port for a model's data backend
+         * @returns {String}
+         */
+        urlHost: function () {
+            return this.urlScheme + this.apiHost + ':' + this.apiPort;
+        },
         /**
          * Generate a URI query string from an object
          * @returns {String} queryString a URL query string
@@ -397,14 +329,21 @@ Quarry.Model = Em.Object.extend().reopenClass(
             // did we prepare a 'params' object ?
             // (or, if we didn't pass one in, we'll have an empty object)
             if (typeof params === "object") {
-                params.key = this.key;
-                params.sig = this.sig();
+                // add key/sig values if they exist
+                if (this.key() && this.sig()) {
+                    params.key = this.key();
+                    params.sig = this.sig();
+                }
                 params = this.objToUriParams(params);
             // or did we receive a manually composed url parameter string?
             } else if (typeof params === "string") {
-                params += '&key=' + this.key + '&sig=' + this.sig();
+                // add key/sig values if they exist
+                if (this.key() && this.sig()) {
+                    params += '&key=' + this.key() +
+                        '&sig=' + this.sig();
+                }
             }
-            queryString = this.urlScheme + this.urlHost + path +
+            queryString = this.urlHost() + path +
                 '?' + params;
             doAjax = function (promise) {
                 settings = {
@@ -1459,4 +1398,36 @@ Quarry.initModels = function () {
             }
         }
     );
-};
+    /**
+     * Quarry.User class
+     * @class Quarry.User
+     * @extends Quarry.Model
+     * @classdesc Quarry User API
+     */
+    this.User = Quarry.Model.extend().reopenClass(
+        /** @lends Quarry.Blade.prototype */
+        {
+            appPath: '/users/',
+            /**
+             * Get a list of role names
+             * @returns {Array.<String>} array of role names
+             */
+            getSecret: function (username, passwd) {
+                var path, params;
+                path = this.appPath + username
+                params = {
+                    username: username,
+                    password: encodeURIComponent(passwd)
+                };
+                return this.ajax(path, params).then(
+                    function authenticated(data) {
+                        return data.data[0].secret;
+                    },
+                    function rejected(jqXHR) {
+                        return jqXHR;
+                    }
+                );
+            }
+        }
+    );
+}

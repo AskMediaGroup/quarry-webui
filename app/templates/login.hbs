@@ -1,0 +1,43 @@
+<legend>{{icon name="homePage"}}Login</legend>
+{{#if authenticating}}
+    <p>Authenticating....</p>
+    <div class="progress progress-striped active">
+        <div class="bar" style="width: 100%;"></div>
+    </div>
+{{else}}
+    {{#if loadingAppData}}
+        <p>Loading Quarry Data....</p>
+        <div class="progress progress-striped active">
+            <div class="bar" style="width: 100%;"></div>
+        </div>
+    {{else}}
+        <form>
+            <fieldset>
+                <label>ID</label>
+                {{view Em.TextField valueBinding="userid" class="input-large"
+                id="userid" placeholder="Search ID"}}
+                <label>Password</label>
+                {{view Em.TextField type="password" valueBinding="password"
+                class="input-large" id="password" placeholder="Password"}}
+                <hr>
+                <button {{action "authenticate"}}
+                        class="btn btn-primary" type="submit" >Sign in</button>
+            </fieldset>
+        </form>
+        {{#if rejected}}
+            <div class="alert alert-error">
+                User/password combination rejected!
+            </div>
+        {{/if}}
+        {{#if cookieError}}
+            <div class="alert alert-error">
+                Error storing credentials, please enable cookies!
+            </div>
+        {{/if}}
+        {{#if apiError}}
+            <div class="alert alert-error">
+                Error communicating with authentication API!
+            </div>
+        {{/if}}
+    {{/if}}
+{{/if}}

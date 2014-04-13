@@ -1,5 +1,6 @@
 /*global console, App, Em, $ */
 App.Router.map(function () {
+    this.resource('login');
     this.resource('jobs');
     this.resource('job', { path: '/job/:job_uuid' });
     this.resource('commission', function () {

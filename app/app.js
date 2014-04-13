@@ -12,7 +12,7 @@ var App = Em.Application.create(
          */
         ready: function () {
             /*jslint nomen: true*/
-            if (!Quarry.TESTING) {
+            if (!Quarry.TESTING && Quarry.api) {
                 this.__container__.lookup(
                     'controller:jobs'
                 ).registerAutoJobCheck();
@@ -22,13 +22,16 @@ var App = Em.Application.create(
             }
             /*jslint nomen: false*/
         },
-
         /** Log transitions?
          * @type {boolean}
          * @constant
          */
         LOG_TRANSITIONS: false,
-
+        /** Where to find model objects
+         * @type {String}
+         * @constant
+         */
+        MODELS_PATH: 'js/models.min.js',
         /**
          * Load application metadata
          */
@@ -46,6 +49,9 @@ var App = Em.Application.create(
                     }
                 }
             );
+        },
+        loadModels: function () {
+            return $.getScript(App.MODELS_PATH);
         }
     }
 );
@@ -56,35 +62,31 @@ Em.Application.initializer({
      * Please clean me up!!
      */
     initialize: function (container, application) {
+        App.set('credentialsLoaded', false);
         if (!Quarry.TESTING) {
             App.deferReadiness();
-            Quarry.configure(function () {
-                Quarry.authenticated(function () {
-                    Quarry.mantelSetup(function () {
-                        Mantel.register(Quarry.api, function (result) {
-                            Quarry.apiSetup(result, function () {
-                                App.loadMetadata().then(
+            // Set basic API config: URL/port
+            Quarry.configureApi(Quarry.BACKEND).then(
+                function () {
+                    // Try to load credentials from persistent client cookie
+                    if (Quarry.creds.setStoredCredentials()) {
+                        // Credentials successfully loaded from cookie!
+                        App.set('credentialsLoaded', true);
+                        App.loadMetadata().then(
+                            function () {
+                                App.loadModels().done(
                                     function () {
                                         App.advanceReadiness();
                                     }
                                 );
-                            });
-                        });
-                    });
-                });
-            });
-        }
-    }
-});
-Em.Application.initializer({
-    name: 'loadModels',
-    after: 'quarry-api',
-    initialize: function (container, application) {
-        if (!Quarry.TESTING) {
-            App.deferReadiness();
-            $.getScript('js/models.min.js').done(
-                function () {
-                    App.advanceReadiness();
+                            }
+                        );
+                    } else {
+                        // Credentials not found in cookie, App will
+                        // automatically transition to login route state based
+                        // on the false value of App.credentialsLoaded
+                        App.advanceReadiness();
+                    }
                 }
             );
         }
