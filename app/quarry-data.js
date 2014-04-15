@@ -381,9 +381,17 @@ Quarry.Model = Em.Object.extend().reopenClass(
         /**
          * Generic API response callback function
          * @param {Object} data API Response data
-         * @returns {Array} The data array
+         * @returns {Object} API Response data
          */
         apiCallback: function (data) {
+            return data;
+        },
+        /**
+         * Generic API Data response callback function
+         * @param {Object} data API Response data
+         * @returns {Array} The data array
+         */
+        apiDataCallback: function (data) {
             return data.data;
         },
         /**
@@ -479,14 +487,45 @@ Quarry.Model = Em.Object.extend().reopenClass(
         },
         /**
          * Generic find
-         * @param {string=} name Object name
+         * @param {string=|Object=} name string identifier or search object
          * @returns {Function}
          */
-        find: function (name) {
-            var path, that = this;
-            path = name ? this.appPath + name : this.appPath;
-            return this.ajax(path).then(
-                name ? this.findCallback(that) : this.findAllCallback(that),
+        find: function (thing) {
+            var path, params = {}, successCallback, that = this;
+            // a find for a specific resource (by a named identifier)
+            if (typeof thing === 'string') {
+                path = this.appPath + thing;
+                if (thing) {
+                    successCallback = this.findCallback(that);
+                } else {
+                    // just in case an empty string is passed in
+                    successCallback = this.findAllCallback(that);
+                }
+              // a find using generic search object notation
+            } else if (typeof thing === 'object') {
+                path = this.appPath;
+                if (typeof thing.sort === 'string') {
+                    params.sort = thing.sort;
+                }
+                if (typeof thing.limit === 'number') {
+                    params.limit = thing.limit;
+                }
+                if (typeof thing.offset === 'number') {
+                    params.offset = thing.offset;
+                }
+                params.where = thing.where;
+                successCallback = this.apiCallback;
+              // a "find all"
+            } else if (typeof thing === 'undefined') {
+                path = this.appPath;
+                successCallback = this.findAllCallback(that);
+              // an unexpected find argument type
+            } else {
+                console.log('received malformed Quarry find() request!');
+                return undefined;
+            }
+            return this.ajax(path, params).then(
+                successCallback,
                 this.errorCallback
             );
         },
@@ -554,7 +593,7 @@ Quarry.Model = Em.Object.extend().reopenClass(
                 settings.data = JSON.stringify(data);
             }
             return this.ajax(path, params, settings).then(
-                this.apiCallback,
+                this.apiDataCallback,
                 this.errorCallback
             );
         }
@@ -770,6 +809,18 @@ Quarry.initModels = function () {
         /** @lends Quarry.Network.prototype */
         {
             appPath: '/quarry/ipdb/networks/'
+        }
+    );
+    /**
+     * Quarry.Ips class
+     * @class Quarry.Ips
+     * @extends Quarry.Model
+     * @classdesc Quarry Ips (ipdb) API connector
+     */
+    this.Ip = Quarry.Model.extend().reopenClass(
+        /** @lends Quarry.Network.prototype */
+        {
+            appPath: '/quarry/ipdb/ips/'
         }
     );
     /**

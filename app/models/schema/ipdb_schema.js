@@ -15,3 +15,18 @@ App.networkSchema = {
     description: null,
     datacenter: null
 };
+/**
+ This object describes the static properties of an Ip model
+
+ @type {Object}
+ **/
+App.ipSchema = {
+    ip_id: null,
+    network_id: null,
+    asset_id: null,
+    ip: null,
+    description: null,
+    type: null,
+    network: App.networkSchema,
+    asset: App.assetSchema
+};
