@@ -1409,8 +1409,8 @@ Quarry.initModels = function () {
         {
             appPath: '/users/',
             /**
-             * Get a list of role names
-             * @returns {Array.<String>} array of role names
+             * Get a user secret
+             * @returns {String} secret
              */
             getSecret: function (username, passwd) {
                 var path, params;
@@ -1424,6 +1424,29 @@ Quarry.initModels = function () {
                         return data.data[0].secret;
                     },
                     function rejected(jqXHR) {
+                        return jqXHR;
+                    }
+                );
+            },
+            /**
+             * Create a new user secret
+             * @returns {String} secret
+             */
+            createSecret: function (username, passwd) {
+                var path, params, settings;
+                path = this.appPath + username
+                params = {
+                    username: username,
+                    password: encodeURIComponent(passwd)
+                };
+                settings = {
+                    type: 'PUT'
+                };
+                return this.ajax(path, params, settings).then(
+                    function success(data) {
+                        return data.data[0].secret;
+                    },
+                    function failure(jqXHR) {
                         return jqXHR;
                     }
                 );
