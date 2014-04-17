@@ -22,7 +22,7 @@
             </div>
             <ul class="pager">
                 <li class="previous">
-                    <a href="#" {{action "refresh" model}}>&larr; Back to Network Detail</a>
+                    <a href="#" {{action "refresh"}}>&larr; Back to Network Detail</a>
                 </li>
             </ul>
         {{else}}
@@ -34,7 +34,7 @@
             </div>
             <ul class="pager">
                 <li class="previous">
-                    <a href="#" {{action "refresh" model}}>&larr; Back to Network Detail</a>
+                    <a href="#" {{action "refresh"}}>&larr; Back to Network Detail</a>
                 </li>
             </ul>
         {{/if}}
@@ -99,6 +99,32 @@
                     valueBinding="description" class="span4"}}
                 </div>
             </div>
+        </div>
+        <div class="well well-large">
+            <p class="lead">Usage</p>
+            <small>{{ips_percent_free}} % IP address availability</small><br>
+            <div class="progress">
+                <div class="bar bar-danger" {{bind-attr style=ips_used_style}}></div>
+                <div class="bar bar-success" {{bind-attr style=ips_free_style}}></div>
+            </div>
+            <dl class="dl-horizontal">
+                <dt>Total</dt>
+                <dd><strong>{{totalIps}}</strong> IP Addresses in {{name}}/{{cidr netmask}}</dd>
+                <dt>Used</dt>
+                <dd><strong>{{usedIps}}</strong> IP Addresses</dd>
+                <dt>Available</dt>
+                <dd><strong>{{availIps}}</strong> IP Addresses</dd>
+                <dt>Host IPs</dt>
+                <dd><strong>{{type1Ips}}</strong></dd>
+                <dt>LOM IPs</dt>
+                <dd><strong>{{type2Ips}}</strong></dd>
+                <dt>Reserved IPs</dt>
+                <dd><strong>{{type3Ips}}</strong></dd>
+                <dt>Rogue IPs</dt>
+                <dd><strong>{{type4Ips}}</strong></dd>
+                <dt>Alternate IPs</dt>
+                <dd><strong>{{type5Ips}}</strong></dd>
+            </dl>
         </div>
     </div>
     {{#if deleteInProgress}}

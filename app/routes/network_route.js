@@ -1,9 +1,9 @@
 /*global App, Em */
-App.NetworkRoute = Em.Route.extend({
+App.NetworkRoute = Em.Route.extend(App.NetworkStats, {
     model: function (params) {
         return App.Network.find(params.gateway).then(
-            function (response) {
-                return response;
+            function (data) {
+                return data;
             }
         );
     },
@@ -13,11 +13,24 @@ App.NetworkRoute = Em.Route.extend({
     },
 
     setupController: function (controller, model) {
-        controller.setProperties({
-            model: model,
-            network_gateway: model.get('gateway'),
-            status: undefined
-        });
-        controller.set('formUpdated', false);
+        if (!model.get('hasStats')) {
+            this.getStats(model).then(
+                function (network) {
+                    controller.setProperties({
+                        model: network,
+                        network_gateway: network.gateway,
+                        status: undefined
+                    });
+                    controller.set('formUpdated', false);
+                }
+            );
+        } else {
+            controller.setProperties({
+                model: model,
+                network_gateway: model.gateway,
+                status: undefined
+            });
+            controller.set('formUpdated', false);
+        }
     }
 });

@@ -1,5 +1,5 @@
 /*global App, Em */
-App.NetworkController = Em.ObjectController.extend({
+App.NetworkController = Em.ObjectController.extend(App.NetworkStats, {
     content: {},
     needs: ['application'],
 
@@ -7,13 +7,17 @@ App.NetworkController = Em.ObjectController.extend({
         refresh: function () {
             var that = this;
             App.Network.find(this.get('network_gateway')).then(
-                function (response) {
-                    that.setProperties({
-                        content: response,
-                        network_gateway: response.get('gateway'),
-                        status: undefined
-                    });
-                    that.set('formUpdated', false);
+                function (data) {
+                    this.getStats(data).then(
+                        function (network) {
+                            that.setProperties({
+                                content: network,
+                                network_gateway: network.gateway,
+                                status: undefined
+                            });
+                            that.set('formUpdated', false);
+                        }
+                    );
                 }
             );
         },

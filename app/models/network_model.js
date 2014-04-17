@@ -15,5 +15,14 @@ App.Network = Quarry.Network.extend({
     ips_used_style: function () {
         return 'width: ' +
             (100 - Number(this.get('ips_percent_free')).toFixed()) + '%';
-    }.property('ips_percent_free')
+    }.property('ips_percent_free'),
+    hasStats: function () {
+        return typeof this.get('availIps') === 'number'
+            && typeof this.get('type1Ips') === 'number'
+            && typeof this.get('type2Ips') === 'number'
+            && typeof this.get('type3Ips') === 'number'
+            && typeof this.get('type4Ips') === 'number'
+            && typeof this.get('type5Ips') === 'number'
+    }.property('availIps', 'type1Ips', 'type2Ips', 'type3Ips', 'type4Ips',
+        'type5Ips')
 });
