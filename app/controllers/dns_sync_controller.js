@@ -3,7 +3,7 @@ App.DnsSyncController = Em.ObjectController.extend({
     actions: {
         sync: function () {
             var that = this;
-            return App.Dns.sync().then(
+            return App.DnsSync.sync().then(
                 function (response) {
                     that.transitionToRoute('job', App.Job.create(response));
                 }

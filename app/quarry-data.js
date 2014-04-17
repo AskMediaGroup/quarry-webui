@@ -1217,13 +1217,13 @@ Quarry.initModels = function () {
         }
     );
     /**
-     * Quarry.Dns class
-     * @class Quarry.Dns
+     * Quarry.DnsSync class
+     * @class Quarry.DnsSync
      * @extends Quarry.Model
-     * @classdesc Quarry Dns API connector
+     * @classdesc Quarry DnsSync API connector
      */
-    this.Dns = Quarry.Model.extend().reopenClass(
-        /** @lends Quarry.Dns.prototype */
+    this.DnsSync = Quarry.Model.extend().reopenClass(
+        /** @lends Quarry.DnsSync.prototype */
         {
             /**
              * Sync Quarry records in DNS
