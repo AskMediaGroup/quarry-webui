@@ -493,7 +493,7 @@ Quarry.Model = Em.Object.extend().reopenClass(
         find: function (thing) {
             var path, params = {}, successCallback, that = this;
             // a find for a specific resource (by a named identifier)
-            if (typeof thing === 'string') {
+            if (typeof thing === 'string' || typeof thing === 'number') {
                 path = this.appPath + thing;
                 if (thing) {
                     successCallback = this.findCallback(that);
