@@ -6,13 +6,12 @@ App.NetworkController = Em.ObjectController.extend(App.NetworkStats, {
     actions: {
         refresh: function () {
             var that = this;
-            App.Network.find(this.get('network_gateway')).then(
+            App.Network.find(this.get('network_id')).then(
                 function (data) {
-                    this.getStats(data).then(
+                    that.getStats(data).then(
                         function (network) {
                             that.setProperties({
                                 content: network,
-                                network_gateway: network.gateway,
                                 status: undefined
                             });
                             that.set('formUpdated', false);
@@ -33,7 +32,7 @@ App.NetworkController = Em.ObjectController.extend(App.NetworkStats, {
                 datacenter: this.get('datacenter')
             });
             App.Network.update(
-                this.get('network_gateway'),
+                this.get('network_id'),
                 App.getNotNullAttrs(network)
             ).then(
                 function success(response) {

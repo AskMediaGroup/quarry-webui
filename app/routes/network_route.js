@@ -18,7 +18,6 @@ App.NetworkRoute = Em.Route.extend(App.NetworkStats, {
                 function (network) {
                     controller.setProperties({
                         model: network,
-                        network_gateway: network.gateway,
                         status: undefined
                     });
                     controller.set('formUpdated', false);
@@ -27,7 +26,6 @@ App.NetworkRoute = Em.Route.extend(App.NetworkStats, {
         } else {
             controller.setProperties({
                 model: model,
-                network_gateway: model.gateway,
                 status: undefined
             });
             controller.set('formUpdated', false);
