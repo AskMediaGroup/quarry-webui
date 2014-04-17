@@ -350,7 +350,7 @@ Quarry.Model = Em.Object.extend().reopenClass(
                     type: settings.type || 'GET',
                     dataType: settings.dataType || 'json',
                     data: settings.data || undefined,
-                    contentType: settings.data ?
+                    contentType: String(settings.type).match(/^POST|PUT$/) ?
                             settings.contentType ||
                                 'application/json; charset=utf-8' :
                             undefined,
@@ -513,7 +513,9 @@ Quarry.Model = Em.Object.extend().reopenClass(
                 if (typeof thing.offset === 'number') {
                     params.offset = thing.offset;
                 }
-                params.where = thing.where;
+                if (typeof thing.where === 'object') {
+                    params.where = thing.where;
+                }
                 successCallback = this.apiCallback;
               // a "find all"
             } else if (typeof thing === 'undefined') {
