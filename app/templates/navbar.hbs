@@ -29,7 +29,11 @@
                     <a href="#"
                        class="dropdown-toggle"
                        data-toggle="dropdown">
-                        {{icon name="navJobs"}}
+                        {{#if hasFailedJobs}}
+                            {{icon name="navJobsFailed"}}
+                        {{else}}
+                            {{icon name="navJobs"}}
+                        {{/if}}
                     </a>
                     <ul class="dropdown-menu">
                         <li>

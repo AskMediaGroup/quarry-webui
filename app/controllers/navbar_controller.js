@@ -213,5 +213,12 @@ App.NavbarController = Em.ObjectController.extend({
 
     lastTenJobs: function () {
         return this.get('controllers.jobs').get('sorted').slice(0, 10);
+    }.property('controllers.jobs.sorted'),
+
+    hasFailedJobs: function () {
+        if (this.get('controllers.jobs.sorted').filterBy('state', 15).length > 0) {
+            return true;
+        }
+        return false;
     }.property('controllers.jobs.sorted')
 });

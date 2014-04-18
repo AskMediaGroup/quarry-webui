@@ -250,3 +250,8 @@ span[rel="popover"] {
 .buttonLink:hover {
     text-decoration: none;
 }
+
+/* color emphasis for failed jobs in jobs list */
+.failed-jobs {
+    color: #b94a48
+}

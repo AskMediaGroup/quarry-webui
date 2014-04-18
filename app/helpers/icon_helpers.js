@@ -115,6 +115,8 @@ Em.Handlebars.registerBoundHelper('icon', function (name) {
             icons.get('navDown'),
         navJobs: addStyles(icons.get('jobs'), 'icon-large') +
             icons.get('navDown'),
+        navJobsFailed: addStyles(icons.get('jobs'), 'icon-large failed-jobs') +
+            icons.get('navDown'),
         navTools: addStyles(icons.get('tools'), 'icon-large'),
         /* The page icons are muted */
         homePage: addStyles(icons.get('home'), 'muted'),
