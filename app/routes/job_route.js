@@ -14,7 +14,11 @@ App.JobRoute = Em.Route.extend({
                         return App.Cardstack.get_output(
                             job.get('output.output_oid')
                         ).then(function (output) {
-                            return App.Logging.findJob(job.get('uuid')).then(
+                            return App.Logging.find({
+                                where: {
+                                    'context.job.uuid': job.get('uuid')
+                                }
+                            }).then(
                                 function success(log) {
                                     job.setProperties({
                                         logs: log.entries,
@@ -39,7 +43,11 @@ App.JobRoute = Em.Route.extend({
                         return App.Command.get_output(
                             job.get('output.output_oid')
                         ).then(function (output) {
-                            return App.Logging.findJob(job.get('uuid')).then(
+                            return App.Logging.find({
+                                where: {
+                                    'context.job.uuid': job.get('uuid')
+                                }
+                            }).then(
                                 function success(log) {
                                     job.setProperties({
                                         logs: log.entries,
@@ -64,7 +72,11 @@ App.JobRoute = Em.Route.extend({
                         break;
                     }
                 } else {
-                    return App.Logging.findJob(job.get('uuid')).then(
+                    return App.Logging.find({
+                        where: {
+                            'context.job.uuid': job.get('uuid')
+                        }
+                    }).then(
                         function success(log) {
                             job.set('logs', log.entries);
                             that.controllerFor('job').set('isLoading', false);
@@ -98,7 +110,11 @@ App.JobRoute = Em.Route.extend({
                             App.Cardstack.get_output(
                                 job.get('output.output_oid')
                             ).then(function (output) {
-                                return App.Logging.findJob(job.get('uuid')).then(
+                                return App.Logging.find({
+                                    where: {
+                                        'context.job.uuid': job.get('uuid')
+                                    }
+                                }).then(
                                     function success(log) {
                                         job.setProperties({
                                             logs: log.entries,
@@ -122,7 +138,11 @@ App.JobRoute = Em.Route.extend({
                             App.Command.get_output(
                                 job.get('output.output_oid')
                             ).then(function (output) {
-                                App.Logging.findJob(job.get('uuid')).then(
+                                App.Logging.find({
+                                    where: {
+                                        'context.job.uuid': job.get('uuid')
+                                    }
+                                }).then(
                                     function success(log) {
                                         job.setProperties({
                                             logs: log.entries,
@@ -146,7 +166,11 @@ App.JobRoute = Em.Route.extend({
                             break;
                         }
                     } else {
-                        App.Logging.findJob(job.get('uuid')).then(
+                        App.Logging.find({
+                            where: {
+                                'context.job.uuid': job.get('uuid')
+                            }
+                        }).then(
                             function success(log) {
                                 job.set('logs', log.entries);
                                 controller.setProperties({

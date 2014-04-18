@@ -30,7 +30,11 @@ App.JobController = Em.ObjectController.extend({
         if (this.get('children')) {
             this.get('children').forEach(
                 function (item, index, enumerable) {
-                    App.Logging.findJob(item.get('uuid')).then(
+                    App.Logging.find({
+                        where: {
+                            'context.job.uuid': item.get('uuid')
+                        }
+                    }).then(
                         function (log) {
                             item.set('logs', log.entries);
                         }
@@ -137,7 +141,11 @@ App.JobController = Em.ObjectController.extend({
         // if we're not currently looking at a job
         if (this.get('controllers.application').get('currentPath') === 'job') {
             var intervalId = job.get('logTailId');
-            App.Logging.findJob(job.get('uuid')).then(
+            App.Logging.find({
+                where: {
+                    'context.job.uuid': job.get('uuid')
+                }
+            }).then(
                 function (response) {
                     job.setProperties({
                         logs: response.entries,

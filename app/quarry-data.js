@@ -383,8 +383,10 @@ Quarry.Model = Em.Object.extend().reopenClass(
          * @param {Object} data API Response data
          * @returns {Object} API Response data
          */
-        apiCallback: function (data) {
-            return data;
+        apiCallback: function (that) {
+            return function (data) {
+                return data;
+            }
         },
         /**
          * Generic API Data response callback function
@@ -491,15 +493,15 @@ Quarry.Model = Em.Object.extend().reopenClass(
          * @returns {Function}
          */
         find: function (thing) {
-            var path, params = {}, successCallback, that = this;
+            var path, params = {}, successCallback;
             // a find for a specific resource (by a named identifier)
             if (typeof thing === 'string' || typeof thing === 'number') {
                 path = this.appPath + thing;
                 if (thing) {
-                    successCallback = this.findCallback(that);
+                    successCallback = this.findCallback(this);
                 } else {
                     // just in case an empty string is passed in
-                    successCallback = this.findAllCallback(that);
+                    successCallback = this.findAllCallback(this);
                 }
               // a find using generic search object notation
             } else if (typeof thing === 'object') {
@@ -516,11 +518,11 @@ Quarry.Model = Em.Object.extend().reopenClass(
                 if (typeof thing.where === 'object') {
                     params.where = thing.where;
                 }
-                successCallback = this.apiCallback;
+                successCallback = this.apiCallback(this);
               // a "find all"
             } else if (typeof thing === 'undefined') {
                 path = this.appPath;
-                successCallback = this.findAllCallback(that);
+                successCallback = this.findAllCallback(this);
               // an unexpected find argument type
             } else {
                 console.log('received malformed Quarry find() request!');
@@ -627,32 +629,23 @@ Quarry.initModels = function () {
     this.Logging = Quarry.Model.extend().reopenClass(
         /** @lends Quarry.Logging.prototype */
         {
+            appPath: '/quarry/logging/',
             /**
-             * Find all log entries created by a job
-             * @param {string} uuid Job UUID
-             * @returns {Logs} a job's log entries
+             * Generate custom callback function for Quarry.Logging.find({})
+             * @param {Object} data Data response
+             * @returns {Logs} Log entries
              */
-            findJob: function (uuid) {
-                var path, params, that = this;
-                path = '/logging';
-                params = {
-                    where: JSON.stringify({
-                        "context.job.uuid": uuid
-                    })
-                };
-                return this.ajax(path, params).then(
-                    function (data) {
-                        var i, k, log = {
-                            total: data.total,
-                            entries: []
-                        };
-                        for (i = 0, k = data.data.length; i < k; i += 1) {
-                            log.entries.pushObject(that.create(data.data[i]));
-                        }
-                        return log;
-                    },
-                    that.errorCallback
-                );
+            apiCallback: function (that) {
+                return function (data) {
+                    var i, k, log = {
+                        total: data.total,
+                        entries: []
+                    };
+                    for (i = 0, k = data.data.length; i < k; i += 1) {
+                        log.entries.pushObject(that.create(data.data[i]));
+                    }
+                    return log;
+                }
             }
         }
     );
