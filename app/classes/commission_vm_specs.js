@@ -6,7 +6,7 @@ App.CommissionVmHostSpecs = Em.Object.extend({
         return this.get('hostname') + App.DOMAIN_SUFFIX;
     }.property('hostname'),
     clusterPrefix: function () {
-        return this.get('hostname') ? this.get('hostname').split(/\d/)[0] :
+        return this.get('hostname') ? '^' + this.get('hostname').split(/\d/)[0] :
                 undefined;
     }.property('hostname'),
     prodType: null,
