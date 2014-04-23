@@ -1,5 +1,5 @@
 /*global App, Em */
-App.Job = Quarry.Job.extend({
+App.Jobs = Quarry.Jobs.extend({
     JOB_CODES: {
         0: "Created",
         1: "Queued",

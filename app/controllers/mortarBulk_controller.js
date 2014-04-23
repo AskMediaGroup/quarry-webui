@@ -17,7 +17,7 @@ App.MortarBulkController = Em.ObjectController.extend({
                 function (response) {
                     // App.MortarBulk.verify returns a job object, so we
                     // pass that to the 'job' route as its model
-                    that.transitionToRoute('job', App.Job.create(response));
+                    that.transitionToRoute('job', App.Jobs.create(response));
                 }
             );
         },

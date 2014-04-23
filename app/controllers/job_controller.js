@@ -80,7 +80,7 @@ App.JobController = Em.ObjectController.extend({
         logs = this.get('logs');
         logTailId = this.get('logTailId');
         this.set('isRefreshing', true);
-        App.Job.find(this.get('uuid')).then(
+        App.Jobs.find(this.get('uuid')).then(
             function (job) {
                 if (job.get('output.output_oid')) {
                     switch (job.get('func')) {

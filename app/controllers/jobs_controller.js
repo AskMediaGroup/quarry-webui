@@ -51,7 +51,7 @@ App.JobsController = Em.ArrayController.extend(
         find: function () {
             var that = this;
             this.set('isLoading', true);
-            return App.Job.mine().then(function (jobs) {
+            return App.Jobs.mine().then(function (jobs) {
                 that.setProperties({
                     isLoading: false,
                     loaded: true

@@ -71,7 +71,7 @@ App.CommissionVmSpecsController = Em.ArrayController.extend({
 
                 App.Mortar.commission(asset, kickstart, vm, layout, role).then(
                     function (response) {
-                        return App.Job.create(response);
+                        return App.Jobs.create(response);
                     }
                 );
             });

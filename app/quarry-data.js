@@ -650,23 +650,23 @@ Quarry.initModels = function () {
         }
     );
     /**
-     * Quarry.Job class
-     * @class Quarry.Job
+     * Quarry.Jobs class
+     * @class Quarry.Jobs
      * @extends Quarry.Model
-     * @classdesc Woodstove Jobs API connector
+     * @classdesc Quarry Jobs API connector
      */
-    this.Job = Quarry.Model.extend().reopenClass(
-        /** @lends Quarry.Job.prototype */
+    this.Jobs = Quarry.Model.extend().reopenClass(
+        /** @lends Quarry.Jobs.prototype */
         {
             appPath: '/jobs/',
             /**
-             * Generate custom callback function for Quarry.Job.find(uuid)
+             * Generate custom callback function for Quarry.Jobs.find(uuid)
              * @param {Object} that Model instance
              * @returns {Function} The callback function
              */
             findCallback: function (that) {
                 /**
-                 * Job 'find' success (fulfilled Promise) callback function
+                 * Jobs 'find' success (fulfilled Promise) callback function
                  * @param {Object} data API Response data
                  * @returns {Job} A Job object, including all existent child jobs
                  */

@@ -14,7 +14,7 @@ App.CommandRunController = Em.ObjectController.extend({
             var that = this;
             App.Command.run(this.get('command'), this.get('query')).then(
                 function (job) {
-                    that.transitionToRoute('job', App.Job.create(job));
+                    that.transitionToRoute('job', App.Jobs.create(job));
                 }
             );
         }

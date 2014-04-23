@@ -16,7 +16,7 @@ App.RenameController = Em.ArrayController.extend({
                     item.get('newName').toLowerCase() + App.DOMAIN_SUFFIX,
                     item.get('reboot')
                 ).then(function (response) {
-                    return App.Job.create(response);
+                    return App.Jobs.create(response);
                 });
             });
             this.transitionToRoute('jobs');

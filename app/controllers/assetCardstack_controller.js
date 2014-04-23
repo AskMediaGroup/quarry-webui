@@ -15,7 +15,7 @@ App.AssetCardstackController = Em.ObjectController.extend({
                 { FQDN: '^' + this.get('controllers.asset.FQDN') + '$' }
             ).then(
                 function (job) {
-                    that.transitionToRoute('job', App.Job.create(job));
+                    that.transitionToRoute('job', App.Jobs.create(job));
                 }
             );
         }

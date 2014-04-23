@@ -6,7 +6,7 @@ App.JobRoute = Em.Route.extend({
             isLoading: true,
             uuid: params.job_uuid
         });
-        return App.Job.find(params.job_uuid).then(
+        return App.Jobs.find(params.job_uuid).then(
             function (job) {
                 if (job.get('output.output_oid')) {
                     switch (job.get('func')) {
@@ -102,7 +102,7 @@ App.JobRoute = Em.Route.extend({
                 isLoading: true,
                 uuid: model.get('uuid')
             });
-            App.Job.find(model.get('uuid')).then(
+            App.Jobs.find(model.get('uuid')).then(
                 function (job) {
                     if (job.get('output.output_oid')) {
                         switch (job.get('func')) {

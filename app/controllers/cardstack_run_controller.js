@@ -13,7 +13,7 @@ App.CardstackRunController = Em.ObjectController.extend({
                 this.get('controllers.serp').get('searchTerms.asset');
             App.Cardstack.run(this.get('cardstack_id'), query).then(
                 function (job) {
-                    that.transitionToRoute('job', App.Job.create(job));
+                    that.transitionToRoute('job', App.Jobs.create(job));
                 }
             );
         }
