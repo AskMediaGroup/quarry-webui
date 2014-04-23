@@ -72,7 +72,7 @@ App.PoolController = Em.ObjectController.extend({
         getAsset: function (fqdn) {
             var that = this;
             if (fqdn) {
-                App.Asset.find(fqdn).then(
+                App.Assets.find(fqdn).then(
                     function (asset) {
                         that.transitionToRoute('asset', asset);
                     }

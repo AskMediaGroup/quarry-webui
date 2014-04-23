@@ -38,7 +38,7 @@ App.CommissionVmSpecsController = Em.ArrayController.extend({
 
                 fqdn = item.hostname + App.DOMAIN_SUFFIX;
 
-                asset = App.Asset.create({
+                asset = App.Assets.create({
                     FQDN: fqdn,
                     ProdType: item.prodType || '',
                     Owner_Email: item.ownerEmail || '',
@@ -259,7 +259,7 @@ App.CommissionVmSpecsController = Em.ArrayController.extend({
         this.set('fqdnsChecked', 0);
         that = this;
         content.forEach(function (item) {
-            App.Asset.find(item.hostname + App.DOMAIN_SUFFIX).then(
+            App.Assets.find(item.hostname + App.DOMAIN_SUFFIX).then(
                 function success(response) {
                     // A response means the FQDN already exists
                     that.get('nonAvailFqdns').pushObject(

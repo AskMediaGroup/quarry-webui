@@ -1,12 +1,12 @@
 /*global App, Em */
 /**
- * App.Asset class
- * @class App.Asset
- * @extends Quarry.Asset
+ * App.Assets class
+ * @class App.Assets
+ * @extends Quarry.Assets
  * @classdesc Asset model class
  */
-App.Asset = Quarry.Asset.extend(
-    /** @lends App.Asset.prototype */
+App.Assets = Quarry.Assets.extend(
+    /** @lends App.Assets.prototype */
     {
         hostname: function () {
             return this.get('FQDN') ? this.get('FQDN').split(App.DOMAIN_SUFFIX)[0] : '';

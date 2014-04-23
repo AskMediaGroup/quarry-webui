@@ -41,7 +41,7 @@ App.AddPhysicalSpecsController = Em.ArrayController.extend({
             //Build the assets array
             this.get('content').forEach(function (item, index, enumerable) {
                 fqdn = item.hostname + App.DOMAIN_SUFFIX;
-                assetsArray.push(App.getNotNullAttrs(App.Asset.create({
+                assetsArray.push(App.getNotNullAttrs(App.Assets.create({
                     FQDN: fqdn,
                     Service_Tag: item.assetTag,
                     ProdType: item.prodType || '',
@@ -247,7 +247,7 @@ App.AddPhysicalSpecsController = Em.ArrayController.extend({
         this.set('fqdnsChecked', 0);
         that = this;
         content.forEach(function (item) {
-            App.Asset.find(item.hostname + App.DOMAIN_SUFFIX).then(
+            App.Assets.find(item.hostname + App.DOMAIN_SUFFIX).then(
                 function success(response) {
                     // A response means the FQDN already exists
                     that.get('nonAvailFqdns').pushObject(

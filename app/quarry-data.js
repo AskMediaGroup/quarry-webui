@@ -771,13 +771,13 @@ Quarry.initModels = function () {
         }
     );
     /**
-     * Quarry.Asset class
-     * @class Quarry.Asset
+     * Quarry.Assets class
+     * @class Quarry.Assets
      * @extends Quarry.Model
      * @classdesc Quarry Asset API connector
      */
-    this.Asset = Quarry.Model.extend().reopenClass(
-        /** @lends Quarry.Asset.prototype */
+    this.Assets = Quarry.Model.extend().reopenClass(
+        /** @lends Quarry.Assets.prototype */
         {
             appPath: '/quarry/assets/'
         }

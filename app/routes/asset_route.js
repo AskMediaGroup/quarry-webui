@@ -2,7 +2,7 @@
 App.AssetRoute = Em.Route.extend({
     model: function (params) {
         this.controllerFor('asset').set('isLoading', true);
-        return App.Asset.find(params.fqdn).then(
+        return App.Assets.find(params.fqdn).then(
             function (asset) {
                 return asset;
             }

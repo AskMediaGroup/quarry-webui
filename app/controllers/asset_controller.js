@@ -20,7 +20,7 @@ App.AssetController = Em.ObjectController.extend({
     actions: {
         refresh: function () {
             var that = this;
-            App.Asset.find(this.get('id')).then(
+            App.Assets.find(this.get('id')).then(
                 function (response) {
                     // While we're storing available application types in memory
                     // as constant arrays we need to account for the fact that the db
@@ -46,7 +46,7 @@ App.AssetController = Em.ObjectController.extend({
             var that = this;
             this.set('isLoading', true);
             if (fqdn) {
-                App.Asset.find(fqdn).then(
+                App.Assets.find(fqdn).then(
                     function success(asset) {
                         that.set('formUpdated', false);
                         that.transitionToRoute('asset', asset);
@@ -98,7 +98,7 @@ App.AssetController = Em.ObjectController.extend({
                 Switch: model.Switch,
                 SW_RAID: this.get('isSwRaid') ? 1 : 0
             });
-            App.Asset.update(asset.id, App.getNotNullAttrs(asset)).then(
+            App.Assets.update(asset.id, App.getNotNullAttrs(asset)).then(
                 function success(response) {
                     that.set('status', { updated: true });
                 },

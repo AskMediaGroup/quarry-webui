@@ -10,7 +10,7 @@ App.RekickController = Em.ArrayController.extend({
         prepBulk: function () {
             var data, that = this;
             data = Em.Object.create({
-                query: App.Asset.create(this.get('searchTerms.asset')),
+                query: App.Assets.create(this.get('searchTerms.asset')),
                 kstarget: App.Kickstart.create({
                     id: this.get('kickstarts').findBy(
                         'name',
