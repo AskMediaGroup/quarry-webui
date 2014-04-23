@@ -72,12 +72,12 @@
  * @typedef {Object} Asset
  */
 /**
- * A Kickstart model object
- * @typedef {Object} Kickstart
+ * An OsTarget model object
+ * @typedef {Object} OsTarget
  * @property {number} id
  * @property {number} available Boolean integer: available?
- * @property {string} name Kickstart name
- * @property {string} filename Kickstart image filename
+ * @property {string} name OsTarget name
+ * @property {string} filename OsTarget image filename
  */
 /**
  * A Vm model object
@@ -783,13 +783,13 @@ Quarry.initModels = function () {
         }
     );
     /**
-     * Quarry.Kickstart class
-     * @class Quarry.Kickstart
+     * Quarry.OsTargets class
+     * @class Quarry.OsTargets
      * @extends Quarry.Model
-     * @classdesc Quarry Kickstart (ks) API connector
+     * @classdesc Quarry OsTarget (ks) API connector
      */
-    this.Kickstart = Quarry.Model.extend().reopenClass(
-        /** @lends Quarry.Kickstart.prototype */
+    this.OsTargets = Quarry.Model.extend().reopenClass(
+        /** @lends Quarry.OsTargets.prototype */
         {
             appPath: '/quarry/pxe/targets/'
         }
@@ -899,21 +899,21 @@ Quarry.initModels = function () {
             /**
              * Commission a virtual host
              * @param {Asset} asset Asset object describing the target asset
-             * @param {Kickstart} kickstart Kickstart object
+             * @param {OsTarget} osTarget OsTarget object
              * describing the target OS
              * @param {Vm} vm Vm object describing the target virtual host
              * @param {Layout} layout Layout object
              * describing the OS storage specs
              * @returns {Job} Job object created by the commission execution
              */
-            commission: function (asset, kickstart, vm, layout, role) {
+            commission: function (asset, osTarget, vm, layout, role) {
                 var path, params = {}, settings;
                 path = '/mortar/commission/vm';
                 settings = {
                     type: 'POST',
                     data: JSON.stringify({
                         'asset': asset,
-                        'kstarget': kickstart,
+                        'kstarget': osTarget,
                         'vm': vm,
                         'layout': layout,
                         'role': role
@@ -959,19 +959,19 @@ Quarry.initModels = function () {
             /**
              * Rekick a virtual host
              * @param {string} asset_id Asset id
-             * @param {Kickstart} kickstart Kickstart object
+             * @param {OsTarget} osTarget OsTarget object
              * describing the new, target OS
              * @param {Layout} layout Layout object
              * describing the OS storage specs
              * @returns {Job} Job object created by the rekick execution
              */
-            rekick: function (asset_id, kickstart, layout) {
+            rekick: function (asset_id, osTarget, layout) {
                 var path, params = {}, settings;
                 path = '/mortar/rekick/' + asset_id;
                 settings = {
                     type: 'POST',
                     data: JSON.stringify({
-                        'kstarget': kickstart,
+                        'kstarget': osTarget,
                         'layout': layout
                     })
                 };

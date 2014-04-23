@@ -16,7 +16,7 @@ App.RekickRoute = Em.Route.extend({
     },
 
     setupController: function (controller, model) {
-        this.controllerFor('kickstarts').refresh();
+        this.controllerFor('osTargets').refresh();
         this.controllerFor('layouts').refresh();
         controller.set('model', model);
     }

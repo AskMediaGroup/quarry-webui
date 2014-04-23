@@ -1,9 +1,9 @@
 /*global App, Em, $ */
 App.CommissionVmSpecsController = Em.ArrayController.extend({
     content: [],
-    needs: ['commissionVm', 'kickstarts', 'layouts', 'blade', 'pools'],
+    needs: ['commissionVm', 'osTargets', 'layouts', 'blade', 'pools'],
     showTemplateBinding: 'controllers.commissionVm.showTemplate',
-    kickstartsBinding: 'controllers.kickstarts.content',
+    osTargetsBinding: 'controllers.osTargets.content',
     layoutsBinding: 'controllers.layouts.content',
     rolesBinding: 'controllers.blade.roles',
     poolsBinding: 'controllers.pools.content',
@@ -34,7 +34,7 @@ App.CommissionVmSpecsController = Em.ArrayController.extend({
         submitCommission: function () {
             var that = this;
             this.get('content').forEach(function (item, index, enumerable) {
-                var fqdn, asset, kickstart, vm, layout, role;
+                var fqdn, asset, osTarget, vm, layout, role;
 
                 fqdn = item.hostname + App.DOMAIN_SUFFIX;
 
@@ -47,8 +47,8 @@ App.CommissionVmSpecsController = Em.ArrayController.extend({
                     Business_Unit: item.businessUnit || ''
                 });
 
-                kickstart = App.Kickstart.create({
-                    id: that.get('kickstarts').findBy('name', item.kickstart).id
+                osTarget = App.OsTargets.create({
+                    id: that.get('osTargets').findBy('name', item.osTarget).id
                 });
 
                 vm = App.Vm.create({
@@ -69,7 +69,7 @@ App.CommissionVmSpecsController = Em.ArrayController.extend({
 
                 role = item.chefRole || undefined;
 
-                App.Mortar.commission(asset, kickstart, vm, layout, role).then(
+                App.Mortar.commission(asset, osTarget, vm, layout, role).then(
                     function (response) {
                         return App.Jobs.create(response);
                     }
@@ -134,15 +134,15 @@ App.CommissionVmSpecsController = Em.ArrayController.extend({
         return this.get('content').length;
     }.property('content'),
 
-    kickstartsDict: function () {
+    osTargetsDict: function () {
         var dict = {};
-        if (this.get('kickstarts')) {
-            this.get('kickstarts').forEach(function (item, index, enumerable) {
+        if (this.get('osTargets')) {
+            this.get('osTargets').forEach(function (item, index, enumerable) {
                 dict[item.name] = item.id;
             });
         }
         return dict;
-    }.property('kickstarts'),
+    }.property('osTargets'),
 
     layoutsDict: function () {
         var dict = {};
@@ -182,7 +182,7 @@ App.CommissionVmSpecsController = Em.ArrayController.extend({
          * value.
          */
         var vmAttrs, i;
-        vmAttrs = ['pool', 'kickstart', 'ram', 'cores',
+        vmAttrs = ['pool', 'osTarget', 'ram', 'cores',
             'storage', 'layout', 'application', 'prodType', 'businessUnit',
             'ownerEmail', 'ownerGroup', 'chefRole'];
         for (i = 0; i < vmAttrs.length; i += 1) {
@@ -245,8 +245,8 @@ App.CommissionVmSpecsController = Em.ArrayController.extend({
     }.property('content.@each.hypervisorNotFound'),
 
     missingOs: function () {
-        return this.get('content').someProperty('kickstart', null);
-    }.property('content.@each.kickstart'),
+        return this.get('content').someProperty('osTarget', null);
+    }.property('content.@each.osTarget'),
 
     missingLayouts: function () {
         return this.get('content').someProperty('layout', null);

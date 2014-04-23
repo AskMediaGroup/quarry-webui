@@ -20,7 +20,7 @@ App.Router.map(function () {
     this.resource('network', { path: '/network/:gateway' }, function () {
         this.route('delete');
     });
-    this.resource('kickstarts');
+    this.resource('osTargets');
     this.resource('hypervisors');
     this.resource('pools');
     this.resource('poolsNew', { path: '/pools/new' });

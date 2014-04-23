@@ -18,7 +18,7 @@ App.CommissionVmHostSpecs = Em.Object.extend({
     memory: null,
     capacity: null,
     cpus: null,
-    kickstart: null,
+    osTarget: null,
     layout: null,
     hypervisor: null,
     hypervisorObserver: function () {

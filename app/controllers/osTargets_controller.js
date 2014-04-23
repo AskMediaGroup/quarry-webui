@@ -1,11 +1,11 @@
 /*global App, Em */
-App.KickstartsController = Em.ArrayController.extend({
+App.OsTargetsController = Em.ArrayController.extend({
     content: [],
 
     find: function () {
         var that = this;
         this.set('isLoading', true);
-        return App.Kickstart.find().then(
+        return App.OsTargets.find().then(
             function (response) {
                 that.set('isLoading', false);
                 return response;

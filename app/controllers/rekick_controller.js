@@ -1,8 +1,8 @@
 /*global App, Em */
 App.RekickController = Em.ArrayController.extend({
     content: [],
-    needs: ['kickstarts', 'layouts', 'serp'],
-    kickstartsBinding: 'controllers.kickstarts.content',
+    needs: ['osTargets', 'layouts', 'serp'],
+    osTargetsBinding: 'controllers.osTargets.content',
     layoutsBinding: 'controllers.layouts.content',
     searchTermsBinding: 'controllers.serp.searchTerms',
 
@@ -11,10 +11,10 @@ App.RekickController = Em.ArrayController.extend({
             var data, that = this;
             data = Em.Object.create({
                 query: App.Assets.create(this.get('searchTerms.asset')),
-                kstarget: App.Kickstart.create({
-                    id: this.get('kickstarts').findBy(
+                kstarget: App.OsTargets.create({
+                    id: this.get('osTargets').findBy(
                         'name',
-                        this.get('kickstart')
+                        this.get('osTarget')
                     ).id
                 }),
                 layout: App.Layout.create({
@@ -39,6 +39,6 @@ App.RekickController = Em.ArrayController.extend({
     },
 
     optionsReady: function () {
-        return (this.get('layout') && this.get('kickstart') ? true : false);
-    }.property('layout', 'kickstart')
+        return (this.get('layout') && this.get('osTarget') ? true : false);
+    }.property('layout', 'osTarget')
 });

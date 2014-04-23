@@ -1,8 +1,8 @@
 /*global App, Em */
 App.MortarBulkController = Em.ObjectController.extend({
     content: {},
-    needs: ['kickstarts', 'layouts', 'confirmation'],
-    kickstartsBinding: 'controllers.kickstarts.content',
+    needs: ['osTargets', 'layouts', 'confirmation'],
+    osTargetsBinding: 'controllers.osTargets.content',
     layoutsBinding: 'controllers.layouts.content',
     readyBinding: 'controllers.confirmation.ready',
 
@@ -46,7 +46,7 @@ App.MortarBulkController = Em.ObjectController.extend({
 
     osName: function () {
         if (this.get('content.kwargs.kstarget.id')) {
-            return this.get('kickstarts').findBy(
+            return this.get('osTargets').findBy(
                 'id',
                 this.get('content.kwargs.kstarget.id')
             ).name;

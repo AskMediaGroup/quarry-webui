@@ -7,7 +7,7 @@
                     <hr>
                     <dt>{{icon name="vm"}}</dt>
                     <dd>FQDN: <strong>{{hostname}}{{controller.domainSuffix}}</strong><br>
-                        OS: <strong>{{kickstart}}</strong><br>
+                        OS: <strong>{{osTarget}}</strong><br>
                         RAM: <strong>{{ram}}</strong><br>
                         CPU Cores: <strong>{{cores}}</strong><br>
                         Storage: <strong>{{storage}}</strong><br>
@@ -108,13 +108,13 @@
                         {{#if selectOS}}
                             {{view Em.Select
                             prompt="Select an OS build...."
-                            contentBinding="controller.kickstarts"
+                            contentBinding="controller.osTargets"
                             optionValuePath="content.name"
                             optionLabelPath="content.name"
-                            valueBinding="kickstart"}}
+                            valueBinding="osTarget"}}
                         {{else}}
                             {{view App.OnClickSelectRevealer
-                            valueBinding="kickstart" revealBinding="selectOS"}}
+                            valueBinding="osTarget" revealBinding="selectOS"}}
                         {{/if}}
                     </div>
                     <div class="span1">

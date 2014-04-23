@@ -1,10 +1,10 @@
 /*global App*/
 /**
- This object describes the static properties of a Kickstart model
+ This object describes the static properties of a OsTarget model
 
  @type {Object}
  **/
-App.kickstartSchema = {
+App.osTargetSchema = {
     id: null,
     available: null,
     name: null,

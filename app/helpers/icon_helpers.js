@@ -128,7 +128,7 @@ Em.Handlebars.registerBoundHelper('icon', function (name) {
         renamePage: addStyles(icons.get('rename'), 'muted'),
         serpPage: addStyles(icons.get('serp'), 'muted'),
         cautionPage: addStyles(icons.get('caution'), 'text-error'),
-        kickstartsPage: addStyles(icons.get('serp'), 'muted'),
+        osTargetsPage: addStyles(icons.get('serp'), 'muted'),
         networksPage: addStyles(icons.get('network'), 'muted'),
         networkPage: addStyles(icons.get('network'), 'muted'),
         hypervisorsPage: addStyles(icons.get('physical'), 'muted'),

@@ -1,5 +1,5 @@
 /*global App, Em */
-App.KickstartsRoute = Em.Route.extend({
+App.OsTargetsRoute = Em.Route.extend({
     setupController: function (controller, model) {
         controller.find().then(
             function (response) {

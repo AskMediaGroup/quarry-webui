@@ -1,8 +1,8 @@
 /*global App, Em */
 App.AssetRekickController = Em.ObjectController.extend({
     content: {},
-    needs: ['kickstarts', 'layouts', 'confirmation'],
-    kickstartsBinding: 'controllers.kickstarts.content',
+    needs: ['osTargets', 'layouts', 'confirmation'],
+    osTargetssBinding: 'controllers.osTargets.content',
     layoutsBinding: 'controllers.layouts.content',
     readyBinding: 'controllers.confirmation.ready',
 
@@ -14,10 +14,10 @@ App.AssetRekickController = Em.ObjectController.extend({
             var that = this;
             return App.Mortar.rekick(
                 this.get('content.id'),
-                App.Kickstart.create({
-                    id: this.get('kickstarts').findBy(
+                App.OsTargets.create({
+                    id: this.get('osTargets').findBy(
                         'name',
-                        this.get('kickstart')
+                        this.get('osTarget')
                     ).id
                 }),
                 App.Layout.create({
@@ -42,6 +42,6 @@ App.AssetRekickController = Em.ObjectController.extend({
     },
 
     optionsReady: function () {
-        return (this.get('layout') && this.get('kickstart') ? true : false);
-    }.property('layout', 'kickstart')
+        return (this.get('layout') && this.get('osTarget') ? true : false);
+    }.property('layout', 'osTarget')
 });

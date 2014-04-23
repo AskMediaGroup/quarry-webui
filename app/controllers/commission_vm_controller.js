@@ -1,9 +1,9 @@
 /*global App, Em */
 App.CommissionVmController = Em.ObjectController.extend({
     content: {},
-    needs: ['kickstarts', 'layouts', 'commissionVmSpecs', 'blade', 'pools'],
+    needs: ['osTargets', 'layouts', 'commissionVmSpecs', 'blade', 'pools'],
     poolsBinding: 'controllers.pools.content',
-    kickstartsBinding: 'controllers.kickstarts.content',
+    osTargetsBinding: 'controllers.osTargets.content',
     layoutsBinding: 'controllers.layouts.content',
     rolesBinding: 'controllers.blade.roles',
 
@@ -66,7 +66,7 @@ App.CommissionVmController = Em.ObjectController.extend({
                     }
                 }
                 if (this.get('controllers.commissionVmSpecs.content')[i]) {
-                    vmAttrs = ['hostname', 'pool', 'kickstart', 'ram', 'cores',
+                    vmAttrs = ['hostname', 'pool', 'osTarget', 'ram', 'cores',
                         'storage', 'layout', 'application', 'prodType', 'businessUnit',
                         'ownerEmail', 'ownerGroup', 'chefRole'];
                     for (j = 0; j < vmAttrs.length; j += 1) {
@@ -85,7 +85,7 @@ App.CommissionVmController = Em.ObjectController.extend({
                         hostname: this.get('hostname'),
                         pool: this.get('pool'),
                         poolArr: [this.get('pool')],
-                        kickstart: this.get('kickstart'),
+                        osTarget: this.get('osTarget'),
                         ram: this.get('ram'),
                         cores: this.get('cores'),
                         storage: this.get('storage'),
@@ -151,9 +151,9 @@ App.CommissionVmController = Em.ObjectController.extend({
         return this.isDistinct('pool');
     }.property('controllers.commissionVmSpecs.content.@each.pool'),
 
-    distinctKickstarts: function () {
-        return this.isDistinct('kickstart');
-    }.property('controllers.commissionVmSpecs.content.@each.kickstart'),
+    distinctOsTargets: function () {
+        return this.isDistinct('osTarget');
+    }.property('controllers.commissionVmSpecs.content.@each.osTarget'),
 
     distinctRam: function () {
         return this.isDistinct('ram');
@@ -198,10 +198,10 @@ App.CommissionVmController = Em.ObjectController.extend({
     optionsReady: function () {
         return (
             this.get('layout') &&
-            this.get('kickstart') &&
+            this.get('osTarget') &&
             this.get('hypervisor') ? true : false
         );
-    }.property('layout', 'kickstart', 'hypervisor'),
+    }.property('layout', 'osTarget', 'hypervisor'),
 
     /**
      * As long as we're asking the user to endure this blocking effects

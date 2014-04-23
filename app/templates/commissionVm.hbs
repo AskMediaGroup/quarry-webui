@@ -38,20 +38,20 @@
         <div class="row">
             <div class="span3">
                 <label>Operating System</label>
-                {{#if distinctKickstarts}}
+                {{#if distinctOsTargets}}
                     {{view Em.Select
                     prompt="<replace existing selections>"
-                    contentBinding="kickstarts"
+                    contentBinding="osTargets"
                     optionValuePath="content.name"
                     optionLabelPath="content.name"
-                    valueBinding="kickstart"}}
+                    valueBinding="osTarget"}}
                 {{else}}
                     {{view Em.Select
                     prompt="Select an OS build...."
-                    contentBinding="kickstarts"
+                    contentBinding="osTargets"
                     optionValuePath="content.name"
                     optionLabelPath="content.name"
-                    valueBinding="kickstart"}}
+                    valueBinding="osTarget"}}
                 {{/if}}
             </div>
             {{#unless hypervisorsReserved}}
