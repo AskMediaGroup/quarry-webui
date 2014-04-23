@@ -56,10 +56,18 @@ App.AddPhysicalSpecsController = Em.ArrayController.extend({
             });
             mortarBulkRequest = Em.Object.create({
                 args: assetsArray,
-                network: this.get('network')
+                network: App.getNotNullAttrs(App.Network.create({
+                    network_id: this.get('network.network_id'),
+                    gateway: this.get('network.gateway')
+                }))
             });
             if (this.get('lomNetwork.gateway')) {
-                mortarBulkRequest.lom_network = this.get('lomNetwork');
+                mortarBulkRequest.lom_network = App.getNotNullAttrs(
+                    App.Network.create({
+                        network_id: this.get('lomNetwork.network_id'),
+                        gateway: this.get('lomNetwork.gateway')
+                    })
+                );
             }
             // Passing an undefined variable as the 2nd arg because there's no
             // dynamic route segment for add_physical
