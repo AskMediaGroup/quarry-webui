@@ -7,7 +7,7 @@ App.NetworkDeleteController = Em.ObjectController.extend({
     actions: {
         remove: function () {
             var that = this;
-            return App.Network.remove(this.get('gateway')).then(
+            return App.Networks.remove(this.get('network_id')).then(
                 function success(response) {
                     that.get('controllers.network').set(
                         'status',

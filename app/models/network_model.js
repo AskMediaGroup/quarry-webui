@@ -1,5 +1,5 @@
 /*global App, Em */
-App.Network = Quarry.Network.extend({
+App.Networks = Quarry.Networks.extend({
     ips_percent_free: function () {
         if (typeof this.get('availIps') === 'number'
             && typeof this.get('totalIps') === 'number') {

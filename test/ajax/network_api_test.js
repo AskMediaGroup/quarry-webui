@@ -5,7 +5,7 @@ module('Network API', {
         this.networkProperties = ['network_id', 'lom_network_id', 'name',
             'gateway', 'netmask', 'datacenter', 'description', 'dns1', 'dns2'
             ];
-        this.network = App.Network.create({
+        this.network = App.Networks.create({
             network_id: 1,
             lom_network_id: 2,
             name: 'Test Network',
@@ -16,7 +16,7 @@ module('Network API', {
             description: 'Test Network',
             datacenter: 'LAX'
         });
-        this.updatedNetwork = App.Network.create({
+        this.updatedNetwork = App.Networks.create({
             network_id: 1,
             lom_network_id: 2,
             name: 'Test Network',
@@ -27,7 +27,7 @@ module('Network API', {
             description: 'Test Network updated',
             datacenter: 'LAX'
         });
-        this.lomNetwork = App.Network.create({
+        this.lomNetwork = App.Networks.create({
             network_id: 2,
             lom_network_id: null,
             name: 'Test LOM Network',
@@ -38,7 +38,7 @@ module('Network API', {
             description: 'Test LOM Network',
             datacenter: 'LAX'
         });
-        this.newNetwork = App.Network.create({
+        this.newNetwork = App.Networks.create({
             network_id: 3,
             lom_network_id: null,
             name: 'New Network',
@@ -57,86 +57,86 @@ module('Network API', {
     }
 });
 
-asyncTest('App.Network.find()', function () {
+asyncTest('App.Networks.find()', function () {
     expect(2);
     var that = this;
     QuarryTest.ajaxStub('/ipdb/network*', 'GET',
         this.fixtures.findAll.data, this.fixtures.findAll.response);
-    App.Network.find().then(
+    App.Networks.find().then(
         function success(obj) {
             equal(obj.length, that.fixtures.findAll.response.data.length,
-                'App.Network.find() returned an unexpected data array!');
+                'App.Networks.find() returned an unexpected data array!');
             deepEqual(
                 obj,
-                [App.Network.create(that.network), App.Network.create(that.lomNetwork)],
-                'App.Network.find() returned an unexpected response!'
+                [App.Networks.create(that.network), App.Networks.create(that.lomNetwork)],
+                'App.Networks.find() returned an unexpected response!'
             );
             start();
         }
     );
 });
 
-asyncTest('App.Network.find(gateway)', function () {
+asyncTest('App.Networks.find(gateway)', function () {
     expect(1);
     var that = this;
     QuarryTest.ajaxStub('/ipdb/network/' + this.network.get('gateway') + '*', 'GET',
         this.fixtures.find.data, this.fixtures.find.response);
-    App.Network.find(this.network.get('gateway')).then(
+    App.Networks.find(this.network.get('gateway')).then(
         function success(obj) {
             deepEqual(obj.getProperties(that.networkProperties),
                 that.network.getProperties(that.networkProperties),
-                'App.Network.find(' + that.network.get('gateway') +
+                'App.Networks.find(' + that.network.get('gateway') +
                     ') returned an unexpected property value!');
             start();
         }
     );
 });
 
-asyncTest('App.Network.update(gateway)', function () {
+asyncTest('App.Networks.update(gateway)', function () {
     expect(1);
     var that = this;
     QuarryTest.ajaxStub('/ipdb/network/' + this.updatedNetwork.get('gateway') +
         '*', 'PUT', this.fixtures.update.data, this.fixtures.update.response);
-    App.Network.update(
+    App.Networks.update(
         this.updatedNetwork.get('gateway'),
         this.updatedNetwork
     ).then(
         function success(obj) {
             deepEqual(obj.getProperties(that.networkProperties),
                 that.updatedNetwork.getProperties(that.networkProperties),
-                'App.Network.update(gateway) returned an unexpected ' +
+                'App.Networks.update(gateway) returned an unexpected ' +
                     'property value!');
             start();
         }
     );
 });
 
-asyncTest('App.Network.add(network)', function () {
+asyncTest('App.Networks.add(network)', function () {
     expect(1);
     var that = this;
     QuarryTest.ajaxStub('/ipdb/network*', 'POST',
         this.fixtures.add.data, this.fixtures.add.response);
-    App.Network.add(this.newNetwork).then(
+    App.Networks.add(this.newNetwork).then(
         function success(obj) {
             deepEqual(obj.getProperties(that.networkProperties),
                 that.newNetwork.getProperties(that.networkProperties),
-                'App.Network.add(network) returned an unexpected ' +
+                'App.Networks.add(network) returned an unexpected ' +
                     'property value!');
             start();
         }
     );
 });
 
-asyncTest('App.Network.remove(network)', function () {
+asyncTest('App.Networks.remove(network)', function () {
     expect(1);
     var that = this;
     QuarryTest.ajaxStub('/ipdb/network/' + this.network.get('gateway') + '*',
         'DELETE', this.fixtures.remove.data, this.fixtures.remove.response);
-    App.Network.remove(this.network.get('gateway')).then(
+    App.Networks.remove(this.network.get('gateway')).then(
         function success(obj) {
             deepEqual(obj.getProperties(that.networkProperties),
                 that.network.getProperties(that.networkProperties),
-                'App.Network.remove(gateway) returned an unexpected ' +
+                'App.Networks.remove(gateway) returned an unexpected ' +
                     'property value!');
             start();
         }

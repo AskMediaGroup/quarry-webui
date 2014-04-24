@@ -12,7 +12,7 @@ App.NetworksController = Em.ArrayController.extend(App.NetworkStats, {
     find: function () {
         var that = this;
         this.set('isLoading', true);
-        return App.Network.find().then(
+        return App.Networks.find().then(
             function (networks_data) {
                 var networks = [];
                 networks_data.forEach(function (network, index, enumerable) {

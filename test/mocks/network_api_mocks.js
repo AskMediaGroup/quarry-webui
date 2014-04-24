@@ -33,7 +33,7 @@ QuarryTest.networkApi = function (network, updated_network, lom_network,
         },
         update: {
             /* HTTP request data */
-            data: JSON.stringify(App.Network.create(updated_network)),
+            data: JSON.stringify(App.Networks.create(updated_network)),
             /* HTTP response */
             response: {
                 "data": [
@@ -47,7 +47,7 @@ QuarryTest.networkApi = function (network, updated_network, lom_network,
         },
         add: {
             /* HTTP request data */
-            data: JSON.stringify(App.Network.create(new_network)),
+            data: JSON.stringify(App.Networks.create(new_network)),
             /* HTTP response */
             response: {
                 "data": [

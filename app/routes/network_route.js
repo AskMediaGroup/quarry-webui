@@ -1,7 +1,11 @@
 /*global App, Em */
 App.NetworkRoute = Em.Route.extend(App.NetworkStats, {
     model: function (params) {
-        return App.Network.find(params.gateway).then(
+        return App.Networks.find({
+            where: {
+                gateway: params.gateway
+            }
+        }).then(
             function (data) {
                 return data;
             }

@@ -795,15 +795,33 @@ Quarry.initModels = function () {
         }
     );
     /**
-     * Quarry.Network class
-     * @class Quarry.Network
+     * Quarry.Networks class
+     * @class Quarry.Networks
      * @extends Quarry.Model
      * @classdesc Quarry Network (ipdb) API connector
      */
-    this.Network = Quarry.Model.extend().reopenClass(
-        /** @lends Quarry.Network.prototype */
+    this.Networks = Quarry.Model.extend().reopenClass(
+        /** @lends Quarry.Networks.prototype */
         {
-            appPath: '/quarry/ipdb/networks/'
+            appPath: '/quarry/ipdb/networks/',
+            /**
+             * Generate custom callback function for Quarry.Networks.find({})
+             * @param {Object} that Model instance
+             * @returns {Function} Callback function
+             */
+            apiCallback: function (that) {
+                return function (data) {
+                    var i, k, networks = [];
+                    if (data.data.length === 1) {
+                        return that.create(data.data[0]);
+                    } else {
+                        for (i = 0, k = data.data.length; i < k; i += 1) {
+                            networks.pushObject(that.create(data.data[i]));
+                        }
+                    }
+                    return networks;
+                }
+            }
         }
     );
     /**

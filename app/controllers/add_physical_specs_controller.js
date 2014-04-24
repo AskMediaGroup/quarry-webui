@@ -56,14 +56,14 @@ App.AddPhysicalSpecsController = Em.ArrayController.extend({
             });
             mortarBulkRequest = Em.Object.create({
                 args: assetsArray,
-                network: App.getNotNullAttrs(App.Network.create({
+                network: App.getNotNullAttrs(App.Networks.create({
                     network_id: this.get('network.network_id'),
                     gateway: this.get('network.gateway')
                 }))
             });
             if (this.get('lomNetwork.gateway')) {
                 mortarBulkRequest.lom_network = App.getNotNullAttrs(
-                    App.Network.create({
+                    App.Networks.create({
                         network_id: this.get('lomNetwork.network_id'),
                         gateway: this.get('lomNetwork.gateway')
                     })

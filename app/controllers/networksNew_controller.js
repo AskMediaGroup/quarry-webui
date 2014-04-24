@@ -22,7 +22,7 @@ App.NetworksNewController = Em.ObjectController.extend({
                     dns1Alert: null,
                     descriptionAlert: null
                 });
-                App.Network.add(
+                App.Networks.add(
                     App.getNotNullAttrs(this.get('content'))
                 ).then(
                     function success(response) {
@@ -36,7 +36,11 @@ App.NetworksNewController = Em.ObjectController.extend({
         },
         edit: function () {
             var that = this;
-            App.Network.find(this.get('gateway')).then(
+            App.Networks.find({
+                where: {
+                    gateway: this.get('gateway')
+                }
+            }).then(
                 function (response) {
                     that.transitionToRoute('network', response);
                 }

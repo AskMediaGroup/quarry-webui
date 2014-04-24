@@ -6,7 +6,7 @@ App.NetworkController = Em.ObjectController.extend(App.NetworkStats, {
     actions: {
         refresh: function () {
             var that = this;
-            App.Network.find(this.get('network_id')).then(
+            App.Networks.find(this.get('network_id')).then(
                 function (data) {
                     that.getStats(data).then(
                         function (network) {
@@ -22,7 +22,7 @@ App.NetworkController = Em.ObjectController.extend(App.NetworkStats, {
         },
         update: function () {
             var network, that = this;
-            network = App.Network.create({
+            network = App.Networks.create({
                 name: this.get('name'),
                 gateway: this.get('gateway'),
                 netmask: this.get('netmask'),
@@ -31,7 +31,7 @@ App.NetworkController = Em.ObjectController.extend(App.NetworkStats, {
                 description: this.get('description'),
                 datacenter: this.get('datacenter')
             });
-            App.Network.update(
+            App.Networks.update(
                 this.get('network_id'),
                 App.getNotNullAttrs(network)
             ).then(
