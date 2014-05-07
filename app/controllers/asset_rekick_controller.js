@@ -20,12 +20,12 @@ App.AssetRekickController = Em.ObjectController.extend({
                         this.get('osTarget')
                     ).id
                 }),
-                App.Layout.create({
-                    partlayout_id:
+                App.Layouts.create({
+                    layout_id:
                         this.get('layouts').findBy(
                             'name',
                             this.get('layout')
-                        ).partlayout_id
+                        ).layout_id
                 })
             ).then(
                 function (response) {

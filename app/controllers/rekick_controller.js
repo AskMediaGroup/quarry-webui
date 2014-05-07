@@ -17,12 +17,12 @@ App.RekickController = Em.ArrayController.extend({
                         this.get('osTarget')
                     ).id
                 }),
-                layout: App.Layout.create({
-                    partlayout_id:
+                layout: App.Layouts.create({
+                    layout_id:
                         this.get('layouts').findBy(
                             'name',
                             this.get('layout')
-                        ).partlayout_id
+                        ).layout_id
                 })
             });
             // Passing an undefined variable as the 2nd arg because there's no

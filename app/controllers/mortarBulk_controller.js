@@ -54,13 +54,13 @@ App.MortarBulkController = Em.ObjectController.extend({
     }.property('content.kwargs.kstarget.id'),
 
     layoutName: function () {
-        if (this.get('content.kwargs.layout.partlayout_id')) {
+        if (this.get('content.kwargs.layout.layout_id')) {
             return this.get('layouts').findBy(
-                'partlayout_id',
-                this.get('content.kwargs.layout.partlayout_id')
+                'layout_id',
+                this.get('content.kwargs.layout.layout_id')
             ).name;
         }
-    }.property('content.kwargs.layout.partlayout_id'),
+    }.property('content.kwargs.layout.layout_id'),
 
     hasAddAssetArgs: function () {
         return (this.get('content.func_name') === 'bulk_physical_create');

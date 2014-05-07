@@ -5,7 +5,7 @@
  @type {Object}
  **/
 App.layoutSchema = {
-    partlayout_id: null,
+    layout_id: null,
     name: null,
     base: null,
     available: null,

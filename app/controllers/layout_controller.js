@@ -7,7 +7,7 @@ App.LayoutController = Em.ObjectController.extend({
     actions: {
         refresh: function () {
             var that = this;
-            App.Layout.find(this.get('partlayout_id')).then(
+            App.Layouts.find(this.get('layout_id')).then(
                 function (response) {
                     that.setProperties({
                         content: response,
@@ -31,7 +31,8 @@ App.LayoutController = Em.ObjectController.extend({
                 dev: '',
                 order: '',
                 grow: 0,
-                size: undefined
+                size: undefined,
+                layout_id: this.get('layout_id')
             }));
         },
 
@@ -40,57 +41,58 @@ App.LayoutController = Em.ObjectController.extend({
         },
         delEntry: function (entry_id) {
             var that = this;
-            App.Layout.findEntry(this.get('partlayout_id'), entry_id).then(
-                function (response) {
+            App.LayoutEntries.find(entry_id).then(
+                function (layoutEntry) {
                     that.transitionToRoute(
                         'layoutEntry.delete',
-                        App.LayoutEntry.create(response)
+                        App.LayoutEntries.create(layoutEntry)
                     );
                 }
             );
         },
         update: function () {
-            var entries, layout, that = this;
-            entries = [];
+            var layout, that = this;
             this.get('entries').forEach(function (item, index, enumerable) {
-                entries.pushObject({
-                    partlayoutentry_id: item.partlayoutentry_id,
-                    partlayout_id: item.partlayout_id,
-                    fs: item.fs || undefined,
-                    level: +item.level || undefined,
-                    mnt: item.mnt || undefined,
-                    dev: item.dev || undefined,
-                    order: +item.order || undefined,
-                    grow: item.willGrow ? 1 : 0,
-                    size: +item.size || undefined
-                });
-            });
-            this.get('newEntries').forEach(function (item, index, enumerable) {
-                App.Layout.addEntry(
-                    that.get('partlayout_id'),
-                    App.getNonEmptyAttrs(App.LayoutEntry.create({
+                App.LayoutEntries.update(
+                    item.entry_id, App.getNonEmptyAttrs(App.LayoutEntries.create({
+                        entry_id: item.entry_id,
                         fs: item.fs || undefined,
-                        level: +item.level || undefined,
+                        level: item.level === undefined
+                            ? undefined
+                            : +item.level,
                         mnt: item.mnt || undefined,
                         dev: item.dev || undefined,
                         order: +item.order || undefined,
                         grow: item.willGrow ? 1 : 0,
-                        size: +item.size || undefined
+                        size: +item.size || undefined,
+                        layout_id: that.get('layout_id')
                     }))
                 );
             });
-            layout = App.Layout.create({
-                partlayout_id: this.get('partlayout_id'),
+            this.get('newEntries').forEach(function (item, index, enumerable) {
+                App.LayoutEntries.add(
+                    App.getNonEmptyAttrs(App.LayoutEntries.create({
+                        fs: item.fs || undefined,
+                        level: item.level === undefined
+                            ? undefined
+                            : +item.level,
+                        mnt: item.mnt || undefined,
+                        dev: item.dev || undefined,
+                        order: +item.order || undefined,
+                        grow: item.willGrow ? 1 : 0,
+                        size: +item.size || undefined,
+                        layout_id: that.get('layout_id')
+                    }))
+                );
+            });
+            layout = App.Layouts.create({
+                layout_id: this.get('layout_id'),
                 name: this.get('name'),
                 base: this.get('isBase') ? 1 : 0,
                 available: this.get('isAvailable') ? 1 : 0,
-                swraid: this.get('isSwRaid') ? 1 : 0,
-                entries: entries
+                swraid: this.get('isSwRaid') ? 1 : 0
             });
-            App.Layout.update(
-                this.get('partlayout_id'),
-                layout
-            ).then(
+            App.Layouts.update(this.get('layout_id'), layout).then(
                 function success(response) {
                     that.setProperties({
                         status: { updated: true },
@@ -109,7 +111,7 @@ App.LayoutController = Em.ObjectController.extend({
 
     formObserver: function () {
         this.set('formUpdated', true);
-    }.observes('partlayout_id', 'name', 'isBase', 'isAvailable',
+    }.observes('layout_id', 'name', 'isBase', 'isAvailable',
         'isSwRaid', 'entries.@each.order', 'entries.@each.fs',
         'entries.@each.mnt', 'entries.@each.size', 'entries.@each.willGrow',
         'entries.@each.level', 'entries.@each.dev'),

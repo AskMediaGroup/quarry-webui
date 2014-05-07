@@ -1,5 +1,5 @@
 /*global App, Em */
-App.Layout = Quarry.Layout.extend({
+App.Layouts = Quarry.Layouts.extend({
     assets: [],
     entries: []
 });

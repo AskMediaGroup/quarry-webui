@@ -59,12 +59,12 @@ App.CommissionVmSpecsController = Em.ArrayController.extend({
                     cpus: parseInt(item.cores, 10)
                 });
 
-                layout = App.Layout.create({
-                    partlayout_id:
+                layout = App.Layouts.create({
+                    layout_id:
                         that.get('layouts').findBy(
                             'name',
                             item.layout
-                        ).partlayout_id
+                        ).layout_id
                 });
 
                 role = item.chefRole || undefined;
@@ -148,7 +148,7 @@ App.CommissionVmSpecsController = Em.ArrayController.extend({
         var dict = {};
         if (this.get('layouts')) {
             this.get('layouts').forEach(function (item, index, enumerable) {
-                dict[item.name] = item.partlayout_id;
+                dict[item.name] = item.layout_id;
             });
         }
         return dict;

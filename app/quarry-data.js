@@ -137,7 +137,7 @@
 /**
  * A Layout model object
  * @typedef {Object} Layout
- * @property {number} partlayout_id Layout id
+ * @property {number} layout_id Layout id
  * @property {string} name Layout name
  * @property {number} base Boolean integer: base?
  * @property {number} available Boolean integer: available?
@@ -146,8 +146,8 @@
 /**
  * A Layout partition entry object
  * @typedef {Object} LayoutEntry
- * @property {number} partlayoutentry_id Layout Entry ID
- * @property {number} partlayout_id Layout ID
+ * @property {number} entry_id Layout Entry ID
+ * @property {number} layout_id Layout ID
  * @property {number} level RAID level
  * @property {string} fs Filesystem type
  * @property {string} mnt Mount point
@@ -837,13 +837,13 @@ Quarry.initModels = function () {
         }
     );
     /**
-     * Quarry.Layout class
-     * @class Quarry.Layout
+     * Quarry.Layouts class
+     * @class Quarry.Layouts
      * @extends Quarry.Model
-     * @classdesc Quarry Layout API connector
+     * @classdesc Quarry Layouts API connector
      */
-    this.Layout = Quarry.Model.extend().reopenClass(
-        /** @lends Quarry.Layout.prototype */
+    this.Layouts = Quarry.Model.extend().reopenClass(
+        /** @lends Quarry.Layouts.prototype */
         {
             appPath: '/quarry/partition/layouts/',
             /**
@@ -903,6 +903,18 @@ Quarry.initModels = function () {
                     that.errorCallback
                 );
             }
+        }
+    );
+    /**
+     * Quarry.LayoutEntries class
+     * @class Quarry.LayoutEntries
+     * @extends Quarry.Model
+     * @classdesc Quarry Layout Entries API connector
+     */
+    this.LayoutEntries = Quarry.Model.extend().reopenClass(
+        /** @lends Quarry.LayoutEntries.prototype */
+        {
+            appPath: '/quarry/partition/entries/'
         }
     );
     /**

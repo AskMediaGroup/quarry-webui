@@ -1,12 +1,12 @@
 /*global App, Em */
 App.LayoutsNewRoute = Em.Route.extend({
     model: function () {
-        return App.Layout.create(App.layoutSchema);
+        return App.Layouts.create(App.layoutSchema);
     },
 
     setupController: function (controller, model) {
         controller.setProperties({
-            model: App.Layout.create(App.layoutSchema),
+            model: App.Layouts.create(App.layoutSchema),
             status: undefined
         });
     }

@@ -1,7 +1,7 @@
 /*global App, Em */
 App.LayoutRoute = Em.Route.extend({
     model: function (params) {
-        return App.Layout.find(params.id).then(
+        return App.Layouts.find(params.id).then(
             function (response) {
                 return response;
             }
@@ -9,7 +9,7 @@ App.LayoutRoute = Em.Route.extend({
     },
 
     serialize: function (model, params) {
-        return { id: model.partlayout_id };
+        return { id: model.layout_id };
     },
 
     setupController: function (controller, model) {

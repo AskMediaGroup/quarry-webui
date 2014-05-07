@@ -4,7 +4,7 @@
         <div class="well well-small">
             <dl class="dl-horizontal">
                 <dt><span class="badge badge-success">success</span></dt>
-                <dd>Layout {{partlayout_id}} deleted!</dd>
+                <dd>Layout {{layout_id}} deleted!</dd>
             </dl>
         </div>
         <ul class="pager">
@@ -66,7 +66,7 @@
                             <td>{{view Em.Checkbox checkedBinding="entry.willGrow" class="span1"}}</td>
                             <td>{{view Em.TextField valueBinding="entry.level" class="span1"}}</td>
                             <td>{{view Em.TextField valueBinding="entry.dev" class="span2"}}</td>
-                            <td><a href="#" {{action "delEntry" entry.partlayoutentry_id}}>
+                            <td><a href="#" {{action "delEntry" entry.entry_id}}>
                                 {{icon name="delLayout"}}</a>
                             </td>
                         </tr>

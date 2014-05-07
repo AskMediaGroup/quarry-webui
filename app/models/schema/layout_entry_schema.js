@@ -1,8 +1,12 @@
-/*global App, Em */
-App.LayoutEntry = Em.Object.extend({
+/*global App*/
+/**
+ This object describes the static properties of a Layout model
+
+ @type {Object}
+ **/
+App.layoutEntrySchema = {
     entry_id: null,
     layout_id: null,
-    partlayout: null,
     level: null,
     fs: null,
     mnt: null,
@@ -10,4 +14,4 @@ App.LayoutEntry = Em.Object.extend({
     size: null,
     grow: null,
     order: null
-});
+};

@@ -52,7 +52,7 @@ App.Router.map(function () {
     });
     this.resource('layout', { path: '/layout/:id' }, function () {
         this.route('delete');
-        this.resource('layoutEntry', { path: '/entry/:entry' }, function () {
+        this.resource('layoutEntry', { path: '/entry/:entry_id' }, function () {
             this.route('delete');
         });
     });

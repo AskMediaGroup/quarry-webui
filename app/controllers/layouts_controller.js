@@ -6,9 +6,9 @@ App.LayoutsController = Em.ArrayController.extend({
     actions: {
         getLayout: function (id) {
             var that = this;
-            App.Layout.find(id).then(
-                function (response) {
-                    that.transitionToRoute('layout', response);
+            App.Layouts.find(id).then(
+                function (layout) {
+                    that.transitionToRoute('layout', layout);
                 }
             );
         }
@@ -23,7 +23,7 @@ App.LayoutsController = Em.ArrayController.extend({
     find: function () {
         var that = this;
         this.set('isLoading', true);
-        return App.Layout.find().then(
+        return App.Layouts.find().then(
             function (response) {
                 that.set('isLoading', false);
                 return response;

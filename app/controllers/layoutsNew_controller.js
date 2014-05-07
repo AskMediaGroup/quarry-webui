@@ -12,8 +12,8 @@ App.LayoutsNewController = Em.ObjectController.extend({
                 this.setProperties({
                     nameAlert: null
                 });
-                App.Layout.add(
-                    App.Layout.create({
+                App.Layouts.add(
+                    App.Layouts.create({
                         name: this.get('name'),
                         base: this.get('isBase') ? 1 : 0,
                         available: this.get('isAvailable') ? 1 : 0,
@@ -34,7 +34,7 @@ App.LayoutsNewController = Em.ObjectController.extend({
         },
         edit: function () {
             var that = this;
-            App.Layout.find(this.get('partlayout_id')).then(
+            App.Layouts.find(this.get('layout_id')).then(
                 function (response) {
                     that.transitionToRoute('layout', response);
                 }

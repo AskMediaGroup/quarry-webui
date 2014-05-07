@@ -7,10 +7,7 @@ App.LayoutEntryDeleteController = Em.ObjectController.extend({
     actions: {
         remove: function () {
             var that = this;
-            return App.Layout.delEntry(
-                this.get('partlayout_id'),
-                this.get('partlayoutentry_id')
-            ).then(
+            return App.LayoutEntries.remove(this.get('entry_id')).then(
                 function success(response) {
                     that.get('controllers.layout').set(
                         'status',
