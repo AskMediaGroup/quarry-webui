@@ -1,0 +1,42 @@
+<legend>{{icon name="poolsPage"}}BigIP Search</legend>
+<div class="container">
+    <form>
+        <div class="row">
+            <div class="span3"><label>VIP name:</label>
+                {{view Em.TextField class="span3" valueBinding="findToken"}}
+            </div>
+            <div class="span3"><label>DC:</label>
+                {{view Em.Select class="span3"
+                prompt="Select a DC...."
+                valueBinding="dc"
+                contentBinding="dcs"}}
+            </div>
+        </div>
+        {{#if isSearching}}
+            <hr>
+            {{#if dcSearch}}
+                <p id="search-in-progress">Getting all VIPs in <strong>{{dcToUpper}}</strong> from the API....</p>
+            {{else}}
+                <p id="search-in-progress">Looking up VIP name <strong>{{findToken}}</strong> from the API....</p>
+            {{/if}}
+            <div class="progress progress-striped active">
+                <div class="bar" style="width: 100%;"></div>
+            </div>
+        {{else}}
+            <button class="btn btn-primary" type="submit" {{action "search"}}>
+                {{icon name="search"}} Find VIP</button>
+            {{#unless findToken}}
+                {{#if dc}}
+                    <button class="btn btn-warning" type="submit" {{action "searchDcs"}}>
+                        {{icon name="search"}} Get all VIPs in <strong>{{dcToUpper}}</strong></button>
+                {{/if}}
+            {{/unless}}
+        {{/if}}
+        {{#if failedSearch}}
+            <br><br>
+            <div class="alert alert-error">
+                No VIP found with name {{findToken}}
+            </div>
+        {{/if}}
+    </form>
+</div>

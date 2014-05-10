@@ -1,0 +1,58 @@
+<legend>{{icon name="poolsPage"}}VIP {{name}}</legend>
+{{#if isLoading}}
+    <p id="search-in-progress">Retrieving VIP details from the API....</p>
+    <div class="progress progress-striped active">
+        <div class="bar" style="width: 100%;"></div>
+    </div>
+{{else}}
+    <div class="container">
+        <div class="well well-large">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th class="span3">Name</th>
+                    <th class="span2">IP Address</th>
+                    <th class="span1">Port</th>
+                    <th class="span1">Available?</th>
+                    <th class="span1">Enabled?</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{name}}</td>
+                    <td>{{address}}</td>
+                    <td>{{port}}</td>
+                    <td>{{pool.available}}</td>
+                    <td>{{pool.enabled}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <legend>Pool Members</legend>
+            <table id="resultstable" class="table table-condensed">
+                <thead id="serpHeaders">
+                <tr>
+                    <th>IP Address</th>
+                    <th>Port</th>
+                    <th>Available?</th>
+                    <th>Enabled?</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{#each pool.members}}
+                    <tr>
+                        <td>{{address}}</td>
+                        <td>{{port}}</td>
+                        <td>{{available}}</td>
+                        <td>{{enabled}}</td>
+                    </tr>
+                {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <ul class="pager">
+        <li class="previous">
+            {{link-to "&larr; Back to BigIP Search" "bigIp"}}
+        </li>
+    </ul>
+{{/if}}
