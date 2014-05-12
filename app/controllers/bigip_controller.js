@@ -10,18 +10,17 @@ App.BigIpController = Em.ObjectController.extend({
                 isSearching: true,
                 failedSearch: false
             });
-            App.BigIp.findByName(this.get('dc'), this.get('findToken')).then(
-                function success(vip) {
-                    that.set('isSearching', false);
-                    that.transitionToRoute('vip', vip);
-                },
-                function failure(jqXHR) {
-                    that.setProperties({
-                        isSearching: false,
-                        failedSearch: true
-                    });
-                }
-            );
+            if (this.get('findToken').match(/^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/)) {
+                App.BigIp.findByIp(this.get('dc'), this.get('findToken')).then(
+                    that.searchSuccessCallback(),
+                    that.searchFailureCallback()
+                );
+            } else {
+                App.BigIp.findByName(this.get('dc'), this.get('findToken')).then(
+                    that.searchSuccessCallback(),
+                    that.searchFailureCallback()
+                );
+            }
         },
         searchDcs: function () {
             var that = this;
@@ -41,6 +40,30 @@ App.BigIpController = Em.ObjectController.extend({
                 }
             );
         }
+    },
+
+    ready: function () {
+        return this.get('findToken') && this.get('dc');
+    }.property('findToken', 'dc'),
+
+    searchSuccessCallback: function () {
+        var that = this;
+        return function (vip) {
+            that.set('isSearching', false);
+            that.transitionToRoute('vip', vip);
+        };
+    },
+
+    searchFailureCallback: function () {
+        var that = this;
+        return function (jqXHR) {
+            that.setProperties({
+                isSearching: false,
+                failedSearchToken: that.get('findToken'),
+                failedSearchDc: that.get('dc').toUpperCase(),
+                failedSearch: true
+            });
+        };
     },
 
     getDcs: function () {

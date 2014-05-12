@@ -176,6 +176,8 @@ Em.Handlebars.registerBoundHelper('icon', function (name) {
             '<i class="icon-terminal"></i>'),
         poolsPage: insertIntoStack(icons.get('cloudStackMuted'),
             '<i class="icon-hdd"></i>'),
+        vipPage: insertIntoStack(icons.get('cloudStackMuted'),
+            '<i class="icon-flag-checkered"></i>'),
         arbitraryScriptsPage: insertIntoStack(icons.get('dangerBackground'),
             '<i class="icon-terminal icon-light"></i>')
     });
