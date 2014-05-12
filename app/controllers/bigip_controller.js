@@ -8,9 +8,10 @@ App.BigIpController = Em.ObjectController.extend({
             var that = this;
             this.setProperties({
                 isSearching: true,
-                failedSearch: false
+                failedSearch: false,
+                lastSearch: 'vip'
             });
-            if (this.get('findToken').match(/^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/)) {
+            if (this.get('isIpSearch')) {
                 App.BigIp.findByIp(this.get('dc'), this.get('findToken')).then(
                     that.searchSuccessCallback(),
                     that.searchFailureCallback()
@@ -23,24 +24,14 @@ App.BigIpController = Em.ObjectController.extend({
             }
         },
         searchDcs: function () {
-            var that = this;
-            this.setProperties({
-                isSearching: true,
-                dcSearch: true,
-                failedSearch: false
-            });
-            this.get('controllers.vips').set('dc', this.get('dc'));
-            App.BigIp.vips(this.get('dc')).then(
-                function (vips) {
-                    that.setProperties({
-                        isSearching: false,
-                        dcSearch: false
-                    });
-                    that.transitionToRoute('vips', vips);
-                }
-            );
+            return this.searchDcs();
         }
     },
+
+    // Observer fires on 'isSearching' instead of on 'findToken' to save cycles
+    isIpSearch: function () {
+        return this.get('findToken').match(/^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/);
+    }.property('isSearching'),
 
     ready: function () {
         return this.get('findToken') && this.get('dc');
@@ -64,6 +55,26 @@ App.BigIpController = Em.ObjectController.extend({
                 failedSearch: true
             });
         };
+    },
+
+    searchDcs: function () {
+        var that = this;
+        this.setProperties({
+            isSearching: true,
+            dcSearch: true,
+            failedSearch: false,
+            lastSearch: 'dc'
+        });
+        this.get('controllers.vips').set('dc', this.get('dc'));
+        App.BigIp.vips(this.get('dc')).then(
+            function (vips) {
+                that.setProperties({
+                    isSearching: false,
+                    dcSearch: false
+                });
+                that.transitionToRoute('vips', vips);
+            }
+        );
     },
 
     getDcs: function () {

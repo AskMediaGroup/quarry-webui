@@ -17,7 +17,7 @@
             {{#if dcSearch}}
                 <p id="search-in-progress">Getting all VIPs in <strong>{{dcToUpper}}</strong> from the API....</p>
             {{else}}
-                <p id="search-in-progress">Looking up VIP name <strong>{{findToken}}</strong> from the API....</p>
+                <p id="search-in-progress">Looking up VIP {{#if isIpSearch}}IP address{{else}}name{{/if}} <strong>{{findToken}}</strong> in <strong>{{dcToUpper}}</strong> from the API....</p>
             {{/if}}
             <div class="progress progress-striped active">
                 <div class="bar" style="width: 100%;"></div>
