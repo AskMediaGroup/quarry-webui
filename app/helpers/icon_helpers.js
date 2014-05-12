@@ -168,6 +168,8 @@ Em.Handlebars.registerBoundHelper('icon', function (name) {
             '<i class="icon-terminal icon-light"></i>'),
         pools: insertIntoStack(icons.get('cloudStack'),
             '<i class="icon-hdd icon-light"></i>'),
+        vips: insertIntoStack(icons.get('cloudStack'),
+            '<i class="icon-flag-checkered icon-light"></i>'),
         cloudStorage: insertIntoStack(icons.get('cloudStack'),
             '<i class="icon-hdd icon-light"></i>'),
         cloudMemory: insertIntoStack(icons.get('cloudStack'),
