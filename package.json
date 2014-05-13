@@ -1,7 +1,7 @@
 {
     "dependencies": {
         "jslint": "*",
-        "karma": "*",
+        "karma": "0.10",
         "karma-qunit": "*",
         "karma-ember-preprocessor": "*",
         "karma-junit-reporter": "*"
