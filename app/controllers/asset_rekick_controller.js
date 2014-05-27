@@ -3,6 +3,7 @@ App.AssetRekickController = Em.ObjectController.extend({
     content: {},
     needs: ['osTargets', 'layouts', 'confirmation'],
     osTargetssBinding: 'controllers.osTargets.content',
+    osTargetsBinding: 'controllers.osTargets.content',
     layoutsBinding: 'controllers.layouts.content',
     readyBinding: 'controllers.confirmation.ready',
 
