@@ -11,11 +11,11 @@ App.RekickController = Em.ArrayController.extend({
             var data, that = this;
             data = Em.Object.create({
                 query: App.Assets.create(this.get('searchTerms.asset')),
-                kstarget: App.OsTargets.create({
-                    id: this.get('osTargets').findBy(
+                target: App.OsTargets.create({
+                    target_id: this.get('osTargets').findBy(
                         'name',
                         this.get('osTarget')
-                    ).id
+                    ).target_id
                 }),
                 layout: App.Layouts.create({
                     layout_id:

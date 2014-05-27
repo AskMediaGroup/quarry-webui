@@ -2,7 +2,6 @@
 App.AssetRekickController = Em.ObjectController.extend({
     content: {},
     needs: ['osTargets', 'layouts', 'confirmation'],
-    osTargetssBinding: 'controllers.osTargets.content',
     osTargetsBinding: 'controllers.osTargets.content',
     layoutsBinding: 'controllers.layouts.content',
     readyBinding: 'controllers.confirmation.ready',
@@ -16,10 +15,10 @@ App.AssetRekickController = Em.ObjectController.extend({
             return App.Mortar.rekick(
                 this.get('content.id'),
                 App.OsTargets.create({
-                    id: this.get('osTargets').findBy(
+                    target_id: this.get('osTargets').findBy(
                         'name',
                         this.get('osTarget')
-                    ).id
+                    ).target_id
                 }),
                 App.Layouts.create({
                     layout_id:

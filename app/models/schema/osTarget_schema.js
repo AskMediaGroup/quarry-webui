@@ -5,7 +5,7 @@
  @type {Object}
  **/
 App.osTargetSchema = {
-    id: null,
+    target_id: null,
     available: null,
     name: null,
     filename: null

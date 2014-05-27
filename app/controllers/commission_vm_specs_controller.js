@@ -48,7 +48,7 @@ App.CommissionVmSpecsController = Em.ArrayController.extend({
                 });
 
                 osTarget = App.OsTargets.create({
-                    id: that.get('osTargets').findBy('name', item.osTarget).id
+                    target_id: that.get('osTargets').findBy('name', item.osTarget).target_id
                 });
 
                 vm = App.Vm.create({
@@ -133,26 +133,6 @@ App.CommissionVmSpecsController = Em.ArrayController.extend({
     numHosts: function () {
         return this.get('content').length;
     }.property('content'),
-
-    osTargetsDict: function () {
-        var dict = {};
-        if (this.get('osTargets')) {
-            this.get('osTargets').forEach(function (item, index, enumerable) {
-                dict[item.name] = item.id;
-            });
-        }
-        return dict;
-    }.property('osTargets'),
-
-    layoutsDict: function () {
-        var dict = {};
-        if (this.get('layouts')) {
-            this.get('layouts').forEach(function (item, index, enumerable) {
-                dict[item.name] = item.layout_id;
-            });
-        }
-        return dict;
-    }.property('layouts'),
 
     /*
      * Ensures that distinct vm attribute values are not overwritten by the

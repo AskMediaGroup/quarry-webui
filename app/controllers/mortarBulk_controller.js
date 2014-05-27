@@ -39,19 +39,19 @@ App.MortarBulkController = Em.ObjectController.extend({
     }.property('content'),
 
     hasRekickArgs: function () {
-        return this.get('content.kwargs.kstarget') &&
+        return this.get('content.kwargs.target') &&
             this.get('content.kwargs.layout') &&
             this.get('content.func_name') === 'rekick';
     }.property('content.kwargs', 'content.func_name'),
 
     osName: function () {
-        if (this.get('content.kwargs.kstarget.id')) {
+        if (this.get('content.kwargs.target.target_id')) {
             return this.get('osTargets').findBy(
-                'id',
-                this.get('content.kwargs.kstarget.id')
+                'target_id',
+                this.get('content.kwargs.target.target_id')
             ).name;
         }
-    }.property('content.kwargs.kstarget.id'),
+    }.property('content.kwargs.target.target_id'),
 
     layoutName: function () {
         if (this.get('content.kwargs.layout.layout_id')) {

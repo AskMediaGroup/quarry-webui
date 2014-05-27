@@ -943,7 +943,7 @@ Quarry.initModels = function () {
                     type: 'POST',
                     data: JSON.stringify({
                         'asset': asset,
-                        'kstarget': osTarget,
+                        'target': osTarget,
                         'vm': vm,
                         'layout': layout,
                         'role': role
@@ -1001,7 +1001,7 @@ Quarry.initModels = function () {
                 settings = {
                     type: 'POST',
                     data: JSON.stringify({
-                        'kstarget': osTarget,
+                        'target': osTarget,
                         'layout': layout
                     })
                 };
