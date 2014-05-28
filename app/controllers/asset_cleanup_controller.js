@@ -1,7 +1,7 @@
 /*global App, Em */
 App.AssetCleanupController = Em.ObjectController.extend({
     content: {},
-    need: ['confirmation'],
+    needs: ['confirmation'],
     readyBinding: 'controllers.confirmation.ready',
 
     actions: {
