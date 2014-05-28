@@ -153,7 +153,7 @@ App.NavbarController = Em.ObjectController.extend({
                     break;
                 case 'power':
                     this.transitionToRoute('assetPower', App.Power.create({
-                        fqdn: this.get('asset.FQDN'),
+                        id: this.get('asset.id'),
                         action: type,
                         description: this.get('powerDesc')[type]
                     }));

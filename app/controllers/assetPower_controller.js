@@ -9,7 +9,7 @@ App.AssetPowerController = Em.ObjectController.extend({
             var that = this;
             return App.Power.push(
                 this.get('content.action'),
-                this.get('content.fqdn')
+                this.get('content.id')
             ).then(
                 function (response) {
                     // App.Power.push returns a job object, so we

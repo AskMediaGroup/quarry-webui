@@ -2,7 +2,7 @@
 App.AssetPowerRoute = Em.Route.extend({
     model: function (params) {
         return App.Power.create({
-            fqdn: this.controllerFor('asset').get('fqdn'),
+            id: this.controllerFor('asset').get('id'),
             action: params.power_action
         });
     },

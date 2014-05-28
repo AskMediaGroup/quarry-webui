@@ -1112,20 +1112,18 @@ Quarry.initModels = function () {
     this.Power = Quarry.Model.extend().reopenClass(
         /** @lends Quarry.Power.prototype */
         {
+            appPath: '/quarry/power/',
             /**
              * Executes a power action against an asset
              * @param {string} action Which power action to execute
              * @param {string} fqdn Target host FQDN
              * @returns {Job} Bulk object
              */
-            push: function (action, fqdn) {
+            push: function (action, asset_id) {
                 var path, params = {}, settings;
-                path = '/power/' + action;
+                path = this.appPath + action + '/' + asset_id;
                 settings = {
-                    type: 'POST',
-                    data: JSON.stringify({
-                        'fqdn': fqdn
-                    })
+                    type: 'POST'
                 };
                 return this.ajax(path, params, settings).then(
                     this.apiRecordCallback,
