@@ -386,7 +386,7 @@ Quarry.Model = Em.Object.extend().reopenClass(
         apiCallback: function (that) {
             return function (data) {
                 return data;
-            }
+            };
         },
         /**
          * Generic API Data response callback function
@@ -645,7 +645,7 @@ Quarry.initModels = function () {
                         log.entries.pushObject(that.create(data.data[i]));
                     }
                     return log;
-                }
+                };
             }
         }
     );
@@ -820,7 +820,7 @@ Quarry.initModels = function () {
                         }
                     }
                     return networks;
-                }
+                };
             }
         }
     );
@@ -1490,7 +1490,7 @@ Quarry.initModels = function () {
              */
             getSecret: function (username, passwd) {
                 var path, params;
-                path = this.appPath + username
+                path = this.appPath + username;
                 params = {
                     username: username,
                     password: encodeURIComponent(passwd)
@@ -1510,7 +1510,7 @@ Quarry.initModels = function () {
              */
             createSecret: function (username, passwd) {
                 var path, params, settings;
-                path = this.appPath + username
+                path = this.appPath + username;
                 params = {
                     username: username,
                     password: encodeURIComponent(passwd)
