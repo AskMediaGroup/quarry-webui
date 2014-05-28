@@ -926,6 +926,7 @@ Quarry.initModels = function () {
     this.Mortar = Quarry.Model.extend().reopenClass(
         /** @lends Quarry.Mortar.prototype */
         {
+            appPath: '/mortar/',
             /**
              * Commission a virtual host
              * @param {Asset} asset Asset object describing the target asset
@@ -938,7 +939,7 @@ Quarry.initModels = function () {
              */
             commission: function (asset, osTarget, vm, layout, role) {
                 var path, params = {}, settings;
-                path = '/mortar/commission/vm';
+                path = this.appPath + 'commission/vm';
                 settings = {
                     type: 'POST',
                     data: JSON.stringify({
@@ -961,7 +962,7 @@ Quarry.initModels = function () {
              */
             decommission: function (asset_id) {
                 var path, params = {}, settings;
-                path = '/mortar/decommission/' + asset_id;
+                path = this.appPath + 'decommission/' + asset_id;
                 settings = {
                     type: 'POST'
                 };
@@ -977,7 +978,7 @@ Quarry.initModels = function () {
              */
             asset_cleanup: function (asset_id) {
                 var path, params = {}, settings;
-                path = '/mortar/asset/cleanup/' + asset_id;
+                path = this.appPath + 'asset/cleanup/' + asset_id;
                 settings = {
                     type: 'POST'
                 };
@@ -997,7 +998,7 @@ Quarry.initModels = function () {
              */
             rekick: function (asset_id, osTarget, layout) {
                 var path, params = {}, settings;
-                path = '/mortar/rekick/' + asset_id;
+                path = this.appPath + 'rekick/' + asset_id;
                 settings = {
                     type: 'POST',
                     data: JSON.stringify({
@@ -1019,7 +1020,7 @@ Quarry.initModels = function () {
              */
             rename: function (asset_id, new_fqdn, reboot) {
                 var path, params = {}, settings;
-                path = '/mortar/rename/' + asset_id;
+                path = this.appPath + 'rename/' + asset_id;
                 settings = {
                     type: 'POST',
                     data: JSON.stringify({
@@ -1043,6 +1044,7 @@ Quarry.initModels = function () {
     this.MortarBulk = Quarry.Model.extend().reopenClass(
         /** @lends Quarry.MortarBulk.prototype */
         {
+            appPath: '/mortar/bulk/',
             /**
              * Queues up a MortarBulk job for verification
              * @param {string} action Action name supported by MortarBulk
@@ -1054,7 +1056,7 @@ Quarry.initModels = function () {
              */
             prepBulk: function (action, routeVar, data) {
                 var path, params = {}, settings, that = this;
-                path = '/mortar/bulk/' + action;
+                path = this.appPath + action;
                 if (routeVar) {
                     path += String('/' + routeVar);
                 }
@@ -1074,7 +1076,7 @@ Quarry.initModels = function () {
              */
             verify: function (bulk_id) {
                 var path, params = {}, settings;
-                path = '/mortar/bulk/' + bulk_id + '/verify';
+                path = this.appPath + bulk_id + '/verify';
                 settings = {
                     type: 'POST'
                 };
@@ -1090,7 +1092,7 @@ Quarry.initModels = function () {
              */
             cancel: function (bulk_id) {
                 var path, params = {}, settings, that = this;
-                path = '/mortar/bulk/' + bulk_id;
+                path = this.appPath + bulk_id;
                 settings = {
                     type: 'DELETE'
                 };
