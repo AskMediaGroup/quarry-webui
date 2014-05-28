@@ -1481,7 +1481,7 @@ Quarry.initModels = function () {
      * @classdesc Quarry User API
      */
     this.User = Quarry.Model.extend().reopenClass(
-        /** @lends Quarry.Blade.prototype */
+        /** @lends Quarry.User.prototype */
         {
             appPath: '/users/',
             /**
