@@ -1,10 +1,15 @@
 /*global App, Em, $ */
 App.AssetRoute = Em.Route.extend({
     model: function (params) {
+        var queryObj = {
+            where: {
+                FQDN: params.fqdn
+            }
+        };
         this.controllerFor('asset').set('isLoading', true);
-        return App.Assets.find(params.fqdn).then(
-            function (asset) {
-                return asset;
+        return App.Assets.find(queryObj).then(
+            function (data) {
+                return App.Assets.create(data.data[0]);
             }
         );
     },

@@ -19,23 +19,29 @@ App.AssetController = Em.ObjectController.extend({
 
     actions: {
         refresh: function () {
-            var that = this;
-            App.Assets.find(this.get('id')).then(
-                function (response) {
+            var queryObj, that = this;
+            queryObj = {
+                where: {
+                    id: this.get('id')
+                }
+            };
+            App.Assets.find(queryObj).then(
+                function (data) {
+                    var asset = data.data[0];
                     // While we're storing available application types in memory
                     // as constant arrays we need to account for the fact that the db
                     // may have values that aren't in our arrays
-                    if ($.inArray(response.Application, App.APPLICATION_TYPES) === -1) {
-                        App.APPLICATION_TYPES.pushObject(response.Application);
+                    if ($.inArray(asset.Application, App.APPLICATION_TYPES) === -1) {
+                        App.APPLICATION_TYPES.pushObject(asset.Application);
                     }
-                    if ($.inArray(response.ProdType, App.PRODUCTION_TYPES) === -1) {
-                        App.PRODUCTION_TYPES.pushObject(response.ProdType);
+                    if ($.inArray(asset.ProdType, App.PRODUCTION_TYPES) === -1) {
+                        App.PRODUCTION_TYPES.pushObject(asset.ProdType);
                     }
-                    if ($.inArray(response.Business_Unit, App.BUSINESS_UNITS) === -1) {
-                        App.BUSINESS_UNITS.pushObject(response.Business_Unit);
+                    if ($.inArray(asset.Business_Unit, App.BUSINESS_UNITS) === -1) {
+                        App.BUSINESS_UNITS.pushObject(asset.Business_Unit);
                     }
                     that.setProperties({
-                        content: response,
+                        content: App.Assets.create(asset),
                         status: undefined
                     });
                     that.set('formUpdated', false);
@@ -43,13 +49,21 @@ App.AssetController = Em.ObjectController.extend({
             );
         },
         getAsset: function (fqdn) {
-            var that = this;
+            var queryObj, that = this;
             this.set('isLoading', true);
             if (fqdn) {
-                App.Assets.find(fqdn).then(
-                    function success(asset) {
+                queryObj = {
+                    where: {
+                        FQDN: fqdn
+                    }
+                };
+                App.Assets.find(queryObj).then(
+                    function success(data) {
                         that.set('formUpdated', false);
-                        that.transitionToRoute('asset', asset);
+                        that.transitionToRoute(
+                            'asset',
+                            App.Assets.create(data.data[0])
+                        );
                     },
                     function failure(jqXHR, textStatus, errorThrown) {
                         console.log(jqXHR);

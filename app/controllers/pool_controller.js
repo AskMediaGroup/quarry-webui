@@ -70,15 +70,20 @@ App.PoolController = Em.ObjectController.extend({
             this.transitionToRoute('pool.delete', this.get('content'));
         },
         getAsset: function (fqdn) {
-            var that = this;
+            var queryObj, that = this;
             if (fqdn) {
-                App.Assets.find(fqdn).then(
-                    function (asset) {
-                        that.transitionToRoute('asset', asset);
+                queryObj = {
+                    where: {
+                        FQDN: fqdn
+                    }
+                };
+                App.Assets.find(queryObj).then(
+                    function (data) {
+                        that.transitionToRoute('asset', App.Assets.create(data.data[0]));
                     }
                 );
             }
-        },
+        }
     },
 
     formObserver: function () {

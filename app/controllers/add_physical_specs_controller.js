@@ -255,7 +255,12 @@ App.AddPhysicalSpecsController = Em.ArrayController.extend({
         this.set('fqdnsChecked', 0);
         that = this;
         content.forEach(function (item) {
-            App.Assets.find(item.hostname + App.DOMAIN_SUFFIX).then(
+            var queryObj = {
+                where: {
+                    FQDN: item.hostname + App.DOMAIN_SUFFIX
+                }
+            };
+            App.Assets.find(queryObj).then(
                 function success(response) {
                     // A response means the FQDN already exists
                     that.get('nonAvailFqdns').pushObject(
