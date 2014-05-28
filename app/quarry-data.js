@@ -1250,17 +1250,17 @@ Quarry.initModels = function () {
     this.DnsSync = Quarry.Model.extend().reopenClass(
         /** @lends Quarry.DnsSync.prototype */
         {
+            appPath: '/quarry/dns/sync/zone',
             /**
              * Sync Quarry records in DNS
              * @returns {Job} Job object
              */
             sync: function () {
-                var path, params = {}, settings;
-                path = '/quarry/dns/sync/sync/zone';
+                var params = {}, settings;
                 settings = {
                     type: 'POST'
                 };
-                return this.ajax(path, params, settings).then(
+                return this.ajax(this.appPath, params, settings).then(
                     this.apiRecordCallback,
                     this.errorCallback
                 );
