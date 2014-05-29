@@ -258,11 +258,11 @@ def test():
 
 @task
 @needs('build')
-@might_call('test')
+#@might_call('test')
 def archive():
-    call_task('test', options={
-        'cleanup' : True
-    })
+    #call_task('test', options={
+    #    'cleanup' : True
+    #})
     # Create archive
     filename = 'quarry-webui.tar.gz'
     chdir(BUILD_DIR)
