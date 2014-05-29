@@ -2,7 +2,7 @@
 App.RenameAsset = Em.Object.extend({
     id: null,
     FQDN: null,
-    reboot: null,
+    reboot: false,
     newName: null,
 
     hostname: function () {
