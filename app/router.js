@@ -1,4 +1,7 @@
 /*global console, App, Em, $ */
+App.Router.reopen({
+    location: 'history'
+});
 App.Router.map(function () {
     this.resource('login');
     this.resource('jobs');
