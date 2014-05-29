@@ -1416,7 +1416,8 @@ Quarry.initModels = function () {
              * @returns {Job} Job object
              */
             run: function (command, query) {
-                var params = {}, settings;
+                var path, params = {}, settings;
+                path = this.appPath + 'script';
                 settings = {
                     type: 'POST',
                     data: JSON.stringify({
@@ -1424,7 +1425,7 @@ Quarry.initModels = function () {
                         'query': query
                     })
                 };
-                return this.ajax(this.appPath, params, settings).then(
+                return this.ajax(path, params, settings).then(
                     this.apiRecordCallback,
                     this.errorCallback
                 );
