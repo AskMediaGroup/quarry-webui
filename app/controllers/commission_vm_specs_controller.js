@@ -245,16 +245,17 @@ App.CommissionVmSpecsController = Em.ArrayController.extend({
                 }
             };
             App.Assets.find(queryObj).then(
-                function success(response) {
-                    // A response means the FQDN already exists
-                    that.get('nonAvailFqdns').pushObject(
-                        item.hostname + App.DOMAIN_SUFFIX
-                    );
-                    that.set('fqdnsChecked', that.get('fqdnsChecked') + 1);
-                },
-                function failure(response) {
-                    // A 404 means that the FQDN is available
-                    that.set('fqdnsChecked', that.get('fqdnsChecked') + 1);
+                function (data) {
+                    // A total of > 0 means the FQDN already exists
+                    if (data.total > 0) {
+                        that.get('nonAvailFqdns').pushObject(
+                                item.hostname + App.DOMAIN_SUFFIX
+                        );
+                        that.incrementProperty('fqdnsChecked', 1);
+                    } else if (data.total === 0) {
+                        // a total of zero means that the FQDN is available
+                        that.incrementProperty('fqdnsChecked', 1);
+                    }
                 }
             );
         });
