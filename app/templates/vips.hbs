@@ -1,0 +1,38 @@
+<legend>{{icon name="vipPage"}}VIPs</legend>
+{{#if isLoading}}
+    <p id="search-in-progress">Retrieving VIPs from the API....</p>
+    <div class="progress progress-striped active">
+        <div class="bar" style="width: 100%;"></div>
+    </div>
+{{else}}
+    {{#if isLoadingVip}}
+        <p id="search-in-progress">Loading VIP & Pool data from the API....</p>
+        <div class="progress progress-striped active">
+            <div class="bar" style="width: 100%;"></div>
+        </div>
+    {{else}}
+        <table id="resultstable" class="table table-condensed">
+            <thead id="serpHeaders">
+            <tr>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Port</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#each controller}}
+                <tr>
+                    <td><a href="#" {{action "loadVip" name}}>{{name}}</a></td>
+                    <td>{{address}}
+                    <td>{{port}}</td>
+                </tr>
+            {{/each}}
+            </tbody>
+        </table>
+        <ul class="pager">
+            <li class="previous">
+                {{link-to "&larr; Back to BigIP Search" "bigIp"}}
+            </li>
+        </ul>
+    {{/if}}
+{{/if}}

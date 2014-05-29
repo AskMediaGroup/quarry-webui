@@ -72,6 +72,9 @@ App.Router.map(function () {
         this.resource('assetCardstack', { path: 'cardstack/:cardstack_id' });
     });
     this.resource('export', { path: '/export/:search_query' });
+    this.resource('vips', {path: '/vips/:dc'});
+    this.resource('vip', {path: '/vip/:dc/:vip_name'});
+    this.resource('bigIp', { path: '/bigip' });
 });
 
 // TODO enable non-hash URLs

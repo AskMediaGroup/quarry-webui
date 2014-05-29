@@ -205,6 +205,32 @@
  * A chef role model object
  * @typedef {Object} ChefRole
  */
+/**
+ * Pool Member object
+ * @typedef {Object} PoolMember
+ * @property {String} address IP address of member
+ * @property {String} name Member name
+ * @property {boolean} available Member available?
+ * @property {boolean} enabled Member enabled?
+ * @property {number} port Member listening port
+ * @property {VipPool=} pool - VIP Pool object
+ */
+/**
+ * VIP Pool object
+ * @typedef {Object} VipPool
+ * @property {boolean} available Pool available?
+ * @property {boolean} enabled Pool enabled?
+ * @property {String} name Pool name
+ * @property {Array.<PoolMember>} members Pool members array
+ */
+/**
+ * VIP object
+ * @typedef {Object} Vip
+ * @property {string} address IP address of VIP
+ * @property {string} name VIP name
+ * @property {number} port VIP listening port
+ * @property {VipPool=} pool - VIP Pool object
+ */
 
 /** Quarry data persistence layer
  * @namespace {Ember.Namespace} Quarry
@@ -1526,6 +1552,86 @@ Quarry.initModels = function () {
                     function failure(jqXHR) {
                         return jqXHR;
                     }
+                );
+            }
+        }
+    );
+    /**
+     * Quarry.BigIp class
+     * @class Quarry.BigIp
+     * @extends Quarry.Model
+     * @classdesc Quarry BigIP API connector
+     */
+    this.BigIp = Quarry.Model.extend().reopenClass(
+        /** @lends Quarry.BigIp.prototype */
+        {
+            /**
+             * Get an array of DCs that have at least one LTM
+             * @returns {Array.<String>} array of DC strings
+             */
+            dcs: function () {
+                var path, that = this;
+                path = '/bigip/ltm';
+                return this.ajax(path).then(
+                    function (data) {
+                        var i, k, dcs = [];
+                        for (i = 0, k = data.data.length; i < k; i += 1) {
+                            dcs.pushObject(data.data[i]);
+                        }
+                        return Em.A(dcs);
+                    },
+                    that.errorCallback
+                );
+            },
+            /**
+             * Get an array of VIP names in a DC
+             * @param {string} dc DC string
+             * @returns {Array.<Vip>} array of VIP objects
+             */
+            vips: function (dc) {
+                var path, that = this;
+                path = '/bigip/ltm/vips/' + dc + '/';
+                return this.ajax(path).then(
+                    function (data) {
+                        var i, k, vips = [];
+                        for (i = 0, k = data.data.length; i < k; i += 1) {
+                            vips.pushObject(data.data[i]);
+                        }
+                        return Em.A(vips);
+                    },
+                    that.errorCallback
+                );
+            },
+            /**
+             * Get a VIP by name reference
+             * @param {string} dc DC string
+             * @param {string} name VIP name string
+             * @returns {Vip} VIP object
+             */
+            findByName: function (dc, name) {
+                var path, that = this;
+                path = '/bigip/ltm/vips/' + dc + '/name/' + name;
+                return this.ajax(path).then(
+                    function (data) {
+                        return Em.Object.create(data.data[0]);
+                    },
+                    that.errorCallback
+                );
+            },
+            /**
+             * Get a VIP by IP reference
+             * @param {string} dc DC string
+             * @param {string} ip IP address string
+             * @returns {Vip} VIP object
+             */
+            findByIp: function (dc, ip) {
+                var path, that = this;
+                path = '/bigip/ltm/vips/' + dc + '/ip/' + ip;
+                return this.ajax(path).then(
+                    function (data) {
+                        return Em.Object.create(data.data[0]);
+                    },
+                    that.errorCallback
                 );
             }
         }
