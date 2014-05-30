@@ -138,6 +138,10 @@ App.AssetController = Em.ObjectController.extend({
                 this.get('controllers.serp').get('content').length > 0 : false;
     }.property('controllers.serp.content'),
 
+    serpContent: function () {
+        return this.get('controllers.serp').get('content');
+    }.property('controllers.serp.content'),
+
     assetIndex: function () {
         if (this.get('currentPath')) {
             return this.get('currentPath') === 'asset.index' ? true : false;
