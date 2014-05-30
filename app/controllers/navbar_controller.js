@@ -179,7 +179,12 @@ App.NavbarController = Em.ObjectController.extend({
         },
         fqdnSearch: function () {
             var that = this;
-            this.transitionToRoute('serp.index');
+            this.set('controllers.serp.searchTerms', App.SearchAsset.create({
+                asset: {
+                    FQDN: this.get('searchFieldVal')
+                }
+            }));
+            this.transitionToRoute('serp.index', []);
             this.get(
                 'controllers.serp'
             ).fqdnSearch(this.get('searchFieldVal')).then(
