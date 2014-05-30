@@ -547,6 +547,7 @@ Quarry.Model = Em.Object.extend().reopenClass(
                 successCallback = this.apiCallback(this);
               // a "find all"
             } else if (typeof thing === 'undefined') {
+                params.limit = -1;
                 path = this.appPath;
                 successCallback = this.findAllCallback(this);
               // an unexpected find argument type
