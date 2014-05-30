@@ -31,7 +31,7 @@ var App = Em.Application.create(
          * @type {String}
          * @constant
          */
-        MODELS_PATH: 'js/models.min.js',
+        MODELS_PATH: '/js/models.min.js',
         /**
          * Load application metadata
          */

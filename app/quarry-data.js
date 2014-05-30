@@ -254,7 +254,7 @@ var Quarry = Em.Namespace.create(
          * @type {String}
          * @constant
          */
-        CONFIG_FILE: 'config.json',
+        CONFIG_FILE: '/config.json',
         /** Backend API to use
          * @type {String}
          * @constant
