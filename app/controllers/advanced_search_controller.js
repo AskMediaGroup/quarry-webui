@@ -59,13 +59,6 @@ App.AdvancedSearchController = Em.ObjectController.extend({
                 sort: App.DEFAULT_SERP_SORT,
                 desc: App.DEFAULT_SERP_DESC
             });
-        },
-        goSerp: function () {
-            this.get('searchTerms').setProperties({
-                asset: App.getNonEmptyAttrs(this.get('searchTerms.asset')),
-                ips: App.getNonEmptyArrIndices(this.get('searchTerms.ips'))
-            });
-            this.transitionToRoute('serp');
         }
     },
 

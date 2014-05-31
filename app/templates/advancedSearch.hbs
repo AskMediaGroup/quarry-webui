@@ -268,8 +268,9 @@
     <button class="btn btn-primary" type="submit" {{action "submit"}}>
         {{icon name="search"}} Search</button>
     <button class="btn" type="button" {{action "reset"}}>Reset</button>
-    <button class="btn" type="button" {{action "goSerp"}}>
-        {{icon name="cancel"}} Cancel</button>
+    {{#link-to "index"}}
+        <button class="btn" type="button">{{icon name="cancel"}} Cancel</button>
+    {{/link-to}}
 </div>
 </form>
 {{#if submittedEmpty}}
