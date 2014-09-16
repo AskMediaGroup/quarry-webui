@@ -63,8 +63,11 @@
             <div id="asset_detail" class="tab-content">
                 <div class="tab-pane fade in active" id="general">
                     <div class="row">
-                        <div class="span5"><label>FQDN:</label>
-                            {{view Em.TextField class="span5" valueBinding="content.FQDN"}}
+                        <div class="span4"><label>FQDN:</label>
+                            {{view Em.TextField class="span4" valueBinding="content.FQDN"}}
+                        </div>
+                        <div class="span1"><label>ID:</label>
+                            <span class="span1 uneditable-input">{{content.id}}</span>
                         </div>
                         <div class="span3"><label>Application Type:</label>
                             {{view Em.Select class="span3"
@@ -156,6 +159,15 @@
                                 valueBinding="vm.cpus"}}
                             </div>
                         </div>
+                        {{#if vm.vnc}}
+                        <hr/>
+                        <div class="row">
+                            <div class="span5">
+                                <label>VNC:</label>
+                                vnc://{{vm.hypervisor}}:{{vm.vnc}}
+                            </div>
+                        </div>
+                        {{/if}}
                     </div>
                     {{/if}}
                     {{#if hypervisor}}
