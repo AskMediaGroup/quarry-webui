@@ -772,7 +772,7 @@ Quarry.initModels = function () {
              * containing assets that match the search criteria
              */
             find: function (searchTerms) {
-                var path, params = {}, that = this;
+                var path, params = {}, that = this, ips;
                 path = '/quarry/assets/';
                 // compose a URI query string object
                 if (searchTerms) {
@@ -780,6 +780,10 @@ Quarry.initModels = function () {
                         'sort', 'limit', 'offset'
                     );
                     params.where = searchTerms.get('asset');
+                    ips = searchTerms.get('ips');
+                    if (ips.length) {
+                        params.where.ips = ips;
+                    }
                 }
                 return this.ajax(path, params).then(
                     function (data) {
