@@ -257,7 +257,7 @@ App.AddPhysicalSpecsController = Em.ArrayController.extend({
         content.forEach(function (item) {
             var queryObj = {
                 where: {
-                    FQDN: item.hostname + App.DOMAIN_SUFFIX
+                    FQDN: '^' + item.hostname + App.DOMAIN_SUFFIX
                 }
             };
             App.Assets.find(queryObj).then(
