@@ -5,10 +5,11 @@ App.PoolsController = Em.ArrayController.extend({
     find: function () {
         var that = this;
         this.set('isLoading', true);
-        return App.Pool.find().then(
+        return App.Pool.find({sort: 'name', limit: -1}).then(
             function (pools_data) {
                 var pools = [];
-                pools_data.forEach(function (pool, index, enumerable) {
+                pools_data.data.forEach(function (pool, index, enumerable) {
+                    pool = App.Pool.create(pool);
                     App.Pool.get_hypervisors(pool.get('name')).then(
                         function (data) {
                             var i, k, hypervisors = [];
