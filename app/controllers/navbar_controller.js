@@ -29,7 +29,7 @@ App.NavbarController = Em.ObjectController.extend({
                                 ownerGroup: item.Owning_Group,
                                 application: item.Application,
                                 businessUnit: item.Business_Unit,
-                                ram: Math.ceil(item.RAM_Total / 1073.741824),
+                                ram: Math.ceil(item.RAM_Total / 1024.0),
                                 storage:
                                     (item.Disk0 ? +item.Disk0.split('G')[0] : 0) +
                                         (item.Disk1 ? +item.Disk1.split('G')[0] : 0) +
