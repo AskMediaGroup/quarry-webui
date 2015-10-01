@@ -814,6 +814,18 @@ Quarry.initModels = function () {
         }
     );
     /**
+     * Quarry.AssetHistories class
+     * @class Quarry.AssetHistories
+     * @extends Quarry.Model
+     * @classdesc Quarry Asset History API connector
+     */
+    this.AssetHistories = Quarry.Model.extend().reopenClass(
+        /** @lends Quarry.assets.prototype */
+        {
+            appPath: '/quarry/history/'
+        }
+    );
+    /**
      * Quarry.OsTargets class
      * @class Quarry.OsTargets
      * @extends Quarry.Model

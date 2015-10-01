@@ -1,4 +1,4 @@
-/*global App, Em */
+/*global App, Em, Quarry */
 /**
  * The Jobs Controller
  * @class App.JobsController
@@ -96,6 +96,38 @@ App.JobsController = Em.ArrayController.extend(
                 ) !== 'jobs') {
                 this.refresh();
             }
-        }
+        },
+
+        /**
+         * Load FQDNs for jobs
+         */
+        getFQDNs: function () {
+            this.get('content').forEach(function(job, index, enumerable) {
+                job.set('fqdn', null);
+                switch (job.get('func')) {
+                case ('commission_vm'):
+                case ('bulk_physical_create'):
+                    job.set('fqdn', job.get('args')[0].asset.FQDN);
+                    break;
+                case ('power'):
+                case ('decommission'):
+                case ('rekick'):
+                case ('rename'):
+                case ('asset_cleanup'):
+                    Quarry.AssetHistories.find({
+                        'where': {
+                            'asset_id': job.get('args')[0]
+                        },
+                        'limit': 1,
+                        'sort': '-history_id'}).then(function (histories) {
+                            if (histories.data.length === 1) {
+                                job.set('fqdn', histories.data[0].fqdn);
+                            }
+                        }
+                    );
+                    break;
+                }
+            });
+        }.observes('content')
     }
 );

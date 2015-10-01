@@ -41,6 +41,10 @@
             {{/if}}
             <dt>Module</dt>
             <dd>{{module}}</dd>
+            {{#if fqdn}}
+            <dt>Asset</dt>
+            <dd>{{#link-to "asset" fqdn}}{{fqdn}}{{/link-to}}</dd>
+            {{/if}}
             {{#if hasArgs}}
                 {{#if longArgs}}
                     <dt>Args</dt>
