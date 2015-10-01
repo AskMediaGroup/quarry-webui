@@ -14,39 +14,70 @@ App.NavbarController = Em.ObjectController.extend({
 
     actions: {
         commissionVm: function () {
-            var modelArr = [], i = 0;
+            var modelArr = [], i = 0, ram, storage, cores, that = this;
             switch (this.get('controllers.application').get('currentPath')) {
             case 'serp.index':
                 if (this.get('serp').length) {
                     this.get('serp').forEach(
                         function (item, index, enumerable) {
                             i += 1;
-                            modelArr.pushObject(App.CommissionVmHostSpecs.create({
-                                index: i,
-                                hostname: item.get('hostname'),
-                                prodType: item.ProdType,
-                                ownerEmail: item.Owner_Email,
-                                ownerGroup: item.Owning_Group,
-                                application: item.Application,
-                                businessUnit: item.Business_Unit,
-                                ram: Math.ceil(item.RAM_Total / 1024.0),
-                                storage:
-                                    (item.Disk0 ? +item.Disk0.split('G')[0] : 0) +
-                                        (item.Disk1 ? +item.Disk1.split('G')[0] : 0) +
-                                        (item.Disk2 ? +item.Disk2.split('G')[0] : 0) +
-                                        (item.Disk3 ? +item.Disk3.split('G')[0] : 0) +
-                                        (item.Disk4 ? +item.Disk4.split('G')[0] : 0),
-                                cores: item.CPU_Cores
-                            }));
+                            App.Vm.find(item.FQDN).then(function (vm) {
+                                modelArr.pushObject(App.CommissionVmHostSpecs.create({
+                                    index: i,
+                                    hostname: item.get('hostname'),
+                                    prodType: item.ProdType,
+                                    ownerEmail: item.Owner_Email,
+                                    ownerGroup: item.Owning_Group,
+                                    application: item.Application,
+                                    businessUnit: item.Business_Unit,
+                                    ram: vm.get('memory'),
+                                    storage: vm.get('capacity'),
+                                    cores: vm.get('cpus')
+                                }));
+                                that.transitionToRoute('commissionSerp', modelArr);
+                            }, function (err) {
+                                if (err.status === 404) {
+                                    modelArr.pushObject(App.CommissionVmHostSpecs.create({
+                                        index: i,
+                                        hostname: item.get('hostname'),
+                                        prodType: item.ProdType,
+                                        ownerEmail: item.Owner_Email,
+                                        ownerGroup: item.Owning_Group,
+                                        application: item.Application,
+                                        businessUnit: item.Business_Unit,
+                                        ram: Math.ceil(item.RAM_Total / 1024),
+                                        storage: (item.Disk0 ? +item.Disk0.split('G')[0] : 0) +
+                                                    (item.Disk1 ? +item.Disk1.split('G')[0] : 0) +
+                                                    (item.Disk2 ? +item.Disk2.split('G')[0] : 0) +
+                                                    (item.Disk3 ? +item.Disk3.split('G')[0] : 0) +
+                                                    (item.Disk4 ? +item.Disk4.split('G')[0] : 0),
+                                        cores: item.CPU_Cores
+                                    }));
+                                    that.transitionToRoute('commissionSerp', modelArr);
+                                }
+                            });
                         }
                     );
-                    this.transitionToRoute('commissionSerp', modelArr);
                     break;
                 }
                 this.get('controllers.commissionVm').freshen();
                 this.transitionToRoute('commissionVm.index');
                 break;
             case 'asset.index':
+                if (this.get('asset.vm')) {
+                    ram = this.get('asset.vm.memory');
+                    storage = this.get('asset.vm.capacity');
+                    cores = this.get('asset.vm.cpus');
+                } else {
+                    ram = Math.ceil(this.get('asset.RAM_Total') / 1024);
+                    storage = (this.get('asset.Disk0') ? +this.get('asset.Disk0').split('G')[0] : 0) +
+                                (this.get('asset.Disk1') ? +this.get('asset.Disk1').split('G')[0] : 0) +
+                                (this.get('asset.Disk2') ? +this.get('asset.Disk2').split('G')[0] : 0) +
+                                (this.get('asset.Disk3') ? +this.get('asset.Disk3').split('G')[0] : 0) +
+                                (this.get('asset.Disk4') ? +this.get('asset.Disk4').split('G')[0] : 0);
+                    cores = this.get('asset.CPU_Cores');
+                }
+
                 modelArr.pushObject(App.CommissionVmHostSpecs.create({
                     index: 1,
                     hostname: this.get('asset.hostname'),
@@ -55,14 +86,9 @@ App.NavbarController = Em.ObjectController.extend({
                     ownerGroup: this.get('asset.Owning_Group'),
                     application: this.get('asset.Application'),
                     businessUnit: this.get('asset.Business_Unit'),
-                    ram: Math.ceil(this.get('asset.RAM_Total') / 1073.741824),
-                    storage:
-                        (this.get('asset.Disk0') ? +this.get('asset.Disk0').split('G')[0] : 0) +
-                            (this.get('asset.Disk1') ? +this.get('asset.Disk1').split('G')[0] : 0) +
-                            (this.get('asset.Disk2') ? +this.get('asset.Disk2').split('G')[0] : 0) +
-                            (this.get('asset.Disk3') ? +this.get('asset.Disk3').split('G')[0] : 0) +
-                            (this.get('asset.Disk4') ? +this.get('asset.Disk4').split('G')[0] : 0),
-                    cores: this.get('asset.CPU_Cores')
+                    ram: ram,
+                    storage: storage,
+                    cores: cores
                 }));
                 this.transitionToRoute('commissionVm.specs', modelArr);
                 break;
