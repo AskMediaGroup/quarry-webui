@@ -132,8 +132,16 @@ App.Jobs = Quarry.Jobs.extend({
     }.property('log'),
 
     output_stringified: function () {
-        return JSON.stringify(this.get('output'));
+        return JSON.stringify(this.get('output'), null, '\t');
     }.property('output'),
+
+    args_stringified: function () {
+        return JSON.stringify(this.get('args'), null, '\t');
+    }.property('args'),
+
+    kwargs_stringified: function () {
+        return JSON.stringify(this.get('kwargs'), null, '\t');
+    }.property('kwargs'),
 
     duration: function () {
         return this.get('end_time') && this.get('start_time')
@@ -192,7 +200,7 @@ App.Jobs = Quarry.Jobs.extend({
     }.property('kwargs'),
 
     longArgs: function () {
-        if (this.get('args').length > 150) {
+        if (this.get('args_stringified').length > 150) {
             return true;
         } else {
             return false;
@@ -200,7 +208,7 @@ App.Jobs = Quarry.Jobs.extend({
     }.property('args'),
 
     longKwargs: function () {
-        if (this.get('kwargs').length > 150) {
+        if (this.get('kwargs_stringified').length > 150) {
             return true;
         } else {
             return false;

@@ -44,19 +44,19 @@
             {{#if hasArgs}}
                 {{#if longArgs}}
                     <dt>Args</dt>
-                    <dd><pre>{{args}}</pre></dd>
+                    <dd><pre>{{args_stringified}}</pre></dd>
                 {{else}}
                     <dt>Args</dt>
-                    <dd><code>{{args}}</code></dd>
+                    <dd><code>{{args_stringified}}</code></dd>
                 {{/if}}
             {{/if}}
             {{#if hasKwargs}}
                 {{#if longKwargs}}
                     <dt>Keyword Args</dt>
-                    <dd><pre>{{kwargs}}</pre></dd>
+                    <dd><pre>{{kwargs_stringified}}</pre></dd>
                 {{else}}
-                    <dt>Args</dt>
-                    <dd><code>{{kwargs}}</code></dd>
+                    <dt>Keyword Args</dt>
+                    <dd><code>{{kwargs_stringified}}</code></dd>
                 {{/if}}
             {{/if}}
             {{#if hasOutputJson}}
