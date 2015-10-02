@@ -1,4 +1,4 @@
-/*global window, App, Em */
+/*global window, App, Em, Quarry */
 App.JobController = Em.ObjectController.extend({
     content: {},
     needs: ['application'],
@@ -188,5 +188,33 @@ App.JobController = Em.ObjectController.extend({
                 }
             });
         }
-    }.observes('content.logs.@each')
+    }.observes('content.logs.@each'),
+
+    getFQDN: function () {
+        var that = this;
+        this.set('fqdn', null);
+        switch (this.get('func')) {
+        case ('commission_vm'):
+        case ('bulk_physical_create'):
+            this.set('fqdn', this.get('args')[0].asset.FQDN);
+            break;
+        case ('power'):
+        case ('decommission'):
+        case ('rekick'):
+        case ('rename'):
+        case ('asset_cleanup'):
+            Quarry.AssetHistories.find({
+                'where': {
+                    'asset_id': this.get('args')[0]
+                },
+                'limit': 1,
+                'sort': '-history_id'}).then(function (histories) {
+                    if (histories.data.length === 1) {
+                        that.set('fqdn', histories.data[0].fqdn);
+                    }
+                }
+            );
+            break;
+        }
+    }.observes('content')
 });

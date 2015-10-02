@@ -28,6 +28,10 @@
                     </dd>
                     <dt>Submitted</dt>
                     <dd>{{job.queue_date}}</dd>
+                    {{#if job.fqdn}}
+                    <dt>Asset</dt>
+                    <dd>{{#link-to 'asset' job.fqdn}}{{job.fqdn}}{{/link-to}}</a></dd>
+                    {{/if}}
                 </dl>
             </div>
         {{/each}}
