@@ -23,10 +23,14 @@ App.LayoutsController = Em.ArrayController.extend({
     find: function () {
         var that = this;
         this.set('isLoading', true);
-        return App.Layouts.find().then(
+        return App.Layouts.find({sort: 'name', limit: -1}).then(
             function (response) {
+                var ret = [];
+                response.data.forEach(function(layout) {
+                    ret.pushObject(App.Layouts.create(layout));
+                });
                 that.set('isLoading', false);
-                return response;
+                return ret;
             }
         );
     },
